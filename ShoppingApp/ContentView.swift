@@ -56,7 +56,14 @@ class AppViewModel: ObservableObject{
             ])
         }
     }
+    
+    
+    func signOut(){
+        try? auth.signOut()
+        self.signedIn = false
+    }
 }
+
     
 //    func signUp(email: String, password: String, username: String){
 //        auth.createUser(withEmail: email, password: password){ [weak self] result, error in
@@ -71,14 +78,34 @@ class AppViewModel: ObservableObject{
 //    }
 //}
 
+enum Tab: String {
+    case Home
+    case Settings
+    case Search
+}
+
 struct ContentView: View {
-    
+        
     @EnvironmentObject var viewModel: AppViewModel
     
     var body: some View {
         NavigationView {
             if viewModel.signedIn {
-                Text("s")
+                TabView{
+                    MainView().tabItem {
+                        Image(systemName: "house.fill")
+                    }.tag(0)
+                    SearchView().tabItem {
+                        Image(systemName: "magnifyingglass")
+                    }.tag(0)
+                    SettingsView().tabItem {
+                        Image(systemName: "gearshape.fill")
+                    }.tag(0)
+
+                }.accentColor(.black)
+                
+                SettingsView()
+
             } else{
                 SignInView()
             }
