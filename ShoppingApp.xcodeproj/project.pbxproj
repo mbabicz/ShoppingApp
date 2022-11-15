@@ -45,6 +45,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		291125B62922C6090000AEA2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				29A6884329217029009E03BF /* ContentView.swift */,
+				291125B22922B4290000AEA2 /* MainView.swift */,
+				291125B42922B4370000AEA2 /* SearchView.swift */,
+				291125A729228CC20000AEA2 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		29A6883529217029009E03BF = {
 			isa = PBXGroup;
 			children = (
@@ -66,14 +77,11 @@
 		29A6884029217029009E03BF /* ShoppingApp */ = {
 			isa = PBXGroup;
 			children = (
+				291125B62922C6090000AEA2 /* Views */,
 				29A6884F29217DCC009E03BF /* GoogleService-Info.plist */,
 				29A6884129217029009E03BF /* ShoppingAppApp.swift */,
-				29A6884329217029009E03BF /* ContentView.swift */,
 				29A688452921702C009E03BF /* Assets.xcassets */,
 				29A688472921702C009E03BF /* Preview Content */,
-				291125A729228CC20000AEA2 /* SettingsView.swift */,
-				291125B22922B4290000AEA2 /* MainView.swift */,
-				291125B42922B4370000AEA2 /* SearchView.swift */,
 			);
 			path = ShoppingApp;
 			sourceTree = "<group>";
