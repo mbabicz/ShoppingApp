@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		291125A829228CC20000AEA2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291125A729228CC20000AEA2 /* SettingsView.swift */; };
+		29062AD52927DB4C001DBFD0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062AD42927DB4C001DBFD0 /* User.swift */; };
+		29062AD72927DBFC001DBFD0 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062AD62927DBFC001DBFD0 /* UserViewModel.swift */; };
+		29062ADB2927F7B8001DBFD0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062ADA2927F7B8001DBFD0 /* AuthenticationView.swift */; };
 		291125B32922B4290000AEA2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291125B22922B4290000AEA2 /* MainView.swift */; };
 		291125B52922B4370000AEA2 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291125B42922B4370000AEA2 /* SearchView.swift */; };
+		2957DAEE2925506700D0BCF9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2957DAED2925506700D0BCF9 /* ProfileView.swift */; };
+		295E6E802926488C00B379EC /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295E6E7F2926488C00B379EC /* CartView.swift */; };
+		295E6E82292648BB00B379EC /* ObservedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295E6E81292648BB00B379EC /* ObservedView.swift */; };
 		29A6884229217029009E03BF /* ShoppingAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A6884129217029009E03BF /* ShoppingAppApp.swift */; };
 		29A6884429217029009E03BF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A6884329217029009E03BF /* ContentView.swift */; };
 		29A688462921702C009E03BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29A688452921702C009E03BF /* Assets.xcassets */; };
@@ -20,9 +25,14 @@
 
 /* Begin PBXFileReference section */
 		0C9FAECF7BDDFB6D09EE3527 /* Pods-ShoppingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoppingApp.debug.xcconfig"; path = "Target Support Files/Pods-ShoppingApp/Pods-ShoppingApp.debug.xcconfig"; sourceTree = "<group>"; };
-		291125A729228CC20000AEA2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		29062AD42927DB4C001DBFD0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = "../New Group/User.swift"; sourceTree = "<group>"; };
+		29062AD62927DBFC001DBFD0 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		29062ADA2927F7B8001DBFD0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		291125B22922B4290000AEA2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		291125B42922B4370000AEA2 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		2957DAED2925506700D0BCF9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		295E6E7F2926488C00B379EC /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		295E6E81292648BB00B379EC /* ObservedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservedView.swift; sourceTree = "<group>"; };
 		29A6883E29217029009E03BF /* ShoppingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShoppingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29A6884129217029009E03BF /* ShoppingAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingAppApp.swift; sourceTree = "<group>"; };
 		29A6884329217029009E03BF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,13 +55,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		29062ADC2927FB9C001DBFD0 /* Backups */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Backups;
+			sourceTree = "<group>";
+		};
+		290EF07F292824E30020996E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				29062AD42927DB4C001DBFD0 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		290EF080292824FD0020996E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				29062AD62927DBFC001DBFD0 /* UserViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		291125B62922C6090000AEA2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				29A6884329217029009E03BF /* ContentView.swift */,
 				291125B22922B4290000AEA2 /* MainView.swift */,
 				291125B42922B4370000AEA2 /* SearchView.swift */,
-				291125A729228CC20000AEA2 /* SettingsView.swift */,
+				2957DAED2925506700D0BCF9 /* ProfileView.swift */,
+				295E6E7F2926488C00B379EC /* CartView.swift */,
+				295E6E81292648BB00B379EC /* ObservedView.swift */,
+				29062ADA2927F7B8001DBFD0 /* AuthenticationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -77,7 +113,10 @@
 		29A6884029217029009E03BF /* ShoppingApp */ = {
 			isa = PBXGroup;
 			children = (
+				290EF080292824FD0020996E /* ViewModels */,
+				290EF07F292824E30020996E /* Models */,
 				291125B62922C6090000AEA2 /* Views */,
+				29062ADC2927FB9C001DBFD0 /* Backups */,
 				29A6884F29217DCC009E03BF /* GoogleService-Info.plist */,
 				29A6884129217029009E03BF /* ShoppingAppApp.swift */,
 				29A688452921702C009E03BF /* Assets.xcassets */,
@@ -227,9 +266,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				291125B52922B4370000AEA2 /* SearchView.swift in Sources */,
-				291125A829228CC20000AEA2 /* SettingsView.swift in Sources */,
+				295E6E802926488C00B379EC /* CartView.swift in Sources */,
+				295E6E82292648BB00B379EC /* ObservedView.swift in Sources */,
 				291125B32922B4290000AEA2 /* MainView.swift in Sources */,
+				29062AD52927DB4C001DBFD0 /* User.swift in Sources */,
 				29A6884429217029009E03BF /* ContentView.swift in Sources */,
+				29062ADB2927F7B8001DBFD0 /* AuthenticationView.swift in Sources */,
+				2957DAEE2925506700D0BCF9 /* ProfileView.swift in Sources */,
+				29062AD72927DBFC001DBFD0 /* UserViewModel.swift in Sources */,
 				29A6884229217029009E03BF /* ShoppingAppApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

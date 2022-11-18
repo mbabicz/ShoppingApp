@@ -15,9 +15,9 @@ struct ShoppingAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            let viewModel = AppViewModel()
+            let user = UserViewModel()
             ContentView()
-                .environmentObject(viewModel)
+                .environmentObject(user)
         }
     }
 }

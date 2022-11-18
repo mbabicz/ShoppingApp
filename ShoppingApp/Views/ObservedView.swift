@@ -1,30 +1,30 @@
 //
-//  SearchView.swift
+//  ObservedView.swift
 //  ShoppingApp
 //
-//  Created by kz on 14/11/2022.
+//  Created by kz on 17/11/2022.
 //
 
 import SwiftUI
 
-struct SearchView: View {
+struct ObservedView: View {
     var body: some View {
-        NavigationView{
-            Text("search")
+        NavigationView {
             
+            Text("obserw")
 
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .principal){
-                    Text("Produkty").font(.headline).bold()
+                    Text("Obserwowane").font(.headline).bold()
                 }
             }
         }
     }
 }
 
-struct SearchView_Previews: PreviewProvider {
+struct ObservedView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        ObservedView()
     }
 }

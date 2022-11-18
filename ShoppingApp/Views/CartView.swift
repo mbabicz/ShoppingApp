@@ -1,30 +1,30 @@
 //
-//  SearchView.swift
+//  CartView.swift
 //  ShoppingApp
 //
-//  Created by kz on 14/11/2022.
+//  Created by kz on 17/11/2022.
 //
 
 import SwiftUI
 
-struct SearchView: View {
+struct CartView: View {
     var body: some View {
-        NavigationView{
-            Text("search")
+        NavigationView {
             
+            Text("koszyk")
 
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .principal){
-                    Text("Produkty").font(.headline).bold()
+                    Text("Koszyk").font(.headline).bold()
                 }
             }
         }
     }
 }
 
-struct SearchView_Previews: PreviewProvider {
+struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        CartView()
     }
 }

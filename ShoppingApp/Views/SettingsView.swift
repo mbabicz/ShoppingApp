@@ -23,9 +23,7 @@ struct SettingsView: View {
             Button {
                 try? Auth.auth().signOut()
                 viewModel.signedIn = false
-                //ContentView.signedIn = false
-                //ContentView().viewModel.signedIn = false
-                //ContentView().viewModel.signOut()
+
             } label: {
                 Text("Log Out")
                     .frame(width: 200, height: 50)
