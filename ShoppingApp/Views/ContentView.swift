@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            if user.userIsAuthenticated{
+            if user.userIsAuthenticatedAndSynced{
                 TabView{
                     MainView().tabItem {
                         Image(systemName: "house.fill")
@@ -36,6 +36,11 @@ struct ContentView: View {
             }
             else{
                 AuthenticationView()
+            }
+        }
+        .onAppear{
+            if user.userIsAuthenticated{
+                user.sync()
             }
         }
     }

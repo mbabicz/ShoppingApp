@@ -21,36 +21,82 @@ struct ProfileView: View {
                     
                     
                     VStack{
-                        Text(auth.currentUser?.email ?? "username").bold().font(.system(size: 20))
+                        //Text(auth.currentUser?.email ?? "username").bold().font(.system(size: 20))
+                        Text(user.user?.username ?? "username").bold().font(.system(size: 20))
+
                         Text(auth.currentUser?.email ?? "user email")
 
-                            //.border(.yellow)
+                            .border(.yellow)
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
-                    //.border(.green)
+                    .border(.green)
                 }
                 .frame(maxWidth: .infinity, alignment: .topLeading).padding()
-                //.border(.red)
-
+                .border(.red)
                 Spacer()
-                               
-                List{
-                    Section(header: Text("Zarządzaj")){
-                        Text("Zamówienia")
-                        Text("Moje dane")
-                        Text("Metody płatności")
-                        Text("Ustawienia")
+
+
+                VStack{
+                    List{
+                        Section(header: Text("Ogólne")){
+                            Text("Zamówienia")
+                            Text("Moje dane")
+                            Text("Metody płatności")
+                            
+                        }
                         
                     }
+                    .listStyle(.grouped)
+                    .scrollDisabled(true)
+                    .scrollContentBackground(.hidden)
+                    .frame(height:175)
+
                     
+                    List{
+                        Section(header: Text("Konto")){
+                            Text("Zmień hasło")
+                            Text("Ustawienia prywatności")
+                            Text("Usuń konto")
+                            
+                        }
+                        
+                    }
+                    .listStyle(.grouped)
+                    .scrollDisabled(true)
+                    .scrollContentBackground(.hidden)
+                    .frame(height:175)
+
+
+                    
+                    List{
+                        Section(header: Text("Ustawienia")){
+                            Text("Powiadomienia")
+                            Text("Historia")
+                            Text("Informacje")
+                            
+                        }
+                        
+                    }
+                    //.listStyle(.grouped)
+                    .listStyle(.grouped)
+                    .scrollDisabled(true)
+                    .scrollContentBackground(.hidden)
+                    .frame(height:175)
+                    
+//                    Button {
+//
+//                    } label: {
+//                        Text("Wyloguj się").font(.system(size:20))
+//                    }
+
                 }
-                //.listStyle(.grouped)
-                .listStyle(.insetGrouped)
-                .scrollDisabled(true)
-                .scrollContentBackground(.hidden)
+                Spacer()
+
+
                 
                 
             }
+            
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .principal){
@@ -79,8 +125,11 @@ struct ProfileView: View {
     }
 }
 
+
 struct ProfileView_Previews: PreviewProvider {
+    static let myEnvObject = UserViewModel()
+
     static var previews: some View {
-        ProfileView()
+        ProfileView().environmentObject(myEnvObject)
     }
 }
