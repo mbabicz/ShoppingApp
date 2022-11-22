@@ -20,7 +20,7 @@ struct AuthenticationView: View {
         }
         .alert(isPresented: $user.showingAlert){
             Alert(
-                title: Text("Error"),
+                title: Text(user.alertTitle),
                 message: Text(user.alertMessage),
                 dismissButton: .default(Text("OK"))
             )
@@ -69,10 +69,13 @@ struct SignInView: View {
                         
                     }
                     
+                    NavigationLink("Forgot password?", destination: ResetPasswordView()).padding([.leading, .bottom, .trailing]).frame(maxWidth: .infinity, alignment: .trailing)
+                    
                     Button {
                         if (!email.isEmpty && !password.isEmpty){
                             user.signIn(email: email, password: password)
                         } else{
+                            user.alertTitle = "Error"
                             user.alertMessage = "Fields cannot be empty"
                             user.showingAlert = true
                         }
@@ -88,6 +91,19 @@ struct SignInView: View {
                 }
                 .padding()
                 Spacer()
+                
+                Button {
+
+                    user.singInAnonymously()
+                    
+                } label: {
+                    Text("Continue as a guest").padding().frame(maxWidth: .infinity, alignment: .center).border(.red)
+
+                }
+
+                
+                //NavigationLink("Continue as a guest", destination: MainView()).padding([.leading, .bottom, .trailing]).frame(maxWidth: .infinity, alignment: .center).border(.red)
+
             }
             .navigationTitle("Sign In")
 
@@ -168,11 +184,13 @@ struct SignUpView: View {
                                 user.signUp(email: email, password: password, username: username)
                             }
                             else{
+                                user.alertTitle = "Error"
                                 user.alertMessage = "Your password and confirmation password do not match"
                                 user.showingAlert = true
                             }
                             
                         } else {
+                            user.alertTitle = "Error"
                             user.alertMessage = "Fields cannot be empty"
                             user.showingAlert = true
                         }
@@ -188,6 +206,47 @@ struct SignUpView: View {
             .navigationTitle("Create Account")
 
         }
+    }
+}
+
+struct ResetPasswordView: View {
+    
+    @State var email = ""
+    
+    @EnvironmentObject var user: UserViewModel
+
+    var body: some View {
+        VStack {
+            VStack{
+                VStack{
+                    
+                    TextField("Email Adress", text: $email).padding()
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .background(Color(.secondarySystemBackground))
+                        
+                }
+                    
+                Button {
+                    if !email.isEmpty {
+                        user.resetPassword(email: email)
+                        
+                    } else {
+                        user.alertTitle = "Error"
+                        user.alertMessage = "Field cannot be empty"
+                        user.showingAlert = true
+                    }
+                        
+                } label: {
+                    Text("Reset Password").frame(width: 200, height: 50).bold().foregroundColor(Color.white).background(Color.blue).cornerRadius(8).padding()
+                }
+
+            }
+            .padding()
+            Spacer()
+        }
+        .navigationTitle("Recover Password")
+
     }
 }
 

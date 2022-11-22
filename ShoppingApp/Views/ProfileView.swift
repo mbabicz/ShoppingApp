@@ -22,11 +22,15 @@ struct ProfileView: View {
                     
                     VStack{
                         //Text(auth.currentUser?.email ?? "username").bold().font(.system(size: 20))
-                        Text(user.user?.username ?? "username").bold().font(.system(size: 20))
+                        if !user.userIsGuest{
+                            Text(user.user?.username ?? "username").bold().font(.system(size: 20))
+                            Text(auth.currentUser?.email ?? "user email")
+                        }
+                        else {
+                            Text("Guest").bold().font(.system(size: 20))
 
-                        Text(auth.currentUser?.email ?? "user email")
-
-                            .border(.yellow)
+                        }
+                           
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
                     .border(.green)

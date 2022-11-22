@@ -17,6 +17,10 @@ class UserViewModel: ObservableObject {
     
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
+    @Published var alertTitle = ""
+    
+    var userIsGuest: Bool = false
+
     
     
     private let auth = Auth.auth()
@@ -38,6 +42,7 @@ class UserViewModel: ObservableObject {
     func signUp(email: String, password: String, username: String){
         auth.createUser(withEmail: email, password: password){ (result, error) in
             if error != nil{
+                self.alertTitle = "Error"
                 self.alertMessage = error?.localizedDescription ?? "Something went wrong"
                 self.showingAlert = true
             } else {
@@ -53,53 +58,47 @@ class UserViewModel: ObservableObject {
     func signIn(email: String, password: String){
         auth.signIn(withEmail: email, password: password){ (result, error) in
             if error != nil{
+                self.alertTitle = "Errors"
                 self.alertMessage = error?.localizedDescription ?? "Something went wrong"
                 self.showingAlert = true
             } else {
                 DispatchQueue.main.async{
                     //Success
                     self.sync()
+
                 }
             }
         }
     }
-
-//    func signUp(email: String, password: String, username: String){
-//        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-//            if error != nil {
-//                self.alertMessage = error?.localizedDescription ?? "Something went wrong"
-//                self.showingAlert = true
-//
-//            } else{
-//                DispatchQueue.main.async {
-//                    let userID = self.auth.currentUser!.uid
-//                    print(userID)
-//
-//                    self.db.collection("Users").document(userID).setData([
-//                        "username" : username,
-//                        "email" : email,
-//                        "date of registration" : Date.now
-//                    ])
-//                    self.sync()
-//                }
-//
-//            }
-//        }
-//    }
-//
     
+    func singInAnonymously(){
+        auth.signInAnonymously(){ authResult, error in
+            guard let user = authResult?.user else { return }
+            self.userIsGuest = user.isAnonymous
+            DispatchQueue.main.async{
+                //Success
+                self.add(User(username: "guest", userEmail: "guest"))
+                self.sync()
+                
+            }
+        }
 
-//
-//    func signUp(email: String, password: String, username: String){
-//        auth.createUser(withEmail: email, password: password){ [weak self] result, error in
-//            guard result != nil, error == nil else { return }
-//            DispatchQueue.main.async {
-//                self?.add(User(username: username))
-//                self?.sync()
-//            }
-//
-//        }
-//    }
+    }
+
+    func resetPassword(email: String){
+        auth.sendPasswordReset(withEmail: email) { error in
+            if error != nil{
+                self.alertTitle = "Error"
+                self.alertMessage = error?.localizedDescription ?? "Something went wrong"
+                self.showingAlert = true
+            } else {
+                self.alertTitle = "Succes"
+                self.alertMessage = "A Password change request has been sent to your email adress."
+                self.showingAlert = true
+            }
+        }
+        
+    }
     
     func signOut(){
         do{
@@ -123,6 +122,14 @@ class UserViewModel: ObservableObject {
                 print("sync error: \(error)")
             }
         }
+        //TEMP anonymous
+        if auth.currentUser?.email == nil {
+            userIsGuest = true
+        }
+        else{
+            userIsGuest = false
+        }
+
     }
     
     private func add(_ user: User){
