@@ -8,17 +8,19 @@
 import Foundation
 
 struct Product: Identifiable, Codable, Hashable {
-    var id: Int
-    var title: String
-    var price: Double
+    var id: String
+    var name: String
+    var img: String
+    var price: Int
+    var amount: Int
     var description: String
     var category: String
-    var image: String
     var rating: Int
 }
 
 extension Product{
     var imageURL: URL {
-        URL(string: image)!
+        URL(string: img)!
     }
 }
+

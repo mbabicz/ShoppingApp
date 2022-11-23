@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     
     @EnvironmentObject var user: UserViewModel
+    @EnvironmentObject var productVM: ProductViewModel
+
     
     var body: some View {
         NavigationView {
@@ -72,6 +74,7 @@ struct ContentView: View {
         .onAppear{
             if user.userIsAuthenticated{
                 user.sync()
+                
             }
         }
     }
