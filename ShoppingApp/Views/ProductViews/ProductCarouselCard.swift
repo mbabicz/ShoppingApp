@@ -15,32 +15,45 @@ struct ProductCarouselCard: View {
         ZStack{
             HStack {
                 ProductCarouselImage(imageURL: product.imageURL)
-                //Image("profile-image")
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//                    .frame(width: 100)
-//                    .padding(.all, 20)
                 VStack(alignment: .leading){
-                    Text(product.name)
-                    //Text("product.title")
+                    Text(product.name.uppercased())
                         .font(.subheadline)
+                        .multilineTextAlignment(.center)
                         .lineLimit(3)
-                    Text("\(product.price)$")
-                    //Text("Price")
-                        .bold()
-                        .padding(2)
                     HStack(spacing: 2) {
-                        //Text("\(product.formatedRating)")
                         Text("rating")
-                        //Text(product.rating)
                             .font(.footnote)
-                        //Text("(\(product.rating.manualCount))")
-                        Text("rating countt")
+                        Text("rating count")
                             .font(.caption)
                             .offset(y:2)
                     }
+                    if product.isOnSale{
+                        VStack{
+                            Text("\(product.price)")
+                                .bold()
+                                .padding([.top, .leading, .trailing])
+                                .font(.callout)
+                                .strikethrough()
+                                .foregroundColor(.black).opacity(0.75)
+                                .frame(alignment: .trailing)
+
+
+                            Text("\(product.onSalePrice)PLN")
+                            
+
+                        }
+                        .frame(alignment: .center)
+      
+                    }
+                    else {
+                        Text("\(product.price)PLN")
+                            .bold()
+                            .padding(.bottom)
+
+                    }
+   
                 }
-                .foregroundColor(.black).opacity(1)
+                .foregroundColor(.black).opacity(0.9)
                 Spacer()
             }
             .background(Color(red: 209/255, green: 217/255, blue: 225/255))
@@ -91,6 +104,6 @@ struct ProductCarouselImage: View {
 
 struct ProductCarouselCard_Previews: PreviewProvider {
     static var previews: some View {
-        ProductCarouselCard(product: Product(id: "1", name: "macbook pro 13 16/512", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5))
+        ProductCarouselCard(product: Product(id: "1", name: "macbook pro 13 16/512", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5, isOnSale: true, onSalePrice: 5000))
     }
 }

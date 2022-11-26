@@ -10,6 +10,8 @@ import SwiftUI
 struct SearchView: View {
     
     @State var searchText = ""
+    @EnvironmentObject var productVM: ProductViewModel
+    var showCategoryList = true
     
     var body: some View {
         NavigationView{
@@ -32,39 +34,42 @@ struct SearchView: View {
                 .border(.red)
                 
                 //Spacer()
+                
+                
                 List{
                     Section(header: Text("Kategorie")){
-                        Text("kat1")
-                        Text("kat2")
-                        Text("kat3")
-                        Text("kat4")
-                        
+                        //NavigationLink("Laptopy", destination: ProductCardList(products: productVM.products2!))
+                        //NavigationLink("Laptopy", destination: CategorizedProductsView(category: "Smartfon"))
+
+
+                        Text("Komputery")
+                        Text("Smartfony")
+                        Text("Słuchawki")
                     }
-                    
+
                 }
-                //.listStyle(.grouped)
-                .listStyle(.inset)
-                .listStyle(.insetGrouped)
+                .listStyle(.grouped)
                 .scrollDisabled(true)
                 .scrollContentBackground(.hidden)
                 
-                
             }
             //Spacer()
-                   
-            
-            
-            
+
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .principal){
                     Text("Produkty").font(.headline).bold()
                 }
             }
+            .background(.gray.opacity(0.1))
             
         }
-
+//        .onAppear{
+//            productVM.loadProducts()
+//        }
     }
+
+    
 }
 
 struct SearchView_Previews: PreviewProvider {
