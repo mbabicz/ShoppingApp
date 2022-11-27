@@ -27,16 +27,17 @@ struct ProductCarousel: View {
         VStack{
             TabView(selection: $currentIndex){
                 ForEach(0..<products.count, id: \.self){ index in
+
                     Button {
                         withAnimation{
                             self.product = products[index]
-                            
+
                         }
                     } label:{
                         ProductCarouselCard(product: products[index])
                             .frame(width: (screenSize.width - 20))
                             .shadow(color: Color.black.opacity(0.15), radius: 4, x: 1, y: 2)
-                        
+
 
                     }
                     .tag(index)
@@ -51,6 +52,9 @@ struct ProductCarousel: View {
             }
             .onAppear{
                 setupAppearance()
+            }
+            .sheet(item: $product){product in
+                ProductDetailsView(product: product)
             }
         }
         

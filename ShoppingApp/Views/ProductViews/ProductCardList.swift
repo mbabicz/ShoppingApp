@@ -32,6 +32,9 @@ struct ProductCardList: View {
             }
 
         }
+        .sheet(item: $product){product in
+            ProductDetailsView(product: product)
+        }
 
     }
 }
