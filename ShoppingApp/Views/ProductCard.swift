@@ -10,6 +10,8 @@ import SwiftUI
 struct ProductCard: View {
     
     var product: Product
+    
+
 
     var body: some View {
         ZStack{
@@ -25,13 +27,38 @@ struct ProductCard: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
                 //Text("rating")
-                Spacer()
+                //Spacer()
+                
+                HStack(spacing: 2) {
+                    //Text("\(product.formatedRating)").font(.title3)
+                    ForEach(0..<Int(product.productRatingAvarage)){ idx in
+                        Image(systemName: "star.fill")
+
+                    }
+                    if (product.productRatingAvarage != floor(product.productRatingAvarage)){
+                        Image(systemName: "star.leadinghalf.fill")
+
+                    }
+                    ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
+                        Image(systemName: "star")
+
+                    }
+
+
+                    Text("(\(product.ratedBy))").font(.caption2)
+                        .foregroundColor(.secondary)
+                        .offset(y: 3)
+                }
+                .padding(.bottom, 5)
+                
+                
+                
 
                 if product.isOnSale{
                     VStack{
                         Text("\(product.price)")
                             .bold()
-                            .padding([.top, .leading, .trailing])
+                            .padding([.leading, .trailing])
                             .font(.callout)
                             .strikethrough()
                             .foregroundColor(.black).opacity(0.75)
@@ -123,6 +150,6 @@ struct ProductCardImage: View {
 
 struct ProductCard_Previews: PreviewProvider {
     static var previews: some View {
-        ProductCard(product: Product(id: "1", name: "macbook pro 13 16/512 intel core i5", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5, isOnSale: true, onSalePrice: 5000))
+        ProductCard(product: Product(id: "1", name: "macbook pro 13 16/512 intel core i5", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 500, ratedBy: 200, isOnSale: true, onSalePrice: 5000))
     }
 }

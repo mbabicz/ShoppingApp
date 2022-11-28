@@ -38,6 +38,7 @@ class ProductViewModel: ObservableObject {
                                 description: doc["description"] as? String ?? "",
                                 category: doc["category"] as? String ?? "",
                                 rating: doc["rating"] as? Int ?? 0,
+                                ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0
                             )
@@ -69,6 +70,7 @@ class ProductViewModel: ObservableObject {
                                 description: doc["description"] as? String ?? "",
                                 category: doc["category"] as? String ?? "",
                                 rating: doc["rating"] as? Int ?? 0,
+                                ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0
                             )
@@ -100,6 +102,7 @@ class ProductViewModel: ObservableObject {
                                 description: doc["description"] as? String ?? "",
                                 category: doc["category"] as? String ?? "",
                                 rating: doc["rating"] as? Int ?? 0,
+                                ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0
                                 
