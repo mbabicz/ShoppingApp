@@ -33,7 +33,6 @@ struct ProductCarouselCard: View {
                         if (product.productRatingAvarage != floor(product.productRatingAvarage)){
                             Image(systemName: "star.leadinghalf.fill").font(.subheadline)
 
-
                         }
                         ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
                             Image(systemName: "star").font(.subheadline)

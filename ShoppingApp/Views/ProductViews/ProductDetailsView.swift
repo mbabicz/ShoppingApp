@@ -13,44 +13,164 @@ struct ProductDetailsView: View {
 
 
     var body: some View {
-        VStack{
-            ProductImage(imageURL: product.imageURL).padding(.top)
-            Spacer()
-            ZStack {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.075))
-//                    .frame(maxWidth: .infinity)
-                    .cornerRadius(15)
-                    .overlay(
-                        VStack(alignment: .center){
-                            Text(product.name.uppercased())
-                                .font(.title2)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(3)
-                                .padding(.top, 30)
-                            Text("rating".uppercased())
-                                .padding(.top, 10)
-                                .font(.title3)
+        ScrollView{
+            VStack{
+                ProductImage(imageURL: product.imageURL).padding(.top)
+                Spacer()
+                ZStack {
+                    Rectangle()
+                        .fill(Color.white)
+                        .cornerRadius(25)
+                        .shadow(color: .black.opacity(0.5), radius: 3, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
+                            VStack(alignment: .center){
+                                Text(product.name.uppercased())
+                                    .font(.title3).bold()
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(3)
+                                    .padding()
+                                    //.padding(.top, 30)
+                                
+                                HStack{
+                                    if product.isOnSale{
+                                        VStack{
+                                            Text("\(product.price)")
+                                                .bold()
+                                                .padding([.leading, .trailing])
+                                                .font(.callout)
+                                                .strikethrough()
+                                                .foregroundColor(.black).opacity(0.75)
+                                                .frame(alignment: .trailing)
 
-                            Text("\(product.price)PLN")
-                                .padding()
-                                .font(.title3
-                                )
-                            Text(product.description)
-                                .padding()
-                                .font(.body)
 
-                            Spacer()
+                                            Text("\(product.onSalePrice)PLN")
+                                                .font(.headline)
 
-                        }
-                    )
-                    .cornerRadius(12)
-                    .shadow(color: .gray, radius: 4, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
-                
+                                        }
+                                        .frame(alignment: .center)
+                                        .padding([.bottom, .leading, .trailing])
+                      
+                                    }
+                                    else {
+                                        Text("\(product.price)PLN")
+                                            .bold()
+                                            .font(.headline)
+                                            .padding([.bottom, .leading, .trailing])
+
+                                    }
+                                                                    
+                                    HStack(spacing: 2) {
+                                        //Text("\(product.formatedRating)").font(.title3)
+                                        ForEach(0..<Int(product.productRatingAvarage)){ idx in
+                                            Image(systemName: "star.fill").font(.callout)
+                                        }
+                                        
+                                        if (product.productRatingAvarage != floor(product.productRatingAvarage)){
+                                            Image(systemName: "star.leadinghalf.fill").font(.callout)
+                                        }
+                                        
+                                        ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
+                                            Image(systemName: "star").font(.callout)
+                                        }
+                                        
+                                        Text("(\(product.ratedBy))").font(.footnote)
+                                            .foregroundColor(.secondary)
+                                            .offset(y: 3)
+                                    }
+                                    .padding([.bottom, .trailing, .leading])
+                                                                    
+                                }
+                                HStack{
+                                    
+                                    Button {
+                                        //
+                                    } label: {
+                                        
+                                        HStack{
+                                            Image(systemName: "cart.badge.plus").bold().font(.body)
+                                            Text("Do koszyka").bold().font(.body)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .foregroundColor(.white)
+                                        .background(Color.orange)
+                                        .cornerRadius(45)
+                                        
+                                    }
+                                    .padding([.leading, .trailing])
+
+                                    Button {
+                                        //
+                                    } label: {
+                                        
+                                        HStack{
+                                            Image(systemName: "eye").bold().font(.body)
+                                            Text("Obserwuj").bold().font(.body)
+                                        }
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .foregroundColor(.white)
+                                        .background(Color.orange)
+                                        .cornerRadius(45)
+                                        
+                                    }
+                                    .padding([.leading, .trailing])
+                                    
+                                }
+                                
+                                Text("Opis")
+                                    .bold()
+                                    .font(.title2)
+                                    .padding()
+                                
+                                Text(product.description)
+                                    .foregroundColor(.black).opacity(0.75)
+                                    .padding([.leading, .trailing, .bottom])
+                                    .font(.body)
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(100)
+
+                                Text("Specyfikacja")
+                                    .bold()
+                                    .font(.title2)
+                                    .padding([.top, .trailing, .leading])
+                          
+                                List{
+                                    Text("Specyfikacja")
+                                    Text("Specyfikacja")
+                                    Text("Specyfikacja")
+                                    Text("Specyfikacja")
+                                }
+                                .listStyle(.plain)
+                                .scrollDisabled(true)
+                                .scrollContentBackground(.hidden)
+
+                                .frame(height: 200)
+         
+                                Spacer()
+
+                            }
+
+                }
+                Button {
+                    //
+                } label: {
+                    
+                    HStack{
+                        Image(systemName: "cart.badge.plus").bold().font(.body)
+                        Text("Do koszyka").bold().font(.body)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(Color.orange)
+                    .cornerRadius(45)
+                    
+                }
+                .padding()
+                .edgesIgnoringSafeArea(.bottom)
             }
-            .edgesIgnoringSafeArea(.bottom)
         }
-        .border(.red)
+
     }
 }
 
@@ -61,7 +181,9 @@ struct ProductImage: View {
         ZStack{
             Rectangle()
                 .fill(Color.white)
-                .frame(maxWidth: .infinity)
+                .frame(width: 300, height: 300, alignment: .center)
+
+                //.frame(maxWidth: .infinity)
                 .cornerRadius(14)
                 .overlay(
                     ZStack {
@@ -91,6 +213,6 @@ struct ProductImage: View {
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13 16/512", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000))
+        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000))
     }
 }
