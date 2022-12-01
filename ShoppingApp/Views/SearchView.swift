@@ -38,6 +38,7 @@ struct SearchView: View {
                 
                 List{
                     Section(header: Text("Kategorie")){
+   
                         //NavigationLink("Laptopy", destination: ProductCardList(products: productVM.products2!))
                         //NavigationLink("Laptopy", destination: CategorizedProductsView(category: "Smartfon"))
 
@@ -64,9 +65,7 @@ struct SearchView: View {
             .background(.gray.opacity(0.1))
             
         }
-//        .onAppear{
-//            productVM.loadProducts()
-//        }
+
     }
 
     

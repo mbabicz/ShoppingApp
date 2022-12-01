@@ -26,28 +26,17 @@ extension Product{
         URL(string: img)!
     }
     
-//    var formatedRating: String{
-//        let avarage = rating/ratedBy
-//        var result = ""
-//
-//        switch avarage{
-//        case 0
-//        }
-//
-//        for _ in 0...Int(avarage){
-//            result.append("★")
-//        }
-//        while result.count<5{
-//            result += "☆"
-//        }
-//        return result
-//
-//    }
+
     
     var productRatingAvarage: Double {
         let avarage: Double
-        avarage = Double(rating)/Double(ratedBy)
-        return Double(avarage)
+        if ratedBy != 0 {
+            avarage = Double(rating)/Double(ratedBy)
+            return Double(avarage)
+        }
+        else {
+            return 0
+        }
     }
     
 //    var formatedRating: String{

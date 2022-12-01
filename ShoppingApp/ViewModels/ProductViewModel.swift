@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 class ProductViewModel: ObservableObject {
     
@@ -15,6 +16,8 @@ class ProductViewModel: ObservableObject {
 
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
+    @Published var userCartProducts: [Product]?
+
 
 
     @Published var products: [Product]?
@@ -106,6 +109,40 @@ class ProductViewModel: ObservableObject {
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0
                                 
+                            )
+                        }
+                    }
+                }
+            }
+            else{
+                print("Error: can't get products from database")
+            }
+        }
+    }
+    
+    
+    func getUserCart(){
+        self.userCartProducts = nil
+        let userID = Auth.auth().currentUser?.uid
+        
+        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
+            if error == nil{
+                
+                if let snapshot = snapshot {
+                    DispatchQueue.main.async{
+                        self.userCartProducts = snapshot.documents.map { doc in
+                            return Product(
+                                id: doc.documentID as String,
+                                name: doc["name"] as? String ?? "",
+                                img: doc["image_url"] as? String ?? "",
+                                price: doc["price"] as? Int ?? 0,
+                                amount: doc["amount"] as? Int ?? 0,
+                                description: doc["description"] as? String ?? "",
+                                category: doc["category"] as? String ?? "",
+                                rating: doc["rating"] as? Int ?? 0,
+                                ratedBy: doc["ratedBy"] as? Int ?? 0,
+                                isOnSale: doc["isOnSale"] as? Bool ?? false,
+                                onSalePrice: doc["onSalePrice"] as? Int ?? 0
                             )
                         }
                     }
