@@ -10,7 +10,7 @@ import SwiftUI
 struct ProductDetailsView: View {
     
     var product: Product
-
+    @EnvironmentObject var productVM: ProductViewModel
 
     var body: some View {
         ScrollView{
@@ -82,7 +82,7 @@ struct ProductDetailsView: View {
                                 HStack{
                                     
                                     Button {
-                                        //
+                                        productVM.addProductToCart(productID: product.id)
                                     } label: {
                                         
                                         HStack{
@@ -128,23 +128,19 @@ struct ProductDetailsView: View {
                                     .font(.body)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(100)
+                                if(product.details != []){
+                                    Text("Specyfikacja")
+                                        .bold()
+                                        .font(.title2)
+                                        .padding()
+                                        ForEach(product.details, id: \.self){ detail in
+                                            Divider()
 
-                                Text("Specyfikacja")
-                                    .bold()
-                                    .font(.title2)
-                                    .padding([.top, .trailing, .leading])
-                          
-                                List{
-                                    Text("Specyfikacja")
-                                    Text("Specyfikacja")
-                                    Text("Specyfikacja")
-                                    Text("Specyfikacja")
+                                            Text(detail)
+                                        }
+                                        .padding(.horizontal, 8)
                                 }
-                                .listStyle(.plain)
-                                .scrollDisabled(true)
-                                .scrollContentBackground(.hidden)
 
-                                .frame(height: 200)
          
                                 Spacer()
 
@@ -213,6 +209,6 @@ struct ProductImage: View {
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000))
+        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"]))
     }
 }

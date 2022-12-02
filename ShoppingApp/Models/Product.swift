@@ -19,6 +19,8 @@ struct Product: Identifiable, Codable, Hashable {
     var ratedBy: Int
     var isOnSale: Bool
     var onSalePrice: Int
+    
+    var details : [String]
 }
 
 extension Product{

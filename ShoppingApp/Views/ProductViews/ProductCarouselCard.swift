@@ -123,6 +123,6 @@ struct ProductCarouselImage: View {
 
 struct ProductCarouselCard_Previews: PreviewProvider {
     static var previews: some View {
-        ProductCarouselCard(product: Product(id: "1", name: "macbook pro 13 16/512", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5,  ratedBy: 2, isOnSale: true, onSalePrice: 5000))
+        ProductCarouselCard(product: Product(id: "1", name: "macbook pro 13 16/512", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5,  ratedBy: 2, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"]))
     }
 }
