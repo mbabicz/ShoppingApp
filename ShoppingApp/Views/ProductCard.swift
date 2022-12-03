@@ -23,51 +23,33 @@ struct ProductCard: View {
             VStack(alignment: .center){
                 ProductCardImage(imageURL: product.imageURL).padding(.top)
                 Text(product.name.uppercased())
+                    .foregroundColor(.black)
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                //Text("rating")
-                //Spacer()
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    //.padding(.bottom)
                 
-                HStack(spacing: 2) {
-                    //Text("\(product.formatedRating)").font(.title3)
-                    ForEach(0..<Int(product.productRatingAvarage)){ idx in
-                        Image(systemName: "star.fill")
-
-                    }
-                    if (product.productRatingAvarage != floor(product.productRatingAvarage)){
-                        Image(systemName: "star.leadinghalf.fill")
-
-                    }
-                    ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
-                        Image(systemName: "star")
-
-                    }
-
-
-                    Text("(\(product.ratedBy))").font(.caption2)
-                        .foregroundColor(.secondary)
-                        .offset(y: 3)
-                }
-                .padding(.bottom, 5)
-                
-                
-                
+                Spacer()
 
                 if product.isOnSale{
                     VStack{
                         Text("\(product.price)")
                             .bold()
+                            .foregroundColor(.black)
                             .padding([.leading, .trailing])
-                            .font(.callout)
+                            .font(.footnote)
                             .strikethrough()
                             .foregroundColor(.black).opacity(0.75)
                             .frame(alignment: .trailing)
 
 
                         Text("\(product.onSalePrice)PLN")
-                        
+                            .font(.body)
+                            .foregroundColor(.black)
 
+                            //.padding(.bottom)
+                        
                     }
                     .frame(alignment: .center)
   
@@ -75,10 +57,11 @@ struct ProductCard: View {
                 else {
                     Text("\(product.price)PLN")
                         .bold()
-                        .padding(.bottom)
+                        .foregroundColor(.black)
+
+                        //.padding(.bottom)
 
                 }
-                    
 
                 Spacer(minLength: 10)
                 ZStack(alignment: .center){
@@ -87,14 +70,14 @@ struct ProductCard: View {
                     } label: {
                         HStack() {
                                Image(systemName: "cart.badge.plus")
-                               Text("Do koszyka")
-                                   .font(.caption)
-                                   .bold()
+                                .bold().font(.callout)
+                               Text("Do koszyka")                                  .bold().font(.footnote)
                            }
-                           .padding(8)
-                           .foregroundColor(.black)
-                           .background(Color(red: 209/255, green: 217/255, blue: 225/255))
-                           .cornerRadius(18)
+
+                            .padding(8)
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(45)
                            
                     }
                 }
@@ -150,6 +133,7 @@ struct ProductCardImage: View {
 
 struct ProductCard_Previews: PreviewProvider {
     static var previews: some View {
-        ProductCard(product: Product(id: "1", name: "macbook pro 13 16/512 intel core i5", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 500, ratedBy: 200, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"]))
+        ProductCard(product: Product(id: "1", name: "macbook pro 13 16/512 intel core i5", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 500, ratedBy: 200, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: ["https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
+        )
     }
 }

@@ -44,7 +44,9 @@ class ProductViewModel: ObservableObject {
                                 ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0,
-                                details : doc["details"] as? [String] ?? []
+                                details : doc["details"] as? [String] ?? [],
+                                images : doc["images"] as? [String] ?? []
+
 
                             )
                         }
@@ -78,7 +80,9 @@ class ProductViewModel: ObservableObject {
                                 ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0,
-                                details : doc["details"] as? [String] ?? []
+                                details : doc["details"] as? [String] ?? [],
+                                images : doc["images"] as? [String] ?? []
+
 
                             )
                         }
@@ -112,8 +116,8 @@ class ProductViewModel: ObservableObject {
                                 ratedBy: doc["ratedBy"] as? Int ?? 0,
                                 isOnSale: doc["isOnSale"] as? Bool ?? false,
                                 onSalePrice: doc["onSalePrice"] as? Int ?? 0,
-                                details : doc["details"] as? [String] ?? []
-                                //let details = sn
+                                details : doc["details"] as? [String] ?? [],
+                                images : doc["images"] as? [String] ?? []
                                 
                             )
                         }

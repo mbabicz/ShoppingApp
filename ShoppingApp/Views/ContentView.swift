@@ -20,25 +20,27 @@ struct ContentView: View {
                 LoadingView()
             }
             else if user.userIsAuthenticatedAndSynced{
-                    TabView{
-                        MainView().tabItem {
-                            Image(systemName: "house.fill")
-                        }.tag(0)
-                        SearchView().tabItem {
-                            Image(systemName: "magnifyingglass")
-                        }.tag(1)
-                        CartView().tabItem {
-                            Image(systemName: "cart.fill")
-                        }.tag(2)
-                        ObservedView().tabItem {
-                            Image(systemName: "eye.fill")
-                        }.tag(3)
-                        ProfileView().tabItem {
-                            Image(systemName: "person.fill")
-                        }.tag(4)
-                    }.accentColor(.black)
-    
-                    ProfileView()
+                TabView{
+                    MainView().tabItem {
+                        Image(systemName: "house.fill")
+                    }.tag(0)
+                    SearchView().tabItem {
+                        Image(systemName: "magnifyingglass")
+   
+                    }.tag(1)
+                    CartView().tabItem {
+                        Image(systemName: "cart.fill")
+
+                    }.tag(2)
+                    ObservedView().tabItem {
+                        Image(systemName: "eye.fill")
+                    }.tag(3)
+                    ProfileView().tabItem {
+                        Image(systemName: "person.fill")
+                    }.tag(4)
+                }.accentColor(.orange)
+
+                ProfileView()
             }
             else{
                 AuthenticationView()

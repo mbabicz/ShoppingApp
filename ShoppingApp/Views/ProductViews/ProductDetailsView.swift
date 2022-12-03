@@ -11,11 +11,33 @@ struct ProductDetailsView: View {
     
     var product: Product
     @EnvironmentObject var productVM: ProductViewModel
+    @State private var currentIndex: Int = 0
 
     var body: some View {
         ScrollView{
             VStack{
-                ProductImage(imageURL: product.imageURL).padding(.top)
+                if(product.images.count > 0){
+                    TabView(selection: $currentIndex){
+                        ForEach(0..<product.images.count, id: \.self){ index in
+                            ProductImage(imageURL: URL(string: product.images[index])!)//.padding(.top)
+                            .tag(index)
+
+                        }
+                        
+                    }
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                    .frame(minHeight: 350)
+
+                    .onAppear{
+                        UIPageControl.appearance().currentPageIndicatorTintColor = .black
+                        UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
+                    }
+                }
+                else {
+                    ProductImage(imageURL: product.imageURL)//1.padding(.top)
+
+                }
+
                 Spacer()
                 ZStack {
                     Rectangle()
@@ -28,7 +50,6 @@ struct ProductDetailsView: View {
                                     .multilineTextAlignment(.center)
                                     .lineLimit(3)
                                     .padding()
-                                    //.padding(.top, 30)
                                 
                                 HStack{
                                     if product.isOnSale{
@@ -209,6 +230,7 @@ struct ProductImage: View {
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"]))
+        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
+        )
     }
 }

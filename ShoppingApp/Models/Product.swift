@@ -21,12 +21,14 @@ struct Product: Identifiable, Codable, Hashable {
     var onSalePrice: Int
     
     var details : [String]
+    var images : [String]
 }
 
 extension Product{
     var imageURL: URL {
         URL(string: img)!
     }
+    
     
 
     
