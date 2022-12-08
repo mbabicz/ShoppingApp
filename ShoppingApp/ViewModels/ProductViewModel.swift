@@ -9,6 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
+import SwiftUI
 
 class ProductViewModel: ObservableObject {
     
@@ -140,6 +141,62 @@ class ProductViewModel: ObservableObject {
     
     
         }
+    
+    func getUserCart(){
+        self.userCartProducts = nil
+        let userID = Auth.auth().currentUser?.uid
+        var documentsID = [String]()
+        
+        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
+            if error == nil{
+                if let snapshot = snapshot {
+                    DispatchQueue.main.async{
+                        for document in snapshot.documents{
+                            documentsID.append(document.documentID)
+                            self.db.collection("Products").document(document.documentID).getDocument { document, error in
+                                if error == nil{
+                                    if let document = document, document.exists{
+                                        
+                                        
+                                        //document.get("name") as? String ?? "",
+                                        //img: doc["image_url"] as? String ?? ""
+                                    }
+                                    
+//                                    if document != nil {
+//                                        DispatchQueue.main.async{
+//                                            self.userCartProducts = document.map { doc in
+//                                                return Product(
+//                                                    id: doc.documentID as String,
+//                                                    name: doc["name"] as? String ?? "",
+//                                                    img: doc["image_url"] as? String ?? "",
+//                                                    price: doc["price"] as? Int ?? 0,
+//                                                    amount: doc["amount"] as? Int ?? 0,
+//                                                    description: doc["description"] as? String ?? "",
+//                                                    category: doc["category"] as? String ?? "",
+//                                                    rating: doc["rating"] as? Int ?? 0,
+//                                                    ratedBy: doc["ratedBy"] as? Int ?? 0,
+//                                                    isOnSale: doc["isOnSale"] as? Bool ?? false,
+//                                                    onSalePrice: doc["onSalePrice"] as? Int ?? 0,
+//                                                    details : doc["details"] as? [String] ?? [],
+//                                                    images : doc["images"] as? [String] ?? []
+//
+//                                                )
+//                                            }
+//                                        }
+//                                    }
+                                }
+                                else{
+                                    print("Error: can't get products from database")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        
+    }
     
 //
 //    func getUserCart(){

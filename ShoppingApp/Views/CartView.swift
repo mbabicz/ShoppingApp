@@ -13,40 +13,35 @@ struct CartView: View {
     var body: some View {
         NavigationView {
             ZStack{
-                //                if(productVM.userCartProducts != nil){
-                //                    Text("koszyk jest pusty")
-                //
-                //                }
-                //                else {
-                //                    List(productVM.userCartProducts){ product in
-                //
-                //
-                //                        }
-                //
-                //                    }
-                //                    .listStyle(.grouped)
-                //                    .scrollDisabled(true)
-                //                    .scrollContentBackground(.hidden)
-                //                    .frame(height:175)
-                //                }
-                //            }
-                Text("koszyk jest pusty")
-                
-                
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar{
-                        ToolbarItem(placement: .principal){
-                            Text("Koszyk").font(.headline).bold()
-                        }
+                if(productVM.userCartProducts == nil){
+                    Text("koszyk jest pusty")
+                    
+                }
+                else {
+                    List(productVM.userCartProducts!){ product in
+                        Text(product.name)
                     }
+                    .listStyle(.grouped)
+                    .scrollContentBackground(.hidden)
+                    .frame(height:175)
+                    
+                }
+
             }
-            //        .onAppear{
-            //            //productVM.getUserCart()
-            //
-            //        }
         }
         
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                ToolbarItem(placement: .principal){
+                    Text("Koszyk").font(.headline).bold()
+                }
+            }
+            .onAppear{
+                productVM.getUserCart()
+                
+            }
     }
+    
 }
 
 

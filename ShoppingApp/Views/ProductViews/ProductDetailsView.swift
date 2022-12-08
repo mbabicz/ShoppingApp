@@ -162,6 +162,12 @@ struct ProductDetailsView: View {
                                         .padding(.horizontal, 8)
                                 }
 
+                                Text("Opinie")
+                                    .bold()
+                                    .font(.title2)
+                                    .padding()
+                                
+                                
          
                                 Spacer()
 
