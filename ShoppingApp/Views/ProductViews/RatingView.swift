@@ -12,8 +12,7 @@ struct RatingView: View {
     @State private var rating: Int?
     var product: Product
     @EnvironmentObject var user: UserViewModel
-    @State var reviewText = ""
-
+    @ObservedObject var textReview = TextLimiter(limit: 200)
 
     
     var body: some View {
@@ -55,13 +54,23 @@ struct RatingView: View {
                     .font(.title3)
                     .frame(alignment: .center)
                 
-                TextField("Opisz ten produkt", text: $reviewText)
+                TextField("Opisz ten produkt", text: $textReview.text, axis: .vertical)
                     .multilineTextAlignment(.leading)
-                    .frame(height: 150)
                     .border(.gray).opacity(0.5)
                     .foregroundColor(.black)
+                    .lineLimit(5...12)
 
-                    .padding()
+                    .padding([.top, .trailing, .leading])
+                
+                Text("\(textReview.text.count)/200")
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .padding(.trailing)
+                    .foregroundColor($textReview.hasReachedLimit.wrappedValue ? .red : .black)
+                
+
+                
+
+
 
             }
             .padding([.top, .bottom])
@@ -130,6 +139,26 @@ struct ProductImageView: View {
             imageLoader.loadImage(with: imageURL)
         }
     }
+}
+
+class TextLimiter: ObservableObject {
+    private let limit: Int
+    init(limit: Int){
+        self.limit = limit
+    }
+    
+    @Published var text = ""{
+        didSet{
+            if text.count > self.limit {
+                text = String(text.prefix(self.limit))
+                self.hasReachedLimit = true
+            }else {
+                self.hasReachedLimit = false
+            }
+        }
+    }
+    @Published var hasReachedLimit = false
+    
 }
 
 struct RatingStars: View {

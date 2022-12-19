@@ -166,8 +166,21 @@ struct ProductDetailsView: View {
                                     .bold()
                                     .font(.title2)
                                     .padding()
-                                
-                                
+                                NavigationLink(destination: RatingView(product: product)){
+                                                               
+                                    HStack{
+                                        Image(systemName: "plus").bold().font(.body)
+                                        Text("Dodaj opinie").bold().font(.body)
+                                    }
+                                    //.frame(maxWidth: .infinity)
+                                    .padding()
+                                    .foregroundColor(.white)
+                                    .background(Color.orange)
+                                    .cornerRadius(45)
+                                        
+ 
+                                }
+
          
                                 Spacer()
 
