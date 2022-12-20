@@ -12,7 +12,9 @@ struct RatingView: View {
     @State private var rating: Int?
     var product: Product
     @EnvironmentObject var user: UserViewModel
+    @EnvironmentObject var productVM: ProductViewModel
     @ObservedObject var textReview = TextLimiter(limit: 200)
+    @Environment(\.dismiss) var dismiss
 
     
     var body: some View {
@@ -28,7 +30,7 @@ struct RatingView: View {
             }
             .padding(.top)
             .frame(maxWidth: .infinity)
-
+            
             Divider()
             
             VStack{
@@ -46,7 +48,7 @@ struct RatingView: View {
                 }
                 .padding(.bottom)
                 .frame(maxWidth: .infinity)
-
+                
                 Divider()
                 
                 Text("Napisz coś o tym produkcie")
@@ -58,8 +60,10 @@ struct RatingView: View {
                     .multilineTextAlignment(.leading)
                     .border(.gray).opacity(0.5)
                     .foregroundColor(.black)
-                    .lineLimit(5...12)
-
+                    .lineLimit(5...12
+                               
+                    )
+                
                     .padding([.top, .trailing, .leading])
                 
                 Text("\(textReview.text.count)/200")
@@ -67,18 +71,32 @@ struct RatingView: View {
                     .padding(.trailing)
                     .foregroundColor($textReview.hasReachedLimit.wrappedValue ? .red : .black)
                 
-
                 
-
-
-
+                
+                
+                
+                
             }
             .padding([.top, .bottom])
             
             Spacer()
             
             Button {
-                //anyany
+                if textReview.text.count < 1 || rating == nil {
+                    user.alertTitle = "Error"
+                    user.alertMessage = "Pola nie mogą być puste"
+                    user.showingAlert = true
+                }
+                else if textReview.text.count < 5 && rating != nil {
+                    user.alertTitle = "Error"
+                    user.alertMessage = "Opinia musi mieć conajmniej 5 znaków"
+                    user.showingAlert = true
+                }
+                else {
+                    productVM.addProductReview(productID: product.id, rating: rating!, review: textReview.text)
+                    dismiss()
+                }
+                
             } label: {
                 
                 HStack{
@@ -96,6 +114,14 @@ struct RatingView: View {
             .edgesIgnoringSafeArea(.bottom)
             Spacer()
 
+        }
+        
+        .alert(isPresented: $user.showingAlert){
+            Alert(
+                title: Text(user.alertTitle),
+                message: Text(user.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
 
     }
@@ -195,8 +221,12 @@ struct RatingStars: View {
 }
 
 struct RatingView_Previews: PreviewProvider {
+    
+    static let myEnvObject = ProductViewModel()
+
     static var previews: some View {
         RatingView(product: Product(id: "1", name: "Macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
         )
+        .environmentObject(myEnvObject)
     }
 }

@@ -40,6 +40,7 @@ struct CartView: View {
                 productVM.getUserCart()
                 
             }
+
     }
     
 }
@@ -47,6 +48,8 @@ struct CartView: View {
 
 
 struct CartView_Previews: PreviewProvider {
+    
+
     static var previews: some View {
         CartView()
     }

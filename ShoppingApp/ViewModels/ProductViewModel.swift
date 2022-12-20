@@ -18,6 +18,11 @@ class ProductViewModel: ObservableObject {
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
     @Published var userCartProducts: [Product]?
+    
+    
+    @Published var showingAlert : Bool = false
+    @Published var alertMessage = ""
+    @Published var alertTitle = ""
 
 
 
@@ -232,6 +237,28 @@ class ProductViewModel: ObservableObject {
 //        }
 //    }
 //
+    
+    
+    func addProductReview(productID: String, rating: Int, review: String){
+        
+        let userID = Auth.auth().currentUser?.uid
+        let ref = db.collection("Products").document(productID).collection("Reviews").document(userID!)
+        let date = ["date" : Date.now] as [String : Any]
+        let product = ["productID" : productID] as [String : Any]
+        let review = ["productID" : review] as [String : Any]
+        let rate = ["rating" : rating] as [String : Any]
+
+
+        ref.setData(date, merge: true)
+        ref.setData(product, merge: true)
+        ref.setData(review, merge: true)
+        ref.setData(rate, merge: true)
+        
+        self.alertTitle = "Powodzenie"
+        self.alertMessage = "Opinia została dodana pomyślnie"
+        self.showingAlert = true
+
+    }
 
     
     

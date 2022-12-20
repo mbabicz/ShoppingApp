@@ -12,6 +12,7 @@ struct ProductDetailsView: View {
     var product: Product
     @EnvironmentObject var productVM: ProductViewModel
     @State private var currentIndex: Int = 0
+    @State private var showingReviewView = false
 
     var body: some View {
         ScrollView{
@@ -166,8 +167,10 @@ struct ProductDetailsView: View {
                                     .bold()
                                     .font(.title2)
                                     .padding()
-                                NavigationLink(destination: RatingView(product: product)){
-                                                               
+                                
+                                Button {
+                                    showingReviewView = true
+                                } label: {
                                     HStack{
                                         Image(systemName: "plus").bold().font(.body)
                                         Text("Dodaj opinie").bold().font(.body)
@@ -177,9 +180,11 @@ struct ProductDetailsView: View {
                                     .foregroundColor(.white)
                                     .background(Color.orange)
                                     .cornerRadius(45)
-                                        
- 
                                 }
+
+                                
+//                                NavigationLink(destination: RatingView(product: product)){
+//                                }
 
          
                                 Spacer()
@@ -205,6 +210,9 @@ struct ProductDetailsView: View {
                 .padding()
                 .edgesIgnoringSafeArea(.bottom)
             }
+        }
+        .sheet(isPresented: $showingReviewView){
+            RatingView(product: product)
         }
 
     }
