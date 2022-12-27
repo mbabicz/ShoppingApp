@@ -22,15 +22,17 @@ struct Product: Identifiable, Codable, Hashable {
     
     var details : [String]
     var images : [String]
+    
+    
+    var productReview : [String]
+    var productRate : [Int]
+    var productRatedBy : [String]
 }
 
 extension Product{
     var imageURL: URL {
         URL(string: img)!
     }
-    
-    
-
     
     var productRatingAvarage: Double {
         let avarage: Double
@@ -42,32 +44,5 @@ extension Product{
             return 0
         }
     }
-    
-//    var formatedRating: String{
-//        let avarage = rating/ratedBy
-//
-//        for _ in 0...Int(avarage){
-//            Image(systemName: "star.fill")
-//        }
-//        
-//        while result.count<5{
-//            Image(systemName: "star")
-//        }
-//        return result
-//        
-//    }
+
 }
-
-
-//
-//var formatedRating: String {
-//    var result = ""
-//    for _ in 0...Int(rating.rate){
-//        result.append("★")
-//    }
-//    while result.count<5{
-//        result += "☆"
-//    }
-//    return result
-//}
-

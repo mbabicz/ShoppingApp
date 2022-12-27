@@ -13,6 +13,7 @@ struct ProductDetailsView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @State private var currentIndex: Int = 0
     @State private var showingReviewView = false
+    @State private var isRated: Bool = true
 
     var body: some View {
         ScrollView{
@@ -167,9 +168,31 @@ struct ProductDetailsView: View {
                                     .bold()
                                     .font(.title2)
                                     .padding()
+                                if(product.productRatedBy != []){
+                                    Text("jest opinia")
+                                }
+                                else {
+                                    Text("nie ma opini")
+//                                    ForEach(product.productRatedBy, id: \.self){ opinion in
+//                                        Divider()
+//                                        Text("Test")
+////                                        Text(product.productRatedBy[opinion])
+////                                        Text(product.productReview[opinion])
+////                                        Text(product.productRate[opinion])
+//
+//
+//                                    }
+                                }
+
                                 
                                 Button {
-                                    showingReviewView = true
+                                    if isRated {
+                                        productVM.alertTitle = "Informacja"
+                                        productVM.alertMessage = "Wystawiłeś juz opinie o tym produkcie"
+                                        productVM.showingAlert = true
+                                    } else {
+                                        showingReviewView = true
+                                    }
                                 } label: {
                                     HStack{
                                         Image(systemName: "plus").bold().font(.body)
@@ -214,6 +237,11 @@ struct ProductDetailsView: View {
         .sheet(isPresented: $showingReviewView){
             RatingView(product: product)
         }
+        .onAppear{
+            self.isRated = productVM.checkIfUserRatedProduct(productID: product.id)
+            //productVM.getProductReviews(productID: product.id)
+
+        }
 
     }
 }
@@ -255,9 +283,10 @@ struct ProductImage: View {
     }
 }
 
+
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
+        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"], productReview: ["test","test3"], productRate: [3,5], productRatedBy: ["213", "3213"])
         )
     }
 }
