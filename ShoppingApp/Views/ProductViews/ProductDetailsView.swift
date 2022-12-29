@@ -13,7 +13,28 @@ struct ProductDetailsView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @State private var currentIndex: Int = 0
     @State private var showingReviewView = false
-    @State private var isRated: Bool = true
+    
+    
+    @State private var rate = [Int]()
+    @State private var review = [String]()
+    @State private var ratedByUID = [String]()
+    @State private var ratedBy = [String]()
+    @State private var ratesTotal: Int = 0
+    @State private var ratesCount: Int = 0
+    @State private var ratesAvarage: Double = 0.0
+//    private var test: Double{
+//        let av: Double
+//        if ratesTotal != 0{
+//            av = Double(ratesCount)/Double(ratesTotal)
+//            return Double(av)
+//
+//        }
+//        else{
+//            return 0
+//        }
+//    }
+
+    @State private var currentReviewIndex: Int = 0
 
     var body: some View {
         ScrollView{
@@ -21,7 +42,7 @@ struct ProductDetailsView: View {
                 if(product.images.count > 0){
                     TabView(selection: $currentIndex){
                         ForEach(0..<product.images.count, id: \.self){ index in
-                            ProductImage(imageURL: URL(string: product.images[index])!)//.padding(.top)
+                            ProductImage(imageURL: URL(string: product.images[index])!)
                             .tag(index)
 
                         }
@@ -64,7 +85,6 @@ struct ProductDetailsView: View {
                                                 .foregroundColor(.black).opacity(0.75)
                                                 .frame(alignment: .trailing)
 
-
                                             Text("\(product.onSalePrice)PLN")
                                                 .font(.headline)
 
@@ -82,20 +102,23 @@ struct ProductDetailsView: View {
                                     }
                                                                     
                                     HStack(spacing: 2) {
-                                        //Text("\(product.formatedRating)").font(.title3)
-                                        ForEach(0..<Int(product.productRatingAvarage)){ idx in
+
+                                        ForEach(0 ..< Int(self.ratesAvarage), id: \.self){ _ in
                                             Image(systemName: "star.fill").font(.callout)
                                         }
-                                        
-                                        if (product.productRatingAvarage != floor(product.productRatingAvarage)){
+
+                                        if (self.ratesAvarage != floor(self.ratesAvarage)) {
                                             Image(systemName: "star.leadinghalf.fill").font(.callout)
+
                                         }
                                         
-                                        ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
+                                        ForEach(0 ..< Int(Double(5) - self.ratesAvarage), id: \.self){ _ in
                                             Image(systemName: "star").font(.callout)
+
                                         }
+
                                         
-                                        Text("(\(product.ratedBy))").font(.footnote)
+                                        Text("(\(self.ratesTotal))").font(.footnote)
                                             .foregroundColor(.secondary)
                                             .offset(y: 3)
                                     }
@@ -163,36 +186,44 @@ struct ProductDetailsView: View {
                                         }
                                         .padding(.horizontal, 8)
                                 }
+                                
+                                VStack{
+                                    HStack{
+                                        Text("Opinie")
+                                            .bold()
+                                            .font(.title2)
+                                            .padding(.top)
+                                        Text("(\(self.ratesTotal))").font(.callout).offset(y: 10)
+                                    }
+                                    
+                                    if(self.rate != []){
+                                        TabView(selection: $currentReviewIndex){
+                                            ForEach(0 ..< self.ratesTotal, id: \.self){ id in
+                                                OpinionCard(rate: self.rate[id], review: self.review[id], username: self.ratedBy[id])
+                                                
+                                                .tag(id)
 
-                                Text("Opinie")
-                                    .bold()
-                                    .font(.title2)
-                                    .padding()
-                                if(product.productRatedBy != []){
-                                    Text("jest opinia")
+
+                                            }
+                                        }
+                                        .frame(height: 200)
+                                        //.frame(maxWidth: .infinity)
+
+                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+
+
+                                    }
+                                    else {
+                                        Text("Ten produkt nie ma jeszcze żadnej opini")
+
+                                    }
                                 }
-                                else {
-                                    Text("nie ma opini")
-//                                    ForEach(product.productRatedBy, id: \.self){ opinion in
-//                                        Divider()
-//                                        Text("Test")
-////                                        Text(product.productRatedBy[opinion])
-////                                        Text(product.productReview[opinion])
-////                                        Text(product.productRate[opinion])
-//
-//
-//                                    }
-                                }
+
 
                                 
                                 Button {
-                                    if isRated {
-                                        productVM.alertTitle = "Informacja"
-                                        productVM.alertMessage = "Wystawiłeś juz opinie o tym produkcie"
-                                        productVM.showingAlert = true
-                                    } else {
-                                        showingReviewView = true
-                                    }
+                                    showingReviewView = true
+                                    
                                 } label: {
                                     HStack{
                                         Image(systemName: "plus").bold().font(.body)
@@ -238,8 +269,18 @@ struct ProductDetailsView: View {
             RatingView(product: product)
         }
         .onAppear{
-            self.isRated = productVM.checkIfUserRatedProduct(productID: product.id)
-            //productVM.getProductReviews(productID: product.id)
+            productVM.getProductReviews(productID: product.id){ uid, rates, reviews, username, rateCount, rateTotal, rateAvarage in
+                
+                rate = rates
+                review = reviews
+                ratedByUID = uid
+                ratedBy = username
+                ratesCount = rateCount
+                ratesTotal = rateTotal
+                ratesAvarage = rateAvarage
+            
+                
+            }
 
         }
 
@@ -286,7 +327,7 @@ struct ProductImage: View {
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"], productReview: ["test","test3"], productRate: [3,5], productRatedBy: ["213", "3213"])
+        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
         )
     }
 }

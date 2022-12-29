@@ -31,6 +31,17 @@ class ProductViewModel: ObservableObject {
     //@Published var productReviews = [[(rate: Int, review: String, ratedBy: String, posted: String)]]()
 //    
 
+    @Published var productReview = [String]()
+    @Published var productRate = [Int]()
+    @Published var productRatedByUID = [String]()
+    @Published var productRatedBy = [String]()
+    @Published var productRatesCount: Int = 0
+    @Published var productRatesTotal: Int = 0
+    @Published var productRatingAvarage : Double = 0
+
+    
+
+
 
     
     
@@ -56,41 +67,9 @@ class ProductViewModel: ObservableObject {
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-                            
-                            var productReview = [String]()
-                            var productRate = [Int]()
-                            var productRatedBy = [String]()
-                            
-                            let ref = self.db.collection("Products").document(id).collection("Reviews")
-                            ref.addSnapshotListener{ (snapshot, error) in
-                                if error != nil{
-                                    print(error?.localizedDescription as Any)
-                                }
-                                else {
-                                    if(snapshot?.isEmpty != true && snapshot != nil){
-                                        productReview.removeAll(keepingCapacity: false)
-                                        productRate.removeAll(keepingCapacity: false)
-                                        productRatedBy.removeAll(keepingCapacity: false)
-                                    }
-                                    for document in snapshot!.documents{
-                                        if let rate = document.get("rating") as? Int {
-                                            print(rate)
-                                            productRate.append(rate)
-                                        }
-                                        if let review = document.get("review") as? String {
-                                            productReview.append(review)
-                                        }
-                                        let ratedBy = document.documentID
-                                        productRatedBy.append(ratedBy)
-                                        
-                                        print(" \(productRate) , \(productReview) , \(productRatedBy)")
 
-                                    }
-                                }
-                                
-                            }
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images, productReview: productReview, productRate: productRate, productRatedBy: productRatedBy)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -123,41 +102,9 @@ class ProductViewModel: ObservableObject {
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-                            
-                            var productReview = [String]()
-                            var productRate = [Int]()
-                            var productRatedBy = [String]()
-                            
-                            let ref = self.db.collection("Products").document(id).collection("Reviews")
-                            ref.addSnapshotListener{ (snapshot, error) in
-                                if error != nil{
-                                    print(error?.localizedDescription as Any)
-                                }
-                                else {
-                                    if(snapshot?.isEmpty != true && snapshot != nil){
-                                        productReview.removeAll(keepingCapacity: false)
-                                        productRate.removeAll(keepingCapacity: false)
-                                        productRatedBy.removeAll(keepingCapacity: false)
-                                    }
-                                    for document in snapshot!.documents{
-                                        if let rate = document.get("rating") as? Int {
-                                            print(rate)
-                                            productRate.append(rate)
-                                        }
-                                        if let review = document.get("review") as? String {
-                                            productReview.append(review)
-                                        }
-                                        let ratedBy = document.documentID
-                                        productRatedBy.append(ratedBy)
-                                        
-                                        print(" \(productRate) , \(productReview) , \(productRatedBy)")
 
-                                    }
-                                }
-                                
-                            }
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images, productReview: productReview, productRate: productRate, productRatedBy: productRatedBy)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -184,47 +131,17 @@ class ProductViewModel: ObservableObject {
                             let amount = doc["amount"] as? Int ?? 0
                             let description = doc["description"] as? String ?? ""
                             let category = doc["category"] as? String ?? ""
+                            
                             let rating = doc["rating"] as? Int ?? 0
                             let ratedBy = doc["ratedBy"] as? Int ?? 0
+                            
                             let isOnSale = doc["isOnSale"] as? Bool ?? false
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-                            
-                            var productReviews = [String]()
-                            var productRates = [Int]()
-                            var productRatedBy = [String]()
-                            
-                            let ref = self.db.collection("Products").document(id).collection("Reviews")
-                            ref.addSnapshotListener{ (snapshot, error) in
-                                if error != nil{
-                                    print(error?.localizedDescription as Any)
-                                }
-                                else {
-                                    if(snapshot?.isEmpty != true && snapshot != nil){
-                                        productReviews.removeAll(keepingCapacity: false)
-                                        productRates.removeAll(keepingCapacity: false)
-                                        productRatedBy.removeAll(keepingCapacity: false)
-                                    }
-                                    for document in snapshot!.documents{
-                                        if let rate = document.get("rating") as? Int {
-                                            print(rate)
-                                            productRates.append(rate)
-                                        }
-                                        if let review = document.get("review") as? String {
-                                            productReviews.append(review)
-                                        }
-                                        let ratedBy = document.documentID
-                                        productRatedBy.append(ratedBy)
-                                        
-                                        print(" \(productRates) , \(productReviews) , \(productRatedBy)")
-
-                                    }
-                                }
                                 
-                            }
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images, productReview: productReviews, productRate: productRates, productRatedBy: productRatedBy)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -338,7 +255,7 @@ class ProductViewModel: ObservableObject {
 //
     
     
-    func addProductReview(productID: String, rating: Int, review: String){
+    func addProductReview(productID: String, rating: Int, review: String, username: String){
         
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Products").document(productID).collection("Reviews").document(userID!)
@@ -346,7 +263,9 @@ class ProductViewModel: ObservableObject {
         let product = ["productID" : productID] as [String : Any]
         let review = ["review" : review] as [String : Any]
         let rating = ["rating" : rating] as [String : Any]
-        let ratedBy = ["ratedBy" : userID!] as [String : Any]
+        let ratedByUID = ["ratedByUID" : userID!] as [String : Any]
+        let ratedBy = ["ratedBy" : username] as [String : Any]
+
 
 
 
@@ -354,7 +273,9 @@ class ProductViewModel: ObservableObject {
         ref.setData(product, merge: true)
         ref.setData(review, merge: true)
         ref.setData(rating, merge: true)
+        ref.setData(ratedByUID, merge: true)
         ref.setData(ratedBy, merge: true)
+
 
         
         self.alertTitle = "Powodzenie"
@@ -365,64 +286,65 @@ class ProductViewModel: ObservableObject {
     
     
     
-    func checkIfUserRatedProduct(productID: String) -> Bool {
-        print("Calling ifUserRated")
-        var hasUserRatedProduct = false
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Products").document(productID).collection("Reviews").document(userID!)
-        ref.getDocument(){ (document, error) in
-            if error == nil {
-                print(" ifUserRated = true ")
-                hasUserRatedProduct = true
+    
+    func getProductReviews(productID: String, completion: @escaping (([String],[Int],[String],[String], Int, Int, Double)) -> ()){
+        let ref = db.collection("Products").document(productID).collection("Reviews")
+        ref.addSnapshotListener{ (snapshot, error) in
+            if error != nil{
+                print(error?.localizedDescription as Any)
             }
             else {
-                print(" ifUserRated = false ")
-                hasUserRatedProduct = false
+                if(snapshot?.isEmpty != true && snapshot != nil){
+                    self.productReview.removeAll(keepingCapacity: false)
+                    self.productRate.removeAll(keepingCapacity: false)
+                    self.productRatedByUID.removeAll(keepingCapacity: false)
+                    self.productRatedBy.removeAll(keepingCapacity: false)
+                    self.productRatesCount = 0
+                    self.productRatesTotal = 0
+
+
+
+                }
+
+                for document in snapshot!.documents{
+                    if let rate = document.get("rating") as? Int {
+                        self.productRate.append(rate)
+                        self.productRatesCount = self.productRatesCount + rate
+                    }
+                    if let review = document.get("review") as? String {
+                        self.productReview.append(review)
+                    }
+                    if let ratedBy = document.get("ratedBy") as? String {
+                        self.productRatedBy.append(ratedBy)
+                    }
+                    let ratedByUID = document.documentID
+                    self.productRatedByUID.append(ratedByUID)
+                    
+
+                }
+                self.productRatesTotal = snapshot?.count ?? 0
+                
+                var productRatingAvarage: Double {
+                    let avarage: Double
+                    if self.productRatesTotal != 0 {
+                        avarage = Double(self.productRatesCount)/Double(self.productRatesTotal)
+                        return Double(avarage)
+                    }
+                    else {
+                        return 0
+                    }
+                }
+                
+                print(" \(self.productRate) , \(self.productReview) , \(self.productRatedBy), \(self.productRatesCount), \(self.productRatesTotal), \(productRatingAvarage)")
+                completion((self.productRatedByUID, self.productRate, self.productReview, self.productRatedBy, self.productRatesCount, self.productRatesTotal, productRatingAvarage))
+
+
             }
+            
+
         }
-        print(" return ifUserRated \(hasUserRatedProduct) ")
-        return hasUserRatedProduct
 
     }
-    
-    
-    
-    
-//    func getProductReviews(productID: String){
-//        let ref = db.collection("Products").document(productID).collection("Reviews")
-//        ref.addSnapshotListener{ (snapshot, error) in
-//            if error != nil{
-//                print(error?.localizedDescription as Any)
-//            }
-//            else {
-//                if(snapshot?.isEmpty != true && snapshot != nil){
-//                    self.productReview.removeAll(keepingCapacity: false)
-//                    self.productRate.removeAll(keepingCapacity: false)
-//                    self.productRatedBy.removeAll(keepingCapacity: false)
-//
-//
-//                }
-//
-//                for document in snapshot!.documents{
-//                    if let rate = document.get("rating") as? Int {
-//                        print(rate)
-//                        self.productRate.append(rate)
-//                    }
-//                    if let review = document.get("review") as? String {
-//                        self.productReview.append(review)
-//                    }
-//                    let ratedBy = document.documentID
-//                    self.productRatedBy.append(ratedBy)
-//
-//                    print(" \(self.productRate) , \(self.productReview) , \(self.productRatedBy)")
-//
-//
-//                }
-//            }
-//
-//        }
-//
-//    }
     
 
     

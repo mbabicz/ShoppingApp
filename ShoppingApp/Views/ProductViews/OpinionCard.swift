@@ -14,29 +14,44 @@ struct OpinionCard: View {
     var username: String
     var maxRate: Int = 5
     
+    
     var body: some View {
-        VStack(alignment: .leading){
-            
-            Divider().overlay(Color.orange)
-            
-            HStack(alignment: .center){
-                Text(username).padding()
-                Spacer()
-                Text("DD//MM/YY").padding().foregroundColor(.black).opacity(0.7)
+        ZStack{
+            VStack(alignment: .leading){
                 
-            }
-            HStack{
-                Spacer()
-                RateStars(rating: 5, max: 5)
-                Spacer()
-            }
+                HStack(alignment: .center){
+                    Text(username)
+                        .padding()
+                        .font(.body)
+                        .foregroundColor(.black).opacity(0.5)
+                    Spacer()
 
-            Text(review).padding([.leading, .trailing, .bottom])
-            
-            Divider().overlay(Color.orange)
+                    RateStars(rating: rate, max: 5)
+                        .font(.body)
 
-            
+                    
+                }
+                
+                Spacer()
+
+                Text(review).padding([.leading, .trailing, .bottom])
+                
+                Spacer()
+
+            }
+            .frame(height: 120)
         }
+
+        .background(Color(red: 240/255, green: 240/255, blue: 240/255))
+        //.shadow(color: Color.orange, radius: 4, x: 1, y: 2)
+        //.padding([.leading, .trailing])
+        //.frame(height: 140)
+        //.frame(maxWidth: .infinity)
+        .cornerRadius(20)
+        .shadow(color: Color.orange.opacity(0.75), radius: 5, x: 0, y: 1)
+        .padding([.leading, .trailing])
+
+        
         
     }
     struct RateStars: View {
@@ -56,7 +71,9 @@ struct OpinionCard: View {
                 
             }
             .padding([.bottom, .trailing, .leading])
+            
         }
+        
         
         func starType(index: Int) -> String {
             if let rating = self.rating {
@@ -68,11 +85,12 @@ struct OpinionCard: View {
         }
         
     }
+    
 }
 
 
 struct OpinionCard_Previews: PreviewProvider {
     static var previews: some View {
-        OpinionCard(rate: 5, review: "Fajny telefon, szybki i ładny. Troche drogi ale 5/5", username: "Tester1")
+        OpinionCard(rate: 5, review: "Fajny telefon ", username: "Tester1")
     }
 }

@@ -22,11 +22,6 @@ struct Product: Identifiable, Codable, Hashable {
     
     var details : [String]
     var images : [String]
-    
-    
-    var productReview : [String]
-    var productRate : [Int]
-    var productRatedBy : [String]
 }
 
 extension Product{
@@ -34,15 +29,6 @@ extension Product{
         URL(string: img)!
     }
     
-    var productRatingAvarage: Double {
-        let avarage: Double
-        if ratedBy != 0 {
-            avarage = Double(rating)/Double(ratedBy)
-            return Double(avarage)
-        }
-        else {
-            return 0
-        }
-    }
+
 
 }
