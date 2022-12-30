@@ -25,25 +25,6 @@ struct ProductCarouselCard: View {
                         .padding(.top)
     
                     Spacer()
-                    
-//                    HStack(spacing: 2) {
-//                        ForEach(0..<Int(product.productRatingAvarage)){ idx in
-//                            Image(systemName: "star.fill").font(.subheadline)
-//                        }
-//                        if (product.productRatingAvarage != floor(product.productRatingAvarage)){
-//                            Image(systemName: "star.leadinghalf.fill").font(.subheadline)
-//                        }
-//                        ForEach(0..<Int(Double(5) - product.productRatingAvarage)){ idx in
-//                            Image(systemName: "star").font(.subheadline)
-//                        }
-//
-//                        Text("(\(product.ratedBy))").font(.caption2)
-//                            .foregroundColor(.secondary)
-//                            .offset(y: 3)
-//                    }
-                    
-                    Spacer()
-
                     if product.isOnSale{
                         VStack{
                             Text("\(product.price)")
@@ -117,7 +98,7 @@ struct ProductCarouselImage: View {
 
 struct ProductCarouselCard_Previews: PreviewProvider {
     static var previews: some View {
-        ProductCarouselCard(product: Product(id: "1", name: "macbook pro 13\" 16/512GB i5", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "test", category: "laptopy", rating: 5,  ratedBy: 2, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: ["https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
-        )
+        ProductCarouselCard(product: Product.sampleProduct)
+            .environmentObject(ProductViewModel())
     }
 }

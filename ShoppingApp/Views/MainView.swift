@@ -30,7 +30,6 @@ struct MainView: View {
                     }
 
                 }
-                //.border(.red)
                 Spacer(minLength: 40)
             }
 
@@ -38,7 +37,6 @@ struct MainView: View {
             
         }
 
-        //.border(.blue)
         .onAppear{
             productVM.getProducts(category: "Smartfon")
             productVM.getPromotedProducts()

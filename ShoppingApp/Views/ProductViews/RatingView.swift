@@ -138,8 +138,6 @@ struct ProductImageView: View {
             Rectangle()
                 .fill(Color.white)
                 .frame(width: 125, height: 125, alignment: .center)
-
-                //.frame(maxWidth: .infinity)
                 .cornerRadius(14)
                 .overlay(
                     ZStack {
@@ -153,7 +151,6 @@ struct ProductImageView: View {
                                     .clipped(antialiased: true)
                                     .aspectRatio(contentMode: .fit)
                                     .cornerRadius(12)
-                                    //.padding()
                                 Spacer()
                             }
                         }
@@ -225,8 +222,7 @@ struct RatingView_Previews: PreviewProvider {
     static let myEnvObject = ProductViewModel()
 
     static var previews: some View {
-        RatingView(product: Product(id: "1", name: "Macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
-        )
-        .environmentObject(myEnvObject)
+        RatingView(product: Product.sampleProduct)
+            .environmentObject(myEnvObject)
     }
 }

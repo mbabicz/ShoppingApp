@@ -18,19 +18,14 @@ class ProductViewModel: ObservableObject {
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
     @Published var userCartProducts: [Product]?
-    
-    
+    @Published var products: [Product]?
+        
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
     @Published var alertTitle = ""
 
-
-
-    @Published var products: [Product]?
-    //@Published var productReviews = [[Int: String]]()
-    //@Published var productReviews = [[(rate: Int, review: String, ratedBy: String, posted: String)]]()
-//    
-
+ 
+    //RATES & REVIEWS
     @Published var productReview = [String]()
     @Published var productRate = [Int]()
     @Published var productRatedByUID = [String]()
@@ -39,11 +34,6 @@ class ProductViewModel: ObservableObject {
     @Published var productRatesTotal: Int = 0
     @Published var productRatingAvarage : Double = 0
 
-    
-
-
-
-    
     
     func getOnSaleProducts(){
         self.products = nil
@@ -61,15 +51,13 @@ class ProductViewModel: ObservableObject {
                             let amount = doc["amount"] as? Int ?? 0
                             let description = doc["description"] as? String ?? ""
                             let category = doc["category"] as? String ?? ""
-                            let rating = doc["rating"] as? Int ?? 0
-                            let ratedBy = doc["ratedBy"] as? Int ?? 0
                             let isOnSale = doc["isOnSale"] as? Bool ?? false
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
 
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -96,15 +84,13 @@ class ProductViewModel: ObservableObject {
                             let amount = doc["amount"] as? Int ?? 0
                             let description = doc["description"] as? String ?? ""
                             let category = doc["category"] as? String ?? ""
-                            let rating = doc["rating"] as? Int ?? 0
-                            let ratedBy = doc["ratedBy"] as? Int ?? 0
                             let isOnSale = doc["isOnSale"] as? Bool ?? false
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
 
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -131,17 +117,13 @@ class ProductViewModel: ObservableObject {
                             let amount = doc["amount"] as? Int ?? 0
                             let description = doc["description"] as? String ?? ""
                             let category = doc["category"] as? String ?? ""
-                            
-                            let rating = doc["rating"] as? Int ?? 0
-                            let ratedBy = doc["ratedBy"] as? Int ?? 0
-                            
                             let isOnSale = doc["isOnSale"] as? Bool ?? false
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
                                 
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, rating: rating, ratedBy: ratedBy, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
@@ -152,16 +134,16 @@ class ProductViewModel: ObservableObject {
         }
     }
     
-        func addProductToCart(productID: String){
-            let userID = Auth.auth().currentUser?.uid
-            let ref = db.collection("Users").document(userID!).collection("Cart").document(productID)
-            let date = ["added to cart date:" : Date.now] as [String : Any]
-            let product = ["productID:" : productID] as [String : Any]
-            ref.setData(date, merge: true)
-            ref.setData(product, merge: true)
-    
-    
-        }
+    func addProductToCart(productID: String){
+        let userID = Auth.auth().currentUser?.uid
+        let ref = db.collection("Users").document(userID!).collection("Cart").document(productID)
+        let date = ["added to cart date:" : Date.now] as [String : Any]
+        let product = ["productID:" : productID] as [String : Any]
+        ref.setData(date, merge: true)
+        ref.setData(product, merge: true)
+        
+        
+    }
     
     func getUserCart(){
         self.userCartProducts = nil
@@ -219,40 +201,6 @@ class ProductViewModel: ObservableObject {
         
     }
     
-//
-//    func getUserCart(){
-//        self.userCartProducts = nil
-//        let userID = Auth.auth().currentUser?.uid
-//
-//        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
-//            if error == nil{
-//
-//                if let snapshot = snapshot {
-//                    DispatchQueue.main.async{
-//                        self.userCartProducts = snapshot.documents.map { doc in
-//                            return Product(
-//                                id: doc.documentID as String,
-//                                name: doc["name"] as? String ?? "",
-//                                img: doc["image_url"] as? String ?? "",
-//                                price: doc["price"] as? Int ?? 0,
-//                                amount: doc["amount"] as? Int ?? 0,
-//                                description: doc["description"] as? String ?? "",
-//                                category: doc["category"] as? String ?? "",
-//                                rating: doc["rating"] as? Int ?? 0,
-//                                ratedBy: doc["ratedBy"] as? Int ?? 0,
-//                                isOnSale: doc["isOnSale"] as? Bool ?? false,
-//                                onSalePrice: doc["onSalePrice"] as? Int ?? 0
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//            else{
-//                print("Error: can't get products from database")
-//            }
-//        }
-//    }
-//
     
     
     func addProductReview(productID: String, rating: Int, review: String, username: String){
@@ -266,17 +214,12 @@ class ProductViewModel: ObservableObject {
         let ratedByUID = ["ratedByUID" : userID!] as [String : Any]
         let ratedBy = ["ratedBy" : username] as [String : Any]
 
-
-
-
         ref.setData(date, merge: true)
         ref.setData(product, merge: true)
         ref.setData(review, merge: true)
         ref.setData(rating, merge: true)
         ref.setData(ratedByUID, merge: true)
         ref.setData(ratedBy, merge: true)
-
-
         
         self.alertTitle = "Powodzenie"
         self.alertMessage = "Opinia została dodana pomyślnie"
@@ -301,9 +244,6 @@ class ProductViewModel: ObservableObject {
                     self.productRatedBy.removeAll(keepingCapacity: false)
                     self.productRatesCount = 0
                     self.productRatesTotal = 0
-
-
-
                 }
 
                 for document in snapshot!.documents{
@@ -319,7 +259,6 @@ class ProductViewModel: ObservableObject {
                     }
                     let ratedByUID = document.documentID
                     self.productRatedByUID.append(ratedByUID)
-                    
 
                 }
                 self.productRatesTotal = snapshot?.count ?? 0
@@ -338,9 +277,7 @@ class ProductViewModel: ObservableObject {
                 print(" \(self.productRate) , \(self.productReview) , \(self.productRatedBy), \(self.productRatesCount), \(self.productRatesTotal), \(productRatingAvarage)")
                 completion((self.productRatedByUID, self.productRate, self.productReview, self.productRatedBy, self.productRatesCount, self.productRatesTotal, productRatingAvarage))
 
-
             }
-            
 
         }
 

@@ -26,22 +26,14 @@ struct SearchView: View {
                     }
                     .foregroundColor(.gray)
                     .padding(.leading, 20)
-                    //.border(.red)
                 }
                 .frame(height: 40)
                 .cornerRadius(13)
                 .padding()
                 .border(.red)
                 
-                //Spacer()
-                
-                
                 List{
                     Section(header: Text("Kategorie")){
-   
-                        //NavigationLink("Laptopy", destination: ProductCardList(products: productVM.products2!))
-                        //NavigationLink("Laptopy", destination: CategorizedProductsView(category: "Smartfon"))
-
 
                         Text("Komputery")
                         Text("Smartfony")
@@ -54,7 +46,6 @@ struct SearchView: View {
                 .scrollContentBackground(.hidden)
                 
             }
-            //Spacer()
 
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{

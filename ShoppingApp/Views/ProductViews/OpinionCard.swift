@@ -29,7 +29,6 @@ struct OpinionCard: View {
                     RateStars(rating: rate, max: 5)
                         .font(.body)
 
-                    
                 }
                 
                 Spacer()
@@ -43,10 +42,6 @@ struct OpinionCard: View {
         }
 
         .background(Color(red: 240/255, green: 240/255, blue: 240/255))
-        //.shadow(color: Color.orange, radius: 4, x: 1, y: 2)
-        //.padding([.leading, .trailing])
-        //.frame(height: 140)
-        //.frame(maxWidth: .infinity)
         .cornerRadius(20)
         .shadow(color: Color.orange.opacity(0.75), radius: 5, x: 0, y: 1)
         .padding([.leading, .trailing])

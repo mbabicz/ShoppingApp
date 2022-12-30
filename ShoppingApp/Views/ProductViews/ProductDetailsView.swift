@@ -14,7 +14,7 @@ struct ProductDetailsView: View {
     @State private var currentIndex: Int = 0
     @State private var showingReviewView = false
     
-    
+    //Rating and reviews
     @State private var rate = [Int]()
     @State private var review = [String]()
     @State private var ratedByUID = [String]()
@@ -22,17 +22,6 @@ struct ProductDetailsView: View {
     @State private var ratesTotal: Int = 0
     @State private var ratesCount: Int = 0
     @State private var ratesAvarage: Double = 0.0
-//    private var test: Double{
-//        let av: Double
-//        if ratesTotal != 0{
-//            av = Double(ratesCount)/Double(ratesTotal)
-//            return Double(av)
-//
-//        }
-//        else{
-//            return 0
-//        }
-//    }
 
     @State private var currentReviewIndex: Int = 0
 
@@ -57,7 +46,7 @@ struct ProductDetailsView: View {
                     }
                 }
                 else {
-                    ProductImage(imageURL: product.imageURL)//1.padding(.top)
+                    ProductImage(imageURL: product.imageURL)
 
                 }
 
@@ -67,183 +56,172 @@ struct ProductDetailsView: View {
                         .fill(Color.white)
                         .cornerRadius(25)
                         .shadow(color: .black.opacity(0.5), radius: 3, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
-                            VStack(alignment: .center){
-                                Text(product.name.uppercased())
-                                    .font(.title3).bold()
-                                    .multilineTextAlignment(.center)
-                                    .lineLimit(3)
-                                    .padding()
-                                
-                                HStack{
-                                    if product.isOnSale{
-                                        VStack{
-                                            Text("\(product.price)")
-                                                .bold()
-                                                .padding([.leading, .trailing])
-                                                .font(.callout)
-                                                .strikethrough()
-                                                .foregroundColor(.black).opacity(0.75)
-                                                .frame(alignment: .trailing)
-
-                                            Text("\(product.onSalePrice)PLN")
-                                                .font(.headline)
-
-                                        }
-                                        .frame(alignment: .center)
-                                        .padding([.bottom, .leading, .trailing])
-                      
-                                    }
-                                    else {
-                                        Text("\(product.price)PLN")
-                                            .bold()
-                                            .font(.headline)
-                                            .padding([.bottom, .leading, .trailing])
-
-                                    }
-                                                                    
-                                    HStack(spacing: 2) {
-
-                                        ForEach(0 ..< Int(self.ratesAvarage), id: \.self){ _ in
-                                            Image(systemName: "star.fill").font(.callout)
-                                        }
-
-                                        if (self.ratesAvarage != floor(self.ratesAvarage)) {
-                                            Image(systemName: "star.leadinghalf.fill").font(.callout)
-
-                                        }
-                                        
-                                        ForEach(0 ..< Int(Double(5) - self.ratesAvarage), id: \.self){ _ in
-                                            Image(systemName: "star").font(.callout)
-
-                                        }
-
-                                        
-                                        Text("(\(self.ratesTotal))").font(.footnote)
-                                            .foregroundColor(.secondary)
-                                            .offset(y: 3)
-                                    }
-                                    .padding([.bottom, .trailing, .leading])
-                                                                    
-                                }
-                                HStack{
+                    VStack(alignment: .center){
+                        Text(product.name.uppercased())
+                            .font(.title3).bold()
+                            .multilineTextAlignment(.center)
+                            .lineLimit(3)
+                            .padding()
+                        
+                        HStack{
+                            if product.isOnSale{
+                                VStack{
+                                    Text("\(product.price)")
+                                        .bold()
+                                        .padding([.leading, .trailing])
+                                        .font(.callout)
+                                        .strikethrough()
+                                        .foregroundColor(.black).opacity(0.75)
+                                        .frame(alignment: .trailing)
                                     
-                                    Button {
-                                        productVM.addProductToCart(productID: product.id)
-                                    } label: {
-                                        
-                                        HStack{
-                                            Image(systemName: "cart.badge.plus").bold().font(.body)
-                                            Text("Do koszyka").bold().font(.body)
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .foregroundColor(.white)
-                                        .background(Color.orange)
-                                        .cornerRadius(45)
-                                        
-                                    }
-                                    .padding([.leading, .trailing])
-
-                                    Button {
-                                        //
-                                    } label: {
-                                        
-                                        HStack{
-                                            Image(systemName: "eye").bold().font(.body)
-                                            Text("Obserwuj").bold().font(.body)
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .padding()
-                                        .foregroundColor(.white)
-                                        .background(Color.orange)
-                                        .cornerRadius(45)
-                                        
-                                    }
-                                    .padding([.leading, .trailing])
+                                    Text("\(product.onSalePrice)PLN")
+                                        .font(.headline)
+                                    
+                                }
+                                .frame(alignment: .center)
+                                .padding([.bottom, .leading, .trailing])
+                                
+                            }
+                            else {
+                                Text("\(product.price)PLN")
+                                    .bold()
+                                    .font(.headline)
+                                    .padding([.bottom, .leading, .trailing])
+                                
+                            }
+                            
+                            HStack(spacing: 2) {
+                                
+                                ForEach(0 ..< Int(self.ratesAvarage), id: \.self){ _ in
+                                    Image(systemName: "star.fill").font(.callout)
+                                }
+                                
+                                if (self.ratesAvarage != floor(self.ratesAvarage)) {
+                                    Image(systemName: "star.leadinghalf.fill").font(.callout)
                                     
                                 }
                                 
-                                Text("Opis")
+                                ForEach(0 ..< Int(Double(5) - self.ratesAvarage), id: \.self){ _ in
+                                    Image(systemName: "star").font(.callout)
+                                    
+                                }
+                                
+                                
+                                Text("(\(self.ratesTotal))").font(.footnote)
+                                    .foregroundColor(.secondary)
+                                    .offset(y: 3)
+                            }
+                            .padding([.bottom, .trailing, .leading])
+                            
+                        }
+                        HStack{
+                            
+                            Button {
+                                productVM.addProductToCart(productID: product.id)
+                            } label: {
+                                
+                                HStack{
+                                    Image(systemName: "cart.badge.plus").bold().font(.body)
+                                    Text("Do koszyka").bold().font(.body)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color.orange)
+                                .cornerRadius(45)
+                                
+                            }
+                            .padding([.leading, .trailing])
+                            
+                            Button {
+                                //
+                            } label: {
+                                
+                                HStack{
+                                    Image(systemName: "eye").bold().font(.body)
+                                    Text("Obserwuj").bold().font(.body)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color.orange)
+                                .cornerRadius(45)
+                                
+                            }
+                            .padding([.leading, .trailing])
+                            
+                        }
+                        
+                        Text("Opis")
+                            .bold()
+                            .font(.title2)
+                            .padding()
+                        
+                        Text(product.description)
+                            .foregroundColor(.black).opacity(0.75)
+                            .padding([.leading, .trailing, .bottom])
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(100)
+                        if(product.details != []){
+                            Text("Specyfikacja")
+                                .bold()
+                                .font(.title2)
+                                .padding()
+                            ForEach(product.details, id: \.self){ detail in
+                                Divider()
+                                
+                                Text(detail)
+                            }
+                            .padding(.horizontal, 8)
+                        }
+                        
+                        VStack{
+                            HStack{
+                                Text("Opinie")
                                     .bold()
                                     .font(.title2)
-                                    .padding()
-                                
-                                Text(product.description)
-                                    .foregroundColor(.black).opacity(0.75)
-                                    .padding([.leading, .trailing, .bottom])
-                                    .font(.body)
-                                    .multilineTextAlignment(.center)
-                                    .lineLimit(100)
-                                if(product.details != []){
-                                    Text("Specyfikacja")
-                                        .bold()
-                                        .font(.title2)
-                                        .padding()
-                                        ForEach(product.details, id: \.self){ detail in
-                                            Divider()
-
-                                            Text(detail)
-                                        }
-                                        .padding(.horizontal, 8)
-                                }
-                                
-                                VStack{
-                                    HStack{
-                                        Text("Opinie")
-                                            .bold()
-                                            .font(.title2)
-                                            .padding(.top)
-                                        Text("(\(self.ratesTotal))").font(.callout).offset(y: 10)
-                                    }
-                                    
-                                    if(self.rate != []){
-                                        TabView(selection: $currentReviewIndex){
-                                            ForEach(0 ..< self.ratesTotal, id: \.self){ id in
-                                                OpinionCard(rate: self.rate[id], review: self.review[id], username: self.ratedBy[id])
-                                                
-                                                .tag(id)
-
-
-                                            }
-                                        }
-                                        .frame(height: 200)
-                                        //.frame(maxWidth: .infinity)
-
-                                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-
-
-                                    }
-                                    else {
-                                        Text("Ten produkt nie ma jeszcze żadnej opini")
-
-                                    }
-                                }
-
-
-                                
-                                Button {
-                                    showingReviewView = true
-                                    
-                                } label: {
-                                    HStack{
-                                        Image(systemName: "plus").bold().font(.body)
-                                        Text("Dodaj opinie").bold().font(.body)
-                                    }
-                                    //.frame(maxWidth: .infinity)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .background(Color.orange)
-                                    .cornerRadius(45)
-                                }
-
-                                
-//                                NavigationLink(destination: RatingView(product: product)){
-//                                }
-
-         
-                                Spacer()
-
+                                    .padding(.top)
+                                Text("(\(self.ratesTotal))").font(.callout).offset(y: 10)
                             }
+                            
+                            if(self.rate != []){
+                                TabView(selection: $currentReviewIndex){
+                                    ForEach(0 ..< self.ratesTotal, id: \.self){ id in
+                                        OpinionCard(rate: self.rate[id], review: self.review[id], username: self.ratedBy[id])
+                                        
+                                            .tag(id)
+                                        
+                                    }
+                                }
+                                .frame(height: 200)
+                                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+                                
+                            }
+                            else {
+                                Text("Ten produkt nie ma jeszcze żadnej opini")
+                                
+                            }
+                        }
+                        
+                        
+                        Button {
+                            showingReviewView = true
+                            
+                        } label: {
+                            HStack{
+                                Image(systemName: "plus").bold().font(.body)
+                                Text("Dodaj opinie").bold().font(.body)
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(45)
+                        }
+                        
+                        Spacer()
+                        
+                    }
 
                 }
                 Button {
@@ -278,7 +256,6 @@ struct ProductDetailsView: View {
                 ratesCount = rateCount
                 ratesTotal = rateTotal
                 ratesAvarage = rateAvarage
-            
                 
             }
 
@@ -295,8 +272,6 @@ struct ProductImage: View {
             Rectangle()
                 .fill(Color.white)
                 .frame(width: 300, height: 300, alignment: .center)
-
-                //.frame(maxWidth: .infinity)
                 .cornerRadius(14)
                 .overlay(
                     ZStack {
@@ -327,7 +302,8 @@ struct ProductImage: View {
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {
-        ProductDetailsView(product: Product(id: "1", name: "macbook pro 13\" 16/512GB m1 silver", img: "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", price: 5500, amount: 3, description: "Ultrabook 13,3 cala, laptop z procesorem Apple M1 , 16GB RAM, dysk 512GB SSD, grafika Apple M1, Multimedia: Kamera, Głośniki, Karta graficzna: Zintegrowana. System operacyjny: macOS", category: "laptopy", rating: 5, ratedBy: 1, isOnSale: true, onSalePrice: 5000, details: ["es" , "esy"], images: [ "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg", "https://www.tradeinn.com/f/13745/137457920/apple-macbook-pro-touch-bar-16-i9-2.3-16gb-1tb-ssd-laptop.jpg"])
-        )
+        ProductDetailsView(product: Product.sampleProduct)
+            .environmentObject(ProductViewModel())
+
     }
 }

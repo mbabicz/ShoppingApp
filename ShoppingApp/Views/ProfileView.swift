@@ -19,9 +19,7 @@ struct ProfileView: View {
                     
                     Image(systemName: "person").resizable().aspectRatio(contentMode: .fit).padding(.all).frame(width: 125, height: 125, alignment: .top)
                     
-                    
                     VStack{
-                        //Text(auth.currentUser?.email ?? "username").bold().font(.system(size: 20))
                         if !user.userIsGuest{
                             Text(user.user?.username ?? "username").bold().font(.system(size: 20))
                             Text(auth.currentUser?.email ?? "user email")
@@ -70,8 +68,6 @@ struct ProfileView: View {
                     .scrollContentBackground(.hidden)
                     .frame(height:175)
 
-
-                    
                     List{
                         Section(header: Text("Ustawienia")){
                             Text("Powiadomienia")
@@ -81,24 +77,14 @@ struct ProfileView: View {
                         }
                         
                     }
-                    //.listStyle(.grouped)
                     .listStyle(.grouped)
                     .scrollDisabled(true)
                     .scrollContentBackground(.hidden)
                     .frame(height:175)
-                    
-//                    Button {
-//
-//                    } label: {
-//                        Text("Wyloguj się").font(.system(size:20))
-//                    }
 
                 }
                 Spacer()
-
-
-                
-                
+ 
             }
             
             .navigationBarTitleDisplayMode(.inline)
@@ -109,7 +95,6 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button {
                         user.signOut()
-                        //viewModel.signedIn = false
                     } label: {
                         Text("Wyloguj się").font(.headline).foregroundColor(.blue)
                     }
@@ -117,11 +102,8 @@ struct ProfileView: View {
                 }
                 
             }
-            //.border(.green)
-            
             
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            //.border(.gray)
             .background(.gray.opacity(0.1))
             
         }
@@ -134,6 +116,7 @@ struct ProfileView_Previews: PreviewProvider {
     static let myEnvObject = UserViewModel()
 
     static var previews: some View {
-        ProfileView().environmentObject(myEnvObject)
+        ProfileView()
+            .environmentObject(myEnvObject)
     }
 }
