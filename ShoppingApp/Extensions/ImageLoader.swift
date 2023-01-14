@@ -10,7 +10,6 @@ import UIKit
 
 private let _imageCache = NSCache<AnyObject, AnyObject>()
 
-/// Load an image and cache it
 class ImageLoader: ObservableObject {
     
     @Published var image: UIImage?

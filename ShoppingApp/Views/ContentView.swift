@@ -32,7 +32,7 @@ struct ContentView: View {
                         Image(systemName: "cart.fill")
 
                     }.tag(2)
-                    ObservedView().tabItem {
+                    WatchListView().tabItem {
                         Image(systemName: "eye.fill")
                     }.tag(3)
                     ProfileView().tabItem {

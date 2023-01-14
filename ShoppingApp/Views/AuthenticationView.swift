@@ -41,21 +41,20 @@ struct SignInView: View {
     var body: some View {
         VStack {
             VStack{
-                //TODO: Image
                 VStack{
-                    TextField("Email Adress", text: $email).padding()
+                    TextField("Adres email", text: $email).padding()
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     ZStack(alignment: .trailing){
                         Group{
                             if isSecured {
-                                SecureField("Password", text: $password).padding()
+                                SecureField("Hasło", text: $password).padding()
                                     .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             } else {
-                                TextField("Password", text: $password).padding()
+                                TextField("Hasło", text: $password).padding()
                                     .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
@@ -69,24 +68,34 @@ struct SignInView: View {
                         
                     }
                     
-                    NavigationLink("Forgot password?", destination: ResetPasswordView()).padding([.leading, .bottom, .trailing]).frame(maxWidth: .infinity, alignment: .trailing)
+                    NavigationLink("Zapomniałeś hasła?", destination: ResetPasswordView())
+                        .padding([.leading, .bottom, .trailing])
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .foregroundColor(Color.orange)
                     
                     Button {
                         if (!email.isEmpty && !password.isEmpty){
                             user.signIn(email: email, password: password)
                         } else{
                             user.alertTitle = "Error"
-                            user.alertMessage = "Fields cannot be empty"
+                            user.alertMessage = "Pola nie mogą by puste"
                             user.showingAlert = true
                         }
 
                     } label: {
-                        Text("Sign In").frame(width: 200, height: 50).bold().foregroundColor(Color.white).background(Color.blue).cornerRadius(8).padding()
+                        Text("Logowanie")
+                            .frame(width: 200, height: 50)
+                            .bold()
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(45)
+                            .padding()
+
                     }
 
-                    Text("Don't have an account yet?")
+                    Text("Nie masz konta?")
                         .padding([.top, .leading, .trailing])
-                    NavigationLink("Create Account", destination: SignUpView()).padding([.leading, .bottom, .trailing])
+                    NavigationLink("Załóż konto", destination: SignUpView()).padding([.leading, .bottom, .trailing]).foregroundColor(Color.orange)
 
                 }
                 .padding()
@@ -97,15 +106,16 @@ struct SignInView: View {
                     user.singInAnonymously()
                     
                 } label: {
-                    Text("Continue as a guest").padding().frame(maxWidth: .infinity, alignment: .center).border(.red)
-
+                    Text("Kontynuuj jako gość")
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .foregroundColor(Color.orange)
                 }
 
-                
-                //NavigationLink("Continue as a guest", destination: MainView()).padding([.leading, .bottom, .trailing]).frame(maxWidth: .infinity, alignment: .center).border(.red)
+
 
             }
-            .navigationTitle("Sign In")
+            .navigationTitle("Logowanie")
 
         }
     }
@@ -129,23 +139,23 @@ struct SignUpView: View {
             VStack{
                 //TODO: Image
                 VStack{
-                    TextField("Username", text: $username).padding()
+                    TextField("Nazwa użytkownika", text: $username).padding()
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     
-                    TextField("Email Adress", text: $email).padding()                        .disableAutocorrection(true)
+                    TextField("Adres email", text: $email).padding()                        .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     
                     ZStack(alignment: .trailing){
                         Group{
                             if isSecured {
-                                SecureField("Password", text: $password).padding()                        .disableAutocorrection(true)
+                                SecureField("Hasło", text: $password).padding()                        .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             } else {
-                                TextField("Password", text: $password).padding()                        .disableAutocorrection(true)
+                                TextField("Hasło", text: $password).padding()                        .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             }
@@ -161,11 +171,11 @@ struct SignUpView: View {
                     ZStack(alignment: .trailing){
                         Group{
                             if isSecuredConfirmation {
-                                SecureField("Password", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
+                                SecureField("Hasło", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             } else {
-                                TextField("Password", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
+                                TextField("Hasło", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             }
@@ -185,25 +195,32 @@ struct SignUpView: View {
                             }
                             else{
                                 user.alertTitle = "Error"
-                                user.alertMessage = "Your password and confirmation password do not match"
+                                user.alertMessage = "Hasła muszą być takie same"
                                 user.showingAlert = true
                             }
                             
                         } else {
                             user.alertTitle = "Error"
-                            user.alertMessage = "Fields cannot be empty"
+                            user.alertMessage = "Pola nie mogą być puste"
                             user.showingAlert = true
                         }
                         
                     } label: {
-                        Text("Create Account").frame(width: 200, height: 50).bold().foregroundColor(Color.white).background(Color.blue).cornerRadius(8).padding()
+                        Text("Stwórz konto")
+                            .frame(width: 200, height: 50)
+                            .bold()
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(45)
+                            .padding()
+
                     }
 
                 }
                 .padding()
                 Spacer()
             }
-            .navigationTitle("Create Account")
+            .navigationTitle("Stwórz konto")
 
         }
     }
@@ -220,7 +237,7 @@ struct ResetPasswordView: View {
             VStack{
                 VStack{
                     
-                    TextField("Email Adress", text: $email).padding()
+                    TextField("Adres email", text: $email).padding()
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
@@ -233,19 +250,25 @@ struct ResetPasswordView: View {
                         
                     } else {
                         user.alertTitle = "Error"
-                        user.alertMessage = "Field cannot be empty"
+                        user.alertMessage = "Pola nie mogą być puste"
                         user.showingAlert = true
                     }
                         
                 } label: {
-                    Text("Reset Password").frame(width: 200, height: 50).bold().foregroundColor(Color.white).background(Color.blue).cornerRadius(8).padding()
+                    Text("Zresetuj hasło")
+                        .frame(width: 200, height: 50)
+                        .bold()
+                        .foregroundColor(.white)
+                        .background(Color.orange)
+                        .cornerRadius(45)
+                        .padding()
                 }
 
             }
             .padding()
             Spacer()
         }
-        .navigationTitle("Recover Password")
+        .navigationTitle("Odzyskanie hasła")
 
     }
 }

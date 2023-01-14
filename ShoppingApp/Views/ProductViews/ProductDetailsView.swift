@@ -199,7 +199,7 @@ struct ProductDetailsView: View {
                                 
                             }
                             else {
-                                Text("Ten produkt nie ma jeszcze żadnej opini")
+                                Text("Ten produkt nie ma żadnej opini")
                                 
                             }
                         }

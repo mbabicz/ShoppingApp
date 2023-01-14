@@ -14,17 +14,17 @@ import SwiftUI
 class ProductViewModel: ObservableObject {
     
     private let db = Firestore.firestore()
-
+    
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
     @Published var userCartProducts: [Product]?
     @Published var products: [Product]?
-        
+    
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
     @Published var alertTitle = ""
-
- 
+    
+    
     //RATES & REVIEWS
     @Published var productReview = [String]()
     @Published var productRate = [Int]()
@@ -33,7 +33,7 @@ class ProductViewModel: ObservableObject {
     @Published var productRatesCount: Int = 0
     @Published var productRatesTotal: Int = 0
     @Published var productRatingAvarage : Double = 0
-
+    
     
     func getOnSaleProducts(){
         self.products = nil
@@ -55,15 +55,16 @@ class ProductViewModel: ObservableObject {
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-
                             
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                            
+                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
+                                           category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
                     }
                 }
             }
             else{
-                print("Error: can't get products from database")
+                print("Error: can't get OnSale products from database")
             }
         }
     }
@@ -88,7 +89,7 @@ class ProductViewModel: ObservableObject {
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-
+                            
                             
                             return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
@@ -121,7 +122,7 @@ class ProductViewModel: ObservableObject {
                             let onSalePrice = doc["onSalePrice"] as? Int ?? 0
                             let details = doc["details"] as? [String] ?? []
                             let images = doc["images"] as? [String] ?? []
-                                
+                            
                             
                             return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
                         }
@@ -137,68 +138,63 @@ class ProductViewModel: ObservableObject {
     func addProductToCart(productID: String){
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("Cart").document(productID)
-        let date = ["added to cart date:" : Date.now] as [String : Any]
-        let product = ["productID:" : productID] as [String : Any]
+        let date = ["added to cart date" : Date.now] as [String : Any]
+        let product = ["productID" : productID] as [String : Any]
         ref.setData(date, merge: true)
         ref.setData(product, merge: true)
         
         
     }
     
-    func getUserCart(){
-        self.userCartProducts = nil
-        let userID = Auth.auth().currentUser?.uid
-        var documentsID = [String]()
-        
-        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
-            if error == nil{
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async{
-                        for document in snapshot.documents{
-                            documentsID.append(document.documentID)
-                            self.db.collection("Products").document(document.documentID).getDocument { document, error in
-                                if error == nil{
-                                    if let document = document, document.exists{
-                                        
-                                        
-                                        //document.get("name") as? String ?? "",
-                                        //img: doc["image_url"] as? String ?? ""
-                                    }
-                                    
-//                                    if document != nil {
-//                                        DispatchQueue.main.async{
-//                                            self.userCartProducts = document.map { doc in
-//                                                return Product(
-//                                                    id: doc.documentID as String,
-//                                                    name: doc["name"] as? String ?? "",
-//                                                    img: doc["image_url"] as? String ?? "",
-//                                                    price: doc["price"] as? Int ?? 0,
-//                                                    amount: doc["amount"] as? Int ?? 0,
-//                                                    description: doc["description"] as? String ?? "",
-//                                                    category: doc["category"] as? String ?? "",
-//                                                    rating: doc["rating"] as? Int ?? 0,
-//                                                    ratedBy: doc["ratedBy"] as? Int ?? 0,
-//                                                    isOnSale: doc["isOnSale"] as? Bool ?? false,
-//                                                    onSalePrice: doc["onSalePrice"] as? Int ?? 0,
-//                                                    details : doc["details"] as? [String] ?? [],
-//                                                    images : doc["images"] as? [String] ?? []
-//
-//                                                )
-//                                            }
+    func getUserCart(completion: @escaping (([Product])) -> ()){
+//        self.userCartProducts = nil
+//        let userID = Auth.auth().currentUser?.uid
+//        var documentsID = [String]()
+//        
+//        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
+//            if error == nil{
+//                if let snapshot = snapshot {
+//                    DispatchQueue.main.async{
+//                        for document in snapshot.documents{
+//                            documentsID.append(document.documentID)
+//                            print(" usercart: \(documentsID)")
+//                            self.db.collection("Products").document(document.documentID).getDocument { document, error in
+//                                if error == nil{
+//                                    if let document = document, document.exists{
+//                                        let dataDescription = document.data()
+//                                        var tempProduct: Product {
+//                                            let id = document.documentID as String
+//                                            let name = dataDescription?["name"] as? String ?? ""
+//                                            let img = dataDescription?["image_url"] as? String ?? ""
+//                                            let price = dataDescription?["price"] as? Int ?? 0
+//                                            let amount = dataDescription?["amount"] as? Int ?? 0
+//                                            let description = dataDescription?["description"] as? String ?? ""
+//                                            let category = dataDescription?["category"] as? String ?? ""
+//                                            let isOnSale = dataDescription?["isOnSale"] as? Bool ?? false
+//                                            let onSalePrice = dataDescription?["onSalePrice"] as? Int ?? 0
+//                                            let details = dataDescription?["details"] as? [String] ?? []
+//                                            let images = dataDescription?["images"] as? [String] ?? []
+//                                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+//                                            
 //                                        }
+//                                        print(tempProduct)
+//                                        self.userCartProducts?.append(tempProduct)
 //                                    }
-                                }
-                                else{
-                                    print("Error: can't get products from database")
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    
-        
+//                                    else{
+//                                        print("Error: can't get products from database")
+//                                    }
+//                                }
+//                            }
+//                        }
+//                        //completion((self.userCartProducts))
+//
+//                    }
+//                }
+//
+//            }
+//            
+//            
+//        }
     }
     
     
@@ -213,7 +209,7 @@ class ProductViewModel: ObservableObject {
         let rating = ["rating" : rating] as [String : Any]
         let ratedByUID = ["ratedByUID" : userID!] as [String : Any]
         let ratedBy = ["ratedBy" : username] as [String : Any]
-
+        
         ref.setData(date, merge: true)
         ref.setData(product, merge: true)
         ref.setData(review, merge: true)
@@ -224,7 +220,7 @@ class ProductViewModel: ObservableObject {
         self.alertTitle = "Powodzenie"
         self.alertMessage = "Opinia została dodana pomyślnie"
         self.showingAlert = true
-
+        
     }
     
     
@@ -245,7 +241,7 @@ class ProductViewModel: ObservableObject {
                     self.productRatesCount = 0
                     self.productRatesTotal = 0
                 }
-
+                
                 for document in snapshot!.documents{
                     if let rate = document.get("rating") as? Int {
                         self.productRate.append(rate)
@@ -259,7 +255,7 @@ class ProductViewModel: ObservableObject {
                     }
                     let ratedByUID = document.documentID
                     self.productRatedByUID.append(ratedByUID)
-
+                    
                 }
                 self.productRatesTotal = snapshot?.count ?? 0
                 
@@ -276,15 +272,12 @@ class ProductViewModel: ObservableObject {
                 
                 print(" \(self.productRate) , \(self.productReview) , \(self.productRatedBy), \(self.productRatesCount), \(self.productRatesTotal), \(productRatingAvarage)")
                 completion((self.productRatedByUID, self.productRate, self.productReview, self.productRatedBy, self.productRatesCount, self.productRatesTotal, productRatingAvarage))
-
+                
             }
-
+            
         }
-
+        
     }
-    
-
-    
     
 }
 

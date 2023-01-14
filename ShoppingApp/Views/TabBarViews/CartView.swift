@@ -9,11 +9,15 @@ import SwiftUI
 
 struct CartView: View {
     @EnvironmentObject var productVM: ProductViewModel
+    @State var cartProducts: [Product]?
+
     
     var body: some View {
         NavigationView {
             ZStack{
-                if(productVM.userCartProducts == nil){
+                //if(productVM.userCartProducts == nil){
+                if(self.cartProducts == nil){
+
                     Text("koszyk jest pusty")
                     
                 }
@@ -37,7 +41,9 @@ struct CartView: View {
                 }
             }
             .onAppear{
-                productVM.getUserCart()
+                productVM.getUserCart(){ cart in
+                    cartProducts = cart
+                }
                 
             }
 

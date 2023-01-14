@@ -41,6 +41,7 @@ struct MainView: View {
             productVM.getProducts(category: "Smartfon")
             productVM.getPromotedProducts()
             productVM.getOnSaleProducts()
+            //productVM.getUserCart()
 
         }
 
