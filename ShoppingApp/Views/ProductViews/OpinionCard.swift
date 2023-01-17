@@ -45,8 +45,6 @@ struct OpinionCard: View {
         .cornerRadius(20)
         .shadow(color: Color.orange.opacity(0.75), radius: 5, x: 0, y: 1)
         .padding([.leading, .trailing])
-
-        
         
     }
     struct RateStars: View {

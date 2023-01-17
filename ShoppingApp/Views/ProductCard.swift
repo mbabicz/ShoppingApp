@@ -11,8 +11,6 @@ struct ProductCard: View {
     
     var product: Product
     
-
-
     var body: some View {
         ZStack{
             Rectangle()
@@ -28,7 +26,6 @@ struct ProductCard: View {
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    //.padding(.bottom)
                 
                 Spacer()
 
@@ -47,8 +44,6 @@ struct ProductCard: View {
                         Text("\(product.onSalePrice)PLN")
                             .font(.body)
                             .foregroundColor(.black)
-
-                            //.padding(.bottom)
                         
                     }
                     .frame(alignment: .center)
@@ -58,8 +53,6 @@ struct ProductCard: View {
                     Text("\(product.price)PLN")
                         .bold()
                         .foregroundColor(.black)
-
-                        //.padding(.bottom)
 
                 }
 
@@ -88,10 +81,7 @@ struct ProductCard: View {
             .shadow(color: .gray, radius: 4, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
             .frame(width: 200, height: 320, alignment: .center)
             
-            
         }
-
-
 
     }
     

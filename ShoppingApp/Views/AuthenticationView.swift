@@ -10,8 +10,6 @@ import SwiftUI
 
 struct AuthenticationView: View {
     
-
-    
     @EnvironmentObject var user: UserViewModel
 
     var body: some View {
@@ -25,6 +23,7 @@ struct AuthenticationView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        
     }
     
 }
@@ -112,13 +111,13 @@ struct SignInView: View {
                         .foregroundColor(Color.orange)
                 }
 
-
-
             }
             .navigationTitle("Logowanie")
 
         }
+        
     }
+    
 }
 
 struct SignUpView: View {
@@ -139,23 +138,30 @@ struct SignUpView: View {
             VStack{
                 //TODO: Image
                 VStack{
-                    TextField("Nazwa użytkownika", text: $username).padding()
+                    TextField("Nazwa użytkownika", text: $username)
+                        .padding()
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     
-                    TextField("Adres email", text: $email).padding()                        .disableAutocorrection(true)
+                    TextField("Adres email", text: $email)
+                        .padding()
+                        .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     
                     ZStack(alignment: .trailing){
                         Group{
                             if isSecured {
-                                SecureField("Hasło", text: $password).padding()                        .disableAutocorrection(true)
+                                SecureField("Hasło", text: $password)
+                                    .padding()
+                                    .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             } else {
-                                TextField("Hasło", text: $password).padding()                        .disableAutocorrection(true)
+                                TextField("Hasło", text: $password)
+                                    .padding()
+                                    .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             }
@@ -163,19 +169,25 @@ struct SignUpView: View {
                         Button {
                             isSecured.toggle()
                         } label: {
-                            Image(systemName: self.isSecured ? "eye.slash" : "eye").accentColor(.gray)
-                        }.padding()
+                            Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                                .accentColor(.gray)
+                        }
+                        .padding()
                         
                     }
                     
                     ZStack(alignment: .trailing){
                         Group{
                             if isSecuredConfirmation {
-                                SecureField("Hasło", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
+                                SecureField("Hasło", text: $passwordConfirmation)
+                                    .padding()
+                                    .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             } else {
-                                TextField("Hasło", text: $passwordConfirmation).padding()                        .disableAutocorrection(true)
+                                TextField("Hasło", text: $passwordConfirmation)
+                                    .padding()
+                                    .disableAutocorrection(true)
                                     .autocapitalization(.none)
                                     .background(Color(.secondarySystemBackground))
                             }
@@ -183,7 +195,8 @@ struct SignUpView: View {
                         Button {
                             isSecuredConfirmation.toggle()
                         } label: {
-                            Image(systemName: self.isSecuredConfirmation ? "eye.slash" : "eye").accentColor(.gray)
+                            Image(systemName: self.isSecuredConfirmation ? "eye.slash" : "eye")
+                                .accentColor(.gray)
                         }.padding()
                         
                     }
@@ -223,7 +236,9 @@ struct SignUpView: View {
             .navigationTitle("Stwórz konto")
 
         }
+        
     }
+    
 }
 
 struct ResetPasswordView: View {
@@ -231,7 +246,7 @@ struct ResetPasswordView: View {
     @State var email = ""
     
     @EnvironmentObject var user: UserViewModel
-
+    
     var body: some View {
         VStack {
             VStack{
@@ -241,9 +256,9 @@ struct ResetPasswordView: View {
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
-                        
-                }
                     
+                }
+                
                 Button {
                     if !email.isEmpty {
                         user.resetPassword(email: email)
@@ -253,7 +268,7 @@ struct ResetPasswordView: View {
                         user.alertMessage = "Pola nie mogą być puste"
                         user.showingAlert = true
                     }
-                        
+                    
                 } label: {
                     Text("Zresetuj hasło")
                         .frame(width: 200, height: 50)
@@ -263,14 +278,13 @@ struct ResetPasswordView: View {
                         .cornerRadius(45)
                         .padding()
                 }
-
+                
             }
             .padding()
             Spacer()
         }
         .navigationTitle("Odzyskanie hasła")
-
+        
     }
+    
 }
-
-

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoadingView: View {
+    
     var body: some View {
         VStack(alignment: .center){
             ProgressView()
@@ -17,6 +18,7 @@ struct LoadingView: View {
         }
 
     }
+    
 }
 
 struct LoadingView_Previews: PreviewProvider {

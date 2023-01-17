@@ -24,7 +24,6 @@ class ProductViewModel: ObservableObject {
     @Published var alertMessage = ""
     @Published var alertTitle = ""
     
-    
     //RATES & REVIEWS
     @Published var productReview = [String]()
     @Published var productRate = [Int]()

@@ -13,8 +13,6 @@ struct CustomTabBar: View {
             TabBarButton(systemName: "house.circle")
                 .background(Color.blue)
             
-                
-            
         }
     }
 }

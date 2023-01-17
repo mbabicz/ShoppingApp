@@ -11,13 +11,11 @@ struct CartView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @State var cartProducts: [Product]?
 
-    
     var body: some View {
         NavigationView {
             ZStack{
-                //if(productVM.userCartProducts == nil){
                 if(self.cartProducts == nil){
-
+                    
                     Text("koszyk jest pusty")
                     
                 }
@@ -30,27 +28,27 @@ struct CartView: View {
                     .frame(height:175)
                     
                 }
-
-            }
-        }
-        
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal){
-                    Text("Koszyk").font(.headline).bold()
-                }
-            }
-            .onAppear{
-                productVM.getUserCart(){ cart in
-                    cartProducts = cart
-                }
                 
             }
-
+            
+        }
+        
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .principal){
+                Text("Koszyk").font(.headline).bold()
+            }
+        }
+        .onAppear{
+            productVM.getUserCart(){ cart in
+                cartProducts = cart
+            }
+            
+        }
+        
     }
     
 }
-
 
 
 struct CartView_Previews: PreviewProvider {

@@ -10,19 +10,13 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-
 class UserViewModel: ObservableObject {
     
     @Published var user: User?
-    
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
     @Published var alertTitle = ""
-    
-    var userIsGuest: Bool = false
-
-    
-    
+        
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
     
@@ -38,6 +32,9 @@ class UserViewModel: ObservableObject {
         user != nil && userIsAuthenticated
     }
     
+    var userIsAnonymous: Bool{
+        auth.currentUser?.email == nil
+    }
 
     func signUp(email: String, password: String, username: String){
         auth.createUser(withEmail: email, password: password){ (result, error) in
@@ -73,14 +70,13 @@ class UserViewModel: ObservableObject {
     
     func singInAnonymously(){
         auth.signInAnonymously(){ authResult, error in
-            guard let user = authResult?.user else { return }
-            self.userIsGuest = user.isAnonymous
             DispatchQueue.main.async{
                 //Success
                 self.add(User(username: "guest", userEmail: "guest"))
                 self.sync()
                 
             }
+            
         }
 
     }
@@ -96,6 +92,7 @@ class UserViewModel: ObservableObject {
                 self.alertMessage = "A Password change request has been sent to your email adress."
                 self.showingAlert = true
             }
+            
         }
         
     }
@@ -108,6 +105,7 @@ class UserViewModel: ObservableObject {
         catch{
             print("Error signing out user: \(error)")
         }
+        
     }
     
     //MARK: firestore functions for user data
@@ -121,13 +119,7 @@ class UserViewModel: ObservableObject {
             } catch{
                 print("sync error: \(error)")
             }
-        }
-        //TEMP anonymous
-        if auth.currentUser?.email == nil {
-            userIsGuest = true
-        }
-        else{
-            userIsGuest = false
+            
         }
 
     }
@@ -140,6 +132,7 @@ class UserViewModel: ObservableObject {
         } catch {
             print("Error adding: \(error)")
         }
+        
     }
     
     private func update(){
@@ -149,6 +142,7 @@ class UserViewModel: ObservableObject {
         } catch{
             print("error updating \(error)")
         }
+        
     }
     
 }

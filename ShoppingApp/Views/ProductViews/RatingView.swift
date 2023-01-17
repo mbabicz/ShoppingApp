@@ -16,7 +16,6 @@ struct RatingView: View {
     @ObservedObject var textReview = TextLimiter(limit: 200)
     @Environment(\.dismiss) var dismiss
 
-    
     var body: some View {
         VStack{
             HStack(alignment: .center){
@@ -72,10 +71,6 @@ struct RatingView: View {
                     .foregroundColor($textReview.hasReachedLimit.wrappedValue ? .red : .black)
                 
                 
-                
-                
-                
-                
             }
             .padding([.top, .bottom])
             
@@ -103,7 +98,6 @@ struct RatingView: View {
                     Image(systemName: "plus").bold().font(.body)
                     Text("Dodaj opinie").bold().font(.body)
                 }
-                //.frame(maxWidth: .infinity)
                 .padding()
                 .foregroundColor(.white)
                 .background(Color.orange)
@@ -113,7 +107,7 @@ struct RatingView: View {
             .padding()
             .edgesIgnoringSafeArea(.bottom)
             Spacer()
-
+            
         }
         
         .alert(isPresented: $user.showingAlert){
@@ -123,10 +117,8 @@ struct RatingView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-
+        
     }
-
-
     
 }
 
@@ -200,7 +192,6 @@ struct RatingStars: View {
                         self.rating = index
                     }
             }
-            
             
         }
         .padding([.bottom, .trailing, .leading])

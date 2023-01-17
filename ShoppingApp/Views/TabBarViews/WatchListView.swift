@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ObservedView: View {
+struct WatchListView: View {
     var body: some View {
         NavigationView {
             
@@ -25,6 +25,6 @@ struct ObservedView: View {
 
 struct ObservedView_Previews: PreviewProvider {
     static var previews: some View {
-        ObservedView()
+        WatchListView()
     }
 }

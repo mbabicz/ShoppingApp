@@ -13,8 +13,6 @@ struct ProductCardList: View {
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     @State private var product: Product? = nil
 
-
-
     var body: some View {
         LazyVGrid(columns: columns){
             ForEach(products){product in
@@ -29,8 +27,8 @@ struct ProductCardList: View {
 
         }
 
-
     }
+    
 }
 
 struct ProductCardList_Previews: PreviewProvider {

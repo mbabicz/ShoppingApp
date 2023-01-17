@@ -11,6 +11,7 @@ struct ProductDetailsView: View {
     
     var product: Product
     @EnvironmentObject var productVM: ProductViewModel
+    @EnvironmentObject var userVM: UserViewModel
     @State private var currentIndex: Int = 0
     @State private var showingReviewView = false
     
@@ -22,9 +23,9 @@ struct ProductDetailsView: View {
     @State private var ratesTotal: Int = 0
     @State private var ratesCount: Int = 0
     @State private var ratesAvarage: Double = 0.0
-
+    
     @State private var currentReviewIndex: Int = 0
-
+    
     var body: some View {
         ScrollView{
             VStack{
@@ -32,14 +33,14 @@ struct ProductDetailsView: View {
                     TabView(selection: $currentIndex){
                         ForEach(0..<product.images.count, id: \.self){ index in
                             ProductImage(imageURL: URL(string: product.images[index])!)
-                            .tag(index)
-
+                                .tag(index)
+                            
                         }
                         
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
                     .frame(minHeight: 350)
-
+                    
                     .onAppear{
                         UIPageControl.appearance().currentPageIndicatorTintColor = .black
                         UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
@@ -47,9 +48,9 @@ struct ProductDetailsView: View {
                 }
                 else {
                     ProductImage(imageURL: product.imageURL)
-
+                    
                 }
-
+                
                 Spacer()
                 ZStack {
                     Rectangle()
@@ -206,7 +207,19 @@ struct ProductDetailsView: View {
                         
                         
                         Button {
-                            showingReviewView = true
+                            
+                            if userVM.userIsAnonymous{
+                                
+                                productVM.alertTitle = "Uwaga!"
+                                productVM.alertMessage = "Musisz być zalogowany, aby dodać opinie!"
+                                productVM.showingAlert = true
+
+                            }
+                            else {
+                                showingReviewView = true
+
+                            }
+
                             
                         } label: {
                             HStack{
@@ -222,7 +235,7 @@ struct ProductDetailsView: View {
                         Spacer()
                         
                     }
-
+                    
                 }
                 Button {
                     //
@@ -258,10 +271,26 @@ struct ProductDetailsView: View {
                 ratesAvarage = rateAvarage
                 
             }
-
+            
         }
-
+        
+        .alert(isPresented: $userVM.showingAlert){
+            Alert(
+                title: Text(userVM.alertTitle),
+                message: Text(userVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .alert(isPresented: $productVM.showingAlert){
+            Alert(
+                title: Text(productVM.alertTitle),
+                message: Text(productVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        
     }
+    
 }
 
 struct ProductImage: View {

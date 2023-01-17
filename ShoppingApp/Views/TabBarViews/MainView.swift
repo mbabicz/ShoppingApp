@@ -10,6 +10,7 @@ import SwiftUI
 struct MainView: View {
     
     @EnvironmentObject var productVM: ProductViewModel
+    @EnvironmentObject var userVM: UserViewModel
 
     var body: some View {
         VStack{
@@ -41,8 +42,22 @@ struct MainView: View {
             productVM.getProducts(category: "Smartfon")
             productVM.getPromotedProducts()
             productVM.getOnSaleProducts()
-            //productVM.getUserCart()
 
+        }
+        
+        .alert(isPresented: $userVM.showingAlert){
+            Alert(
+                title: Text(userVM.alertTitle),
+                message: Text(userVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .alert(isPresented: $productVM.showingAlert){
+            Alert(
+                title: Text(productVM.alertTitle),
+                message: Text(productVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
 
     }
