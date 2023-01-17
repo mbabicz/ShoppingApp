@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29062AD52927DB4C001DBFD0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062AD42927DB4C001DBFD0 /* User.swift */; };
 		29062AD72927DBFC001DBFD0 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062AD62927DBFC001DBFD0 /* UserViewModel.swift */; };
 		29062ADB2927F7B8001DBFD0 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29062ADA2927F7B8001DBFD0 /* AuthenticationView.swift */; };
 		290EF08A292BFDF50020996E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 290EF089292BFDF50020996E /* LoadingView.swift */; };
@@ -31,13 +30,13 @@
 		29B4DE19292E9EB50035E75C /* ProductDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B4DE18292E9EB50035E75C /* ProductDetailsView.swift */; };
 		29B4DE44292FE4170035E75C /* ProductCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B4DE43292FE4170035E75C /* ProductCard.swift */; };
 		29B4DE47293011A30035E75C /* ProductCardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29B4DE46293011A30035E75C /* ProductCardList.swift */; };
+		29C3369229772AB3000E07DF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C3369129772AB3000E07DF /* User.swift */; };
 		29E917762955C2A7007010E2 /* OpinionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E917752955C2A7007010E2 /* OpinionCard.swift */; };
 		850F8F2EEE6D056FAA8142C4 /* Pods_ShoppingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6317AB7661865C1BB6EB4B17 /* Pods_ShoppingApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0C9FAECF7BDDFB6D09EE3527 /* Pods-ShoppingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoppingApp.debug.xcconfig"; path = "Target Support Files/Pods-ShoppingApp/Pods-ShoppingApp.debug.xcconfig"; sourceTree = "<group>"; };
-		29062AD42927DB4C001DBFD0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = "../New Group/User.swift"; sourceTree = "<group>"; };
 		29062AD62927DBFC001DBFD0 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		29062ADA2927F7B8001DBFD0 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		290EF089292BFDF50020996E /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -62,6 +61,7 @@
 		29B4DE18292E9EB50035E75C /* ProductDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsView.swift; sourceTree = "<group>"; };
 		29B4DE43292FE4170035E75C /* ProductCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProductCard.swift; path = ../ProductCard.swift; sourceTree = "<group>"; };
 		29B4DE46293011A30035E75C /* ProductCardList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardList.swift; sourceTree = "<group>"; };
+		29C3369129772AB3000E07DF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		29E917752955C2A7007010E2 /* OpinionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpinionCard.swift; sourceTree = "<group>"; };
 		6317AB7661865C1BB6EB4B17 /* Pods_ShoppingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShoppingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BBCACDDFBB203F6B492604B /* Pods-ShoppingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoppingApp.release.xcconfig"; path = "Target Support Files/Pods-ShoppingApp/Pods-ShoppingApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -82,7 +82,7 @@
 		290EF07F292824E30020996E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				29062AD42927DB4C001DBFD0 /* User.swift */,
+				29C3369129772AB3000E07DF /* User.swift */,
 				290EF08C292C0F930020996E /* Product.swift */,
 			);
 			path = Models;
@@ -327,7 +327,6 @@
 				29600E32294209EB008598B7 /* RatingView.swift in Sources */,
 				291125B32922B4290000AEA2 /* MainView.swift in Sources */,
 				290EF08D292C0F930020996E /* Product.swift in Sources */,
-				29062AD52927DB4C001DBFD0 /* User.swift in Sources */,
 				29A6884429217029009E03BF /* ContentView.swift in Sources */,
 				29B4DE19292E9EB50035E75C /* ProductDetailsView.swift in Sources */,
 				29062ADB2927F7B8001DBFD0 /* AuthenticationView.swift in Sources */,
@@ -339,6 +338,7 @@
 				290EF09D292E609C0020996E /* ProductViewModel.swift in Sources */,
 				29B4DE47293011A30035E75C /* ProductCardList.swift in Sources */,
 				290EF09B292E54AC0020996E /* ProductCarousel.swift in Sources */,
+				29C3369229772AB3000E07DF /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
