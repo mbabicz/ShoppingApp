@@ -5,7 +5,7 @@
 
 
 ## ABOUT THE PROJECT
-This is a iOS app for an electronic shop. Products are stored in a database on Firebase. The application allows you to log in, browse the store's offer, observe products and purchase selected products. The application allows you to log in as a guest. In this case an anonymous authorization method is used, but the guest account doesn't allow to use all functionalities of the application.
+This is a iOS app for an electronic shop. Products and user's data are stored in a database on Firebase. The application allows you to log in, browse the store's offer, observe products and purchase selected products. The application allows you to log in as a guest. In this case an anonymous authorization method is used, but the guest account doesn't allow to use all functionalities of the application. The app is developed with SwiftUI using MVVM pattern.
 
 <br />_Sign In & Sign Up Views_ <br />
 <img src = "https://user-images.githubusercontent.com/49866616/213217323-a28f1353-25b0-4740-b587-2f1481c2632c.png" width="270" height="518" />
