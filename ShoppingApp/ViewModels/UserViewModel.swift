@@ -145,4 +145,21 @@ class UserViewModel: ObservableObject {
         
     }
     
+    func changePassword(email: String, currentPassword: String, newPassword: String, completion: @escaping (Error?) -> Void){
+        let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+        auth.currentUser?.reauthenticate(with: credential, completion: { (result, error) in
+            if let error = error {
+                completion(error)
+            } else {
+                self.auth.currentUser?.updatePassword(to: newPassword, completion: { (error) in
+                    completion(error)
+                })
+            }
+
+        })
+
+        
+    }
+    
+    
 }

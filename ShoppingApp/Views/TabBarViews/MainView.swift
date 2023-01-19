@@ -13,30 +13,36 @@ struct MainView: View {
     @EnvironmentObject var userVM: UserViewModel
 
     var body: some View {
-        VStack{
-            ScrollView(.vertical){
-                VStack(alignment: .leading){
-                    if(productVM.promotedProducts != nil){
-                        ProductCarousel(products: productVM.promotedProducts ?? (productVM.products)!)
+        NavigationView{
+            VStack{
+                ScrollView(.vertical){
+                    VStack(alignment: .leading){
+                        if(productVM.promotedProducts != nil){
+                            ProductCarousel(products: productVM.promotedProducts ?? (productVM.products)!)
+                        }
                     }
-                }
-
-                VStack(alignment: .leading){
-                    Text("Okazje")
-                        .font(.system(size:28))
-                        .multilineTextAlignment(.leading)
-                        .padding(.leading)
-                    if(productVM.onSaleProducts != nil){
-                        ProductCardList(products: productVM.onSaleProducts!)
+                    
+                    VStack(alignment: .leading){
+                        Text("Okazje")
+                            .font(.system(size:28))
+                            .multilineTextAlignment(.leading)
+                            .padding(.leading)
+                        if(productVM.onSaleProducts != nil){
+                            ProductCardList(products: productVM.onSaleProducts!)
+                        }
+                        
                     }
-
+                    Spacer(minLength: 40)
                 }
-                Spacer(minLength: 40)
+                
+                
+                
             }
-
-
-            
+            .navigationBarTitle("Shopping App")
+            .navigationBarTitleDisplayMode(.inline)
         }
+
+
 
         .onAppear{
             productVM.getProducts(category: "Smartfon")
