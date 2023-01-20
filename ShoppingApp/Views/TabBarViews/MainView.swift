@@ -45,10 +45,10 @@ struct MainView: View {
 
 
         .onAppear{
-            productVM.getProducts(category: "Smartfon")
+            //productVM.getProducts(category: "Smartfon")
             productVM.getPromotedProducts()
             productVM.getOnSaleProducts()
-
+            productVM.getProducts()
         }
         
         .alert(isPresented: $userVM.showingAlert){

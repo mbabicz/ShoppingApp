@@ -15,49 +15,48 @@ struct SearchView: View {
     
     var body: some View {
         NavigationView{
-            VStack(alignment: .leading){
-                ZStack{
-                    Rectangle()
-                        .foregroundColor(Color.gray.opacity(0.25))
-                    HStack{
-                        Image(systemName: "magnifyingglass")
-                        TextField("Search...", text: $searchText)
-                        
+            if self.productVM.products != nil{
+                if self.searchText != "" && !self.searchText.isEmpty {
+                    List{
+                        ForEach(self.productVM.products!.filter{(self.searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchText))}, id: \.id){ id in
+                            Text(id.name)
+                        }
                     }
-                    .foregroundColor(.gray)
-                    .padding(.leading, 20)
                 }
-                .frame(height: 40)
-                .cornerRadius(13)
-                .padding()
-                .border(.red)
-                
-                List{
-                    Section(header: Text("Kategorie")){
+                else {
+                    VStack(alignment: .leading){
+                        List{
+                            Section(header: Text("Kategorie")){
+                                
+                                //NavigationLink(destination: SearchResults(category: "Komputery"), label: Text("Komputery"))
+                                Text("Smartfony")
+                                Text("Słuchawki")
+                            }
+                            
+                        }
+                        .listStyle(.grouped)
+                        .scrollDisabled(true)
+                        .scrollContentBackground(.hidden)
 
-                        Text("Komputery")
-                        Text("Smartfony")
-                        Text("Słuchawki")
                     }
-
                 }
-                .listStyle(.grouped)
-                .scrollDisabled(true)
-                .scrollContentBackground(.hidden)
                 
             }
-
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar{
-                ToolbarItem(placement: .principal){
-                    Text("Produkty").font(.headline).bold()
-                }
-            }
-            .background(.gray.opacity(0.1))
-            
         }
-
+        
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar{
+            ToolbarItem(placement: .principal){
+                Text("Produkty").font(.headline).bold()
+            }
+        }
+        .background(.gray.opacity(0.1))
+        .searchable(text: $searchText)
+        .autocorrectionDisabled(true)
+        .autocapitalization(.none)
+        
     }
+
 
     
 }

@@ -50,9 +50,15 @@ struct ProfileView: View {
                             
                             
                             List{
-                                Section(header: Text("Ustawienia")){
-                                    Text("Powiadomienia")
-                                    Text("Informacje o aplikacji")
+                                Section(header: Text("Aplikacja")){
+                                    NavigationLink(destination: NotificationsView(), label: {
+                                        Text("Powiadomienia")
+                                        
+                                    })
+                                    NavigationLink(destination: AboutAppView(), label: {
+                                        Text("Informacje o aplikacji")
+                                        
+                                    })
                                     
                                 }
                                 
@@ -60,7 +66,7 @@ struct ProfileView: View {
                             .listStyle(.grouped)
                             .scrollDisabled(true)
                             .scrollContentBackground(.hidden)
-                            .frame(height:175)
+                            .frame(height:150)
                             
                             if(!user.userIsAnonymous){
                                 List{
@@ -69,7 +75,6 @@ struct ProfileView: View {
                                             Text("Zmień hasło")                            })
                                         
                                         Text("Moje dane")
-                                        Text("Usuń konto")
                                     }
                                 }
                                 .listStyle(.grouped)
@@ -297,5 +302,118 @@ struct UserOrdersView: View{
     
     var body: some View{
         Text("UserOrdersView")
+    }
+}
+
+
+
+struct NotificationsView: View{
+        
+    @State var recommendtaionToggleIsActive: Bool = false
+    @State var orderToggleIsActive: Bool = false
+
+    
+    var body: some View{
+        VStack{
+            Toggle(
+                isOn: $recommendtaionToggleIsActive,
+                label: {
+                    Text("Polecane")
+                })
+            .toggleStyle(SwitchToggleStyle(tint: .green))
+            .padding()
+            .background(
+                Color(.gray)
+                    .opacity(0.25)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            )
+            .padding()
+            
+            Toggle(
+                isOn: $orderToggleIsActive,
+                label: {
+                    Text("Powiadomienia o zamowieniach")
+                })
+            .toggleStyle(SwitchToggleStyle(tint: .green))
+            .padding()
+            .background(
+                Color(.gray)
+                    .opacity(0.25)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            )
+            .padding()
+        }
+        Spacer()
+        
+    }
+    
+}
+
+struct AboutAppView: View{
+        
+    @EnvironmentObject var user: UserViewModel
+    
+    
+    var body: some View{
+        
+        VStack{
+            GroupBoxRowView(name: "Developer", content: "Michał Babicz")
+            Divider()
+            GroupBoxRowView(name: "Source Code", content: "GitHub", linkLabel: "github.com/mbabicz/MovieCat")
+            Divider()
+            GroupBoxRowView(name: "Compatibility", content: "iOS 16+")
+            Divider()
+            GroupBoxRowView(name: "Version", content: "1.0")
+            Divider()
+
+            
+        }
+        Spacer()
+        
+//        GroupBox(
+//            label: GroupBoxLabelView(labelText: "Shopping APP", labelImage: "info.circle")
+//        ){
+//            GroupBoxRowView(name: "Developer", content: "Michał Babicz")
+//        }
+//        .padding(.horizontal)
+
+
+    }
+}
+
+struct GroupBoxLabelView: View {
+    
+    var labelText: String
+    var labelImage: String
+    
+    var body: some View {
+        HStack {
+            Text(labelText.uppercased()).fontWeight(.bold)
+            Spacer()
+            Image(systemName: labelImage)
+        }
+    }
+}
+
+struct GroupBoxRowView: View{
+    var name: String
+    var content: String
+    var linkLabel: String? = nil
+    
+    var body: some View{
+        HStack{
+            Text(name)
+                .foregroundColor(.gray)
+                .padding()
+            Spacer()
+            if linkLabel != nil{
+                Link(content, destination: URL(string: "https://\(linkLabel!)")!)
+                    .padding()
+                
+            }else {
+                Text(content)
+                    .padding()
+            }
+        }
     }
 }
