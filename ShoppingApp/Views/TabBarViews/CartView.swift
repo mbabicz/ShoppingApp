@@ -10,25 +10,17 @@ import SwiftUI
 struct CartView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @State var cartProducts: [Product]?
+    @State private var productIDs = [String]()
+
 
     var body: some View {
         NavigationView {
-            ZStack{
-                if(self.cartProducts == nil){
-                    
-                    Text("koszyk jest pusty")
-                    
-                }
-                else {
-                    List(productVM.userCartProducts!){ product in
-                        Text(product.name)
+            ScrollView{
+                if self.productIDs.count > 0 {
+                    ForEach(0..<self.productIDs.count, id: \.self) { index in
+                        Text("index")
                     }
-                    .listStyle(.grouped)
-                    .scrollContentBackground(.hidden)
-                    .frame(height:175)
-                    
                 }
-                
             }
             
         }
@@ -40,10 +32,9 @@ struct CartView: View {
             }
         }
         .onAppear{
-            productVM.getUserCart(){ cart in
-                cartProducts = cart
+            productVM.getUserCart(){ productID in
+                productIDs = productID
             }
-            
         }
         
     }

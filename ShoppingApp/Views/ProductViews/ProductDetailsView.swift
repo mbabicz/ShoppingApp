@@ -135,7 +135,7 @@ struct ProductDetailsView: View {
                             .padding([.leading, .trailing])
                             
                             Button {
-                                //
+                                productVM.addProductToWatchList(productID: product.id)
                             } label: {
                                 
                                 HStack{

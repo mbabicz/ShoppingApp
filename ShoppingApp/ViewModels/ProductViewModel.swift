@@ -18,7 +18,10 @@ class ProductViewModel: ObservableObject {
     
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
-    @Published var userCartProducts: [Product]?
+    
+    @Published var userCartProductIDs = [String]()
+    @Published var userWatchListProductIDs: [String]?
+
     
     @Published var products: [Product]?
     
@@ -211,64 +214,88 @@ class ProductViewModel: ObservableObject {
     func addProductToCart(productID: String){
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("Cart").document(productID)
-        let date = ["added to cart date" : Date.now] as [String : Any]
-        let product = ["productID" : productID] as [String : Any]
-        ref.setData(date, merge: true)
-        ref.setData(product, merge: true)
         
+        ref.setData([
+            "date" : Date.now,
+            "product" : productID,
+
+        ]) { err in
+            if err != nil{
+                self.alertTitle = "Errors"
+                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
+                self.showingAlert = true
+            }
+            else {
+                self.alertTitle = "Pomyślnie dodano produkt do koszyka"
+                self.showingAlert = true
+            }
+        }
         
     }
     
-    func getUserCart(completion: @escaping (([Product])) -> ()){
-//        self.userCartProducts = nil
+    func addProductToWatchList(productID: String){
+        let userID = Auth.auth().currentUser?.uid
+        let ref = db.collection("Users").document(userID!).collection("WatchList").document(productID)
+        
+        ref.setData([
+            "date" : Date.now,
+            "product" : productID,
+
+        ]) { err in
+            if err != nil{
+                self.alertTitle = "Errors"
+                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
+                self.showingAlert = true
+            }
+            else {
+                self.alertTitle = "Pomyślnie dodano produkt do listy obserwowanych"
+                self.showingAlert = true
+            }
+        }
+        
+    }
+    
+    func getUserCart(completion: @escaping ([String]) -> ()){
+        self.userCartProductIDs.removeAll(keepingCapacity: false)
+        let userID = Auth.auth().currentUser?.uid
+        let ref = db.collection("Users").document(userID!).collection("Cart")
+        
+        ref.getDocuments { snapshot, error in
+            if error == nil {
+                if let snapshot = snapshot {
+                    DispatchQueue.main.async {
+                        for document in snapshot.documents {
+                            self.userCartProductIDs.append(document.documentID)
+                        }
+                        print(self.userCartProductIDs)
+                        completion(self.userCartProductIDs)
+
+                    }
+                }
+                
+            }
+        }
+    }
+    
+//    func getUserWatchList(completion: @escaping ([String]) -> ()){
+//        self.userWatchListProductIDs?.removeAll(keepingCapacity: false)
 //        let userID = Auth.auth().currentUser?.uid
-//        var documentsID = [String]()
-//        
-//        db.collection("Users").document(userID!).collection("Cart").getDocuments { snapshot, error in
-//            if error == nil{
-//                if let snapshot = snapshot {
-//                    DispatchQueue.main.async{
-//                        for document in snapshot.documents{
-//                            documentsID.append(document.documentID)
-//                            print(" usercart: \(documentsID)")
-//                            self.db.collection("Products").document(document.documentID).getDocument { document, error in
-//                                if error == nil{
-//                                    if let document = document, document.exists{
-//                                        let dataDescription = document.data()
-//                                        var tempProduct: Product {
-//                                            let id = document.documentID as String
-//                                            let name = dataDescription?["name"] as? String ?? ""
-//                                            let img = dataDescription?["image_url"] as? String ?? ""
-//                                            let price = dataDescription?["price"] as? Int ?? 0
-//                                            let amount = dataDescription?["amount"] as? Int ?? 0
-//                                            let description = dataDescription?["description"] as? String ?? ""
-//                                            let category = dataDescription?["category"] as? String ?? ""
-//                                            let isOnSale = dataDescription?["isOnSale"] as? Bool ?? false
-//                                            let onSalePrice = dataDescription?["onSalePrice"] as? Int ?? 0
-//                                            let details = dataDescription?["details"] as? [String] ?? []
-//                                            let images = dataDescription?["images"] as? [String] ?? []
-//                                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
-//                                            
-//                                        }
-//                                        print(tempProduct)
-//                                        self.userCartProducts?.append(tempProduct)
-//                                    }
-//                                    else{
-//                                        print("Error: can't get products from database")
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        //completion((self.userCartProducts))
+//        let ref = db.collection("Users").document(userID!).collection("WatchList")
 //
+//        ref.getDocuments { snapshot, error in
+//            if error == nil {
+//                if let snapshot = snapshot {
+//                    DispatchQueue.main.async {
+//                        for document in snapshot.documents {
+//                            self.userWatchListProductIDs?.append(document.documentID)
+//                        }
+//                        print(self.userWatchListProductIDs!)
+//                        completion(self.userWatchListProductIDs!)
 //                    }
 //                }
-//
 //            }
-//            
-//            
 //        }
-    }
+//    }
     
     
     
