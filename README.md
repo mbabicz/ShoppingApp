@@ -30,7 +30,7 @@ This is a iOS app for an electronic shop. Products and user's data are stored in
 <img src = "https://user-images.githubusercontent.com/49866616/213222143-5e31ff74-9354-4862-9c3b-a174c930ab15.png"  width="243" height="466" />
 <img src = "https://user-images.githubusercontent.com/49866616/213223076-9b1d1de2-45d5-439f-afa5-37b5a3270f2a.png" width="243" height="466" /><br /> <br />
 
-<br />Other_ <br />
+<br />_Other_ <br />
 <img src = "https://user-images.githubusercontent.com/49866616/213930110-2ab3f901-0819-4bea-accc-da172f7cc036.png"  width="243" height="466" />
 <img src = "https://user-images.githubusercontent.com/49866616/213930143-1c91166a-69a4-45ae-8f9b-e64d4d64d9c8.png"  width="243" height="466" />
 <img src = "https://user-images.githubusercontent.com/49866616/213930186-45174df7-a9b1-466e-b4de-98d10ee56073.png" width="243" height="466" /><br /> <br />
