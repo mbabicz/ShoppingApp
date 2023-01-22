@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProductCard: View {
     
+    @EnvironmentObject var productVM: ProductViewModel
     var product: Product
     
     var body: some View {
@@ -59,7 +60,7 @@ struct ProductCard: View {
                 Spacer(minLength: 10)
                 ZStack(alignment: .center){
                     Button {
-                        //
+                        productVM.addProductToCart(productID: product.id)
                     } label: {
                         HStack() {
                                Image(systemName: "cart.badge.plus")

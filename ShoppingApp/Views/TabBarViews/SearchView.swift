@@ -11,7 +11,6 @@ struct SearchView: View {
     
     @State var searchText = ""
     @EnvironmentObject var productVM: ProductViewModel
-    //var showCategoryList = true
     
     var body: some View {
         NavigationView{
@@ -23,7 +22,6 @@ struct SearchView: View {
                                 NavigationLink(destination: ProductDetailsView(product: product)) {
                                     SearchCell(product: product)}
                                     
-                                //SearchCell(product: product)
                                 Divider()
                                     .overlay(Color.orange)
     
@@ -173,14 +171,8 @@ struct SearchCell: View{
             }
 
         }
-
-//        .background(
-//                NavigationLink(destination: ProductDetailsView(product: product)) {}
-//                    .opacity(0)
-//            )
-
+        
     }
-
     
 }
 
