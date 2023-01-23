@@ -14,7 +14,15 @@ This is a iOS app for an electronic shop. Products and user's data are stored in
 
 <br />_Main View_ <br />
 <img src = "https://user-images.githubusercontent.com/49866616/213219232-b13fa4ce-b053-42c0-884a-2a325bcf1f6e.png" width="243" height="466" />
-<img src = "https://user-images.githubusercontent.com/49866616/213219594-b6dd0937-73e6-4343-b117-63ee52961a34.png" width="243" height="466" /> <br /> <br />
+<img src = "https://user-images.githubusercontent.com/49866616/213929729-66063f49-2f33-404a-9eb4-e984a9bbb349.png" width="243" height="466" /> <br /> <br />
+
+
+<br />_Search View_ <br />
+<img src = "https://user-images.githubusercontent.com/49866616/213930006-6ba50334-1473-4979-9b87-a41a152fd77f.png"  width="243" height="466" />
+<img src = "https://user-images.githubusercontent.com/49866616/213929874-7784b66f-fdc0-454e-b90e-db32e943478d.png"  width="243" height="466" />
+
+<br />_Cart & WatchList View_ <br />
+<img src = "https://user-images.githubusercontent.com/49866616/213929801-2e13f9ba-2b09-4016-a654-39192f13a657.png"  width="243" height="466" />
 
 
 <br />_Details View_ <br />
@@ -22,8 +30,12 @@ This is a iOS app for an electronic shop. Products and user's data are stored in
 <img src = "https://user-images.githubusercontent.com/49866616/213222143-5e31ff74-9354-4862-9c3b-a174c930ab15.png"  width="243" height="466" />
 <img src = "https://user-images.githubusercontent.com/49866616/213223076-9b1d1de2-45d5-439f-afa5-37b5a3270f2a.png" width="243" height="466" /><br /> <br />
 
+<br />_Other_ <br />
+<img src = "https://user-images.githubusercontent.com/49866616/213930110-2ab3f901-0819-4bea-accc-da172f7cc036.png"  width="243" height="466" />
+<img src = "https://user-images.githubusercontent.com/49866616/213930143-1c91166a-69a4-45ae-8f9b-e64d4d64d9c8.png"  width="243" height="466" />
+<img src = "https://user-images.githubusercontent.com/49866616/213930186-45174df7-a9b1-466e-b4de-98d10ee56073.png" width="243" height="466" /><br /> <br />
 
-## BUILD WITH
+## BUILT WITH
 <img src = "https://user-images.githubusercontent.com/49866616/213214287-6849916c-ddb3-48ad-bdde-2013f3315b93.png" width="55" height="55" /> <br />
 ![Swift](https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white) <br />
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white) <br />
