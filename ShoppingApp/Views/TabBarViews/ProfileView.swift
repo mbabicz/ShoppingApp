@@ -10,7 +10,10 @@ import Firebase
 
 struct ProfileView: View {
     @EnvironmentObject var user: UserViewModel
+    @EnvironmentObject var orderVM: OrderViewModel
+
     let auth = Auth.auth()
+
     
     var body: some View {
         NavigationView{
@@ -126,6 +129,9 @@ struct ProfileView: View {
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.gray.opacity(0.1))
+        .onAppear{
+            orderVM.getUserOrders()
+        }
         
     }
     
@@ -296,13 +302,214 @@ struct ChangePasswordView: View{
 }
 
 struct UserOrdersView: View{
-        
-    @EnvironmentObject var user: UserViewModel
+    
+    //    @EnvironmentObject var user: UserViewModel
+    @EnvironmentObject var orderVM: OrderViewModel
+    
     
     
     var body: some View{
-        Text("UserOrdersView")
+        if self.orderVM.orders != nil{
+            VStack{
+                Divider()
+                ScrollView{
+                    
+                    ForEach(0..<self.orderVM.orders!.count, id: \.self){ index in
+                        NavigationLink(destination: DetailedOrderView(order: self.orderVM.orders![index])){
+                            VStack(alignment: .leading){
+                                HStack{
+                                    Text("Zamowienie z dnia:")
+                                        .foregroundColor(.black)
+                                        .opacity(0.75)
+                                        .padding(.leading)
+
+                                    
+                                    Text(self.orderVM.orders![index].date, format: .dateTime.day().month().year())
+                                        .foregroundColor(.black)
+                                        .opacity(0.75)
+                                }
+                                VStack{
+                                    
+                                    Text("Zamowienie nr: \(self.orderVM.orders![index].id)")
+                                        .foregroundColor(.black)
+                                        .padding([.leading, .trailing, .top])
+                                    Text("Ilość zamówionych przedmiotow: \(self.orderVM.orders![index].productIDs.count)")
+                                        .foregroundColor(.black)
+                                        .padding([.leading, .trailing, .bottom])
+                                    VStack(alignment: .trailing){
+                                        HStack{
+                                            Spacer()
+                                            NavigationLink(destination: DetailedOrderView(order: self.orderVM.orders![index])){
+                                                Text("Szczegóły zamowienia")
+                                                    .foregroundColor(.orange)
+                                                    .padding(.trailing)
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                            }
+                            
+                        }
+                        Divider()
+                    }
+                    Spacer()
+                }
+            }
+            
+        }
+        else{
+            Text("Nie masz żadnych złożonych zamówień")
+        }
+        
     }
+}
+struct DetailedOrderView: View{
+    
+    @State var order: Order
+    
+    
+    
+    var body: some View{
+        
+        
+        List{
+            Section(header: Text("Zamówienie nr \(order.id)")){
+                HStack{
+                    Text("Status")
+                    Spacer()
+                    if( order.status == "Zrealizowane"){
+                        Text(order.status).foregroundColor(.green)
+
+                    }
+                    else {
+                        Text(order.status)
+
+                    }
+                }
+
+                
+            }
+            
+            Section(header: Text("Kupujący")){
+                HStack{
+                    Text("Imie")
+                    Spacer()
+                    Text(order.firstName)
+                }
+                HStack{
+                    Text("Nazwisko")
+                    Spacer()
+                    Text(order.lastName)
+                }
+                
+            }
+            
+            Section(header: Text("Dostawa")){
+                HStack{
+                    Text("Miasto")
+                    Spacer()
+                    Text(order.city)
+                }
+                HStack{
+                    Text("Ulica")
+                    Spacer()
+                    Text(order.street)
+                }
+                HStack{
+                    Text("Numer ulicy")
+                    Spacer()
+                    Text(order.street)
+                }
+                HStack{
+                    Text("Numer domu")
+                    Spacer()
+                    Text(order.houseNumber)
+                }
+                
+                
+            }
+            
+            Section(header: Text("Platność")){
+                HStack{
+                    Text("Imie właściciela karty")
+                    Spacer()
+                    Text(order.cardHolderFirstname)
+                }
+                HStack{
+                    Text("Imie właściciela karty")
+                    Spacer()
+                    Text(order.cardHolderLastname)
+                }
+                HStack{
+                    Text("Numer karty")
+                    Spacer()
+                    Text(order.cardNumber)
+                }
+                
+            }
+            Section(header: Text("Zakupione produkty")){
+                ForEach(0..<order.productIDs.count, id: \.self) { index in
+                    ProductOrderLoader(productID: order.productIDs[index])
+                    
+                }
+                
+            }
+
+        }
+        .listStyle(.insetGrouped)
+        
+    }
+}
+
+struct ProductOrderLoader: View{
+    
+    @State var productID: String
+    @EnvironmentObject var productVM: ProductViewModel
+    
+    var body: some View{
+        ScrollView{
+            LazyVStack{
+                if self.productVM.products != nil{
+                    ForEach(self.productVM.products!.filter{$0.id.contains(self.productID)}, id: \.id){ product in
+                        NavigationLink(destination: ProductDetailsView(product: product)) {
+                            ProductOrderCell(product: product)}
+
+                    }
+                    
+                }
+
+            }
+            
+        }
+        
+    }
+    
+}
+
+struct ProductOrderCell: View{
+    
+    @State var product: Product
+    @EnvironmentObject var productVM: ProductViewModel
+
+    var body: some View{
+        VStack(alignment: .leading){
+            
+            HStack{
+                ProductSearchCellImage(imageURL: product.imageURL).padding(.leading)
+                Spacer()
+                Text(product.name)
+                Spacer()
+                
+            }
+            .foregroundColor(.black)
+            
+        }
+        .foregroundColor(.black)
+
+    }
+    
+
 }
 
 

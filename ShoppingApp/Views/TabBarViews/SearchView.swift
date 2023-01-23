@@ -126,6 +126,7 @@ struct SearchByCategory: View{
 struct SearchCell: View{
     
     var product: Product
+    @EnvironmentObject var productVM: ProductViewModel
     
     var body: some View{
         HStack{
@@ -138,9 +139,21 @@ struct SearchCell: View{
                     .padding([.top, .leading, .trailing])
                     .foregroundColor(.black)
                 HStack{
-                    Text("gwiazdki")
-                        .padding([.leading, .trailing])
-                        .foregroundColor(.black)
+                    Button {
+                        productVM.addProductToCart(productID: product.id)
+                    } label: {
+                        HStack() {
+                               Image(systemName: "cart.badge.plus")
+                                .bold().font(.callout)
+                               Text("Do koszyka")                                  .bold().font(.footnote)
+                           }
+
+                        .padding(8)
+                        .foregroundColor(.white)
+                        .background(Color.orange)
+                        .cornerRadius(45)
+                           
+                    }
                     Spacer()
                     if product.isOnSale{
                         VStack{

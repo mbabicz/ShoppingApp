@@ -114,7 +114,7 @@ struct ProductWatchListCell: View{
                             VStack{
                                 Text("\(product.price)")
                                     .bold()
-                                    .padding([.top, .leading, .trailing])
+                                    .padding([.leading, .trailing])
                                     .font(.callout)
                                     .strikethrough()
                                     .foregroundColor(.black).opacity(0.75)
@@ -125,13 +125,12 @@ struct ProductWatchListCell: View{
                                     .foregroundColor(.black)
                                     .font(.callout)
                             }
-                            
                             .frame(alignment: .center)
                         }
                         else {
                             Text("\(product.price)PLN")
                                 .bold()
-                                .font(.footnote)
+                                .font(.callout)
                                 .foregroundColor(.black)
                                 .padding()
                         }

@@ -292,29 +292,81 @@ class ProductViewModel: ObservableObject {
         
     }
     
+    func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String){
+        let userID = Auth.auth().currentUser?.uid
+        let ref = db.collection("Users").document(userID!).collection("Orders").document()
+        ref.setData([
+            "date" : Date.now,
+            "productIDs" : productIDs,
+            "firstName" : firstName,
+            "lastName" : lastName,
+            "city" : city,
+            "street" : street,
+            "streetNumber" : streetNumber,
+            "houseNumber" : houseNumber,
+            "cardNumber" : cardNumber,
+            "cardHolderFirstname" : cardHolderFirstname,
+            "cardHolderLastname" : cardHolderLastname,
+            "cardCVV" : cardCVV,
+            "cardExpirationDate" : cardExpirationDate,
+            "status" : "W przygotowaniu"
+
+            
+            
+        ]){ err in
+            if err != nil{
+                self.alertTitle = "Errors"
+                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
+                self.showingAlert = true
+            }
+            else {
+                self.alertTitle = "Zamówienie złożone pomyślnie"
+                self.showingAlert = true
+                for product in productIDs {
+                    self.db.collection("Users").document(userID!).collection("Cart").document(product).delete()
+                }
+                
+            }
+            
+        }
+        
+    }
     
     
     func addProductReview(productID: String, rating: Int, review: String, username: String){
         
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Products").document(productID).collection("Reviews").document(userID!)
-        let date = ["date" : Date.now] as [String : Any]
-        let product = ["productID" : productID] as [String : Any]
-        let review = ["review" : review] as [String : Any]
-        let rating = ["rating" : rating] as [String : Any]
-        let ratedByUID = ["ratedByUID" : userID!] as [String : Any]
-        let ratedBy = ["ratedBy" : username] as [String : Any]
-        
-        ref.setData(date, merge: true)
-        ref.setData(product, merge: true)
-        ref.setData(review, merge: true)
-        ref.setData(rating, merge: true)
-        ref.setData(ratedByUID, merge: true)
-        ref.setData(ratedBy, merge: true)
-        
-        self.alertTitle = "Powodzenie"
-        self.alertMessage = "Opinia została dodana pomyślnie"
-        self.showingAlert = true
+
+        ref.setData([
+            "date" : Date.now,
+            "productID" : productID,
+            "review" : review,
+            "rating" : rating,
+            "ratedByUID" : userID!,
+            "ratedBy" : username
+        ]){ err in
+            if err != nil{
+                self.alertTitle = "Errors"
+                self.alertMessage = err?.localizedDescription ?? "Something went wrong"
+                self.showingAlert = true
+            }
+            else {
+                self.alertTitle = "Done"
+                self.showingAlert = true
+            }
+        }
+//
+//        ref.setData(date, merge: true)
+//        ref.setData(product, merge: true)
+//        ref.setData(review, merge: true)
+//        ref.setData(rating, merge: true)
+//        ref.setData(ratedByUID, merge: true)
+//        ref.setData(ratedBy, merge: true)
+//
+//        self.alertTitle = "Powodzenie"
+//        self.alertMessage = "Opinia została dodana pomyślnie"
+//        self.showingAlert = true
         
     }
     

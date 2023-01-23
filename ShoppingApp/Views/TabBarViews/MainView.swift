@@ -12,6 +12,7 @@ struct MainView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @EnvironmentObject var userVM: UserViewModel
 
+
     var body: some View {
         NavigationView{
             VStack{

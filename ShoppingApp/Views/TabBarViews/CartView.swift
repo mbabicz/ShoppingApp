@@ -22,13 +22,10 @@ struct CartView: View {
                             ProductCartLoader(productID: self.productIDs[index])
                             
                         }
-                        Button {
-                            //productVM.addProductToWatchList(productID: product.id)
-                        } label: {
-                            
+                        NavigationLink(destination: PurchaseView(productIDs: self.productIDs)){
                             HStack{
                                 Image(systemName: "eye").bold().font(.body)
-                                Text("Do kasy").bold().font(.body)
+                                Text("Dokonaj zakupu").bold().font(.body)
                                 
                             }
                             .frame(maxWidth: .infinity)
@@ -36,9 +33,9 @@ struct CartView: View {
                             .foregroundColor(.white)
                             .background(Color.orange)
                             .cornerRadius(45)
-                            
                         }
-                        .padding([.leading, .trailing])
+                        .padding()
+
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Koszyk")
@@ -47,13 +44,14 @@ struct CartView: View {
             }
             
             else{
-                Text("Nie masz żadnego produktu w koszyku.")
+                Text("Koszyk jest pusty")
                 Spacer()
             }
                 
         }
 
         .onAppear{
+            productIDs.removeAll(keepingCapacity: false)
             productVM.getUserCart(){ productID in
                 productIDs = productID
                 
@@ -96,20 +94,20 @@ struct ProductCartCell: View{
     
     @State var product: Product
     @EnvironmentObject var productVM: ProductViewModel
+    @State var quantity = 0
 
     var body: some View{
-        VStack{
+        VStack(alignment: .leading){
             
             HStack{
                 ProductSearchCellImage(imageURL: product.imageURL).padding(.leading)
                 VStack{
                     HStack{
-                        Spacer()
                         Text(product.name)
                             .lineLimit(2)
                             .font(.callout)
-                            .multilineTextAlignment(.center)
-                            .padding([.leading, .trailing])
+                            //.multilineTextAlignment(.center)
+                            //.padding([.trailing])
                             .foregroundColor(.black)
                         Spacer()
                         Button {
@@ -127,8 +125,8 @@ struct ProductCartCell: View{
                             VStack{
                                 Text("\(product.price)")
                                     .bold()
-                                    .padding([.top, .leading, .trailing])
-                                    .font(.footnote)
+                                    .padding([.leading, .trailing])
+                                    .font(.callout)
                                     .strikethrough()
                                     .foregroundColor(.black).opacity(0.75)
                                     .frame(alignment: .trailing)
@@ -136,21 +134,25 @@ struct ProductCartCell: View{
                                 Text("\(product.onSalePrice)PLN")
                                     .padding([.leading,.trailing])
                                     .foregroundColor(.black)
-                                    .font(.footnote)
+                                    .font(.callout)
                             }
                             .frame(alignment: .center)
                         }
                         else {
                             Text("\(product.price)PLN")
                                 .bold()
-                                .font(.footnote)
+                                .font(.callout)
                                 .foregroundColor(.black)
                                 .padding()
                         }
                         
                         Spacer()
+                        Text("Ilość: 1")
+                            .foregroundColor(.black)
+                            .font(.footnote)
+                        .padding()
                         
-                        Text("quant.")
+
                         
                     }
                     

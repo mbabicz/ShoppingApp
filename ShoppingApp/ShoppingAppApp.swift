@@ -17,9 +17,13 @@ struct ShoppingAppApp: App {
         WindowGroup {
             let user = UserViewModel()
             let product = ProductViewModel()
+            let order = OrderViewModel()
+
             ContentView()
                 .environmentObject(user)
                 .environmentObject(product)
+                .environmentObject(order)
+
         }
     }
 }
