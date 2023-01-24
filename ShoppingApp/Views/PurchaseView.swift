@@ -10,6 +10,7 @@ import SwiftUI
 struct PurchaseView: View {
     
     @EnvironmentObject var productVM: ProductViewModel
+    @Environment(\.dismiss) var dismiss
     var productIDs = [String]()
     
     //personal data
@@ -28,9 +29,6 @@ struct PurchaseView: View {
     @State private var cardNumber = ""
     @State private var cardExpirationDate = ""
     @State private var cardCVV = ""
-
-
-
 
     
     var body: some View {
@@ -108,7 +106,8 @@ struct PurchaseView: View {
                     
                     Button {
                         if( self.firstname != "" && self.lastname != "" && self.city != "" && self.street != "" && self.streetNumber != "" && self.cardNumber != "" && self.cardHolderLastname != "" && self.cardHolderFirstname != "" && self.cardExpirationDate != "" && self.cardNumber != ""  && self.cardCVV != "") {
-                            productVM.submitOrder(productIDs: self.productIDs, firstName: self.firstname, lastName: self.lastname, city: self.city, street: self.street, streetNumber: self.streetNumber, houseNumber: self.houseNumber, cardNumber: self.cardNumber, cardHolderFirstname: self.cardHolderFirstname, cardHolderLastname: self.cardHolderLastname, cardCVV: self.cardCVV, cardExpirationDate: self.cardExpirationDate)
+                            productVM.submitOrder(productIDs: self.productIDs, firstName: self.firstname, lastName: self.lastname, city: self.city, street: self.street, streetNumber: self.streetNumber, houseNumber: self.houseNumber, cardNumber: self.cardNumber, cardHolderFirstname: self.cardHolderFirstname, cardHolderLastname: self.cardHolderLastname, cardCVV: self.cardCVV, cardExpirationDate: self.cardExpirationDate, totalPrice: self.productVM.userCartTotalPrice)
+                            self.dismiss()
                         } else {
                             productVM.alertTitle = "Error"
                             productVM.alertMessage = "Pola nie mogą być puste"

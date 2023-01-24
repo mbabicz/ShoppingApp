@@ -42,9 +42,11 @@ class OrderViewModel: ObservableObject {
                             let cardCVV = doc["cardCVV"] as? String ?? ""
                             let cardExpirationDate = doc["cardExpirationDate"] as? String ?? ""
                             let status = doc["status"] as? String ?? ""
+                            let totalPrice = doc["totalPrice"] as? Int ?? 0
+
 
                             
-                           return Order(id: id, date: date, productIDs: productIDs, firstName: firstname, lastName: lastname, city: city, street: street, streetNumber: streetNumber, houseNumber: houseNumber, cardNumber: cardNumber, cardHolderFirstname: cardHolderFirstname, cardHolderLastname: cardHolderLastname, cardCVV: cardCVV, cardExpirationDate: cardExpirationDate, status: status)
+                           return Order(id: id, date: date, productIDs: productIDs, firstName: firstname, lastName: lastname, city: city, street: street, streetNumber: streetNumber, houseNumber: houseNumber, cardNumber: cardNumber, cardHolderFirstname: cardHolderFirstname, cardHolderLastname: cardHolderLastname, cardCVV: cardCVV, cardExpirationDate: cardExpirationDate, status: status, totalPrice: totalPrice)
                         }
                         
                     }

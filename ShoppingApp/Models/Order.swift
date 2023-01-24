@@ -24,5 +24,6 @@ struct Order: Identifiable, Codable, Hashable {
     var cardCVV: String
     var cardExpirationDate: String
     var status: String
+    var totalPrice: Int
 
 }

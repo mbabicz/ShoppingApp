@@ -315,7 +315,7 @@ class ProductViewModel: ObservableObject {
         
     }
     
-    func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String){
+    func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String, totalPrice: Int){
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("Orders").document()
         ref.setData([
@@ -332,7 +332,8 @@ class ProductViewModel: ObservableObject {
             "cardHolderLastname" : cardHolderLastname,
             "cardCVV" : cardCVV,
             "cardExpirationDate" : cardExpirationDate,
-            "status" : "W przygotowaniu"
+            "status" : "W przygotowaniu",
+            "totalPrice" : totalPrice
 
             
             
@@ -348,6 +349,7 @@ class ProductViewModel: ObservableObject {
                 for product in productIDs {
                     self.db.collection("Users").document(userID!).collection("Cart").document(product).delete()
                 }
+                self.getUserCart()
                 
             }
             

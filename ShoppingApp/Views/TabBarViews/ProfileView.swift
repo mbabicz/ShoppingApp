@@ -380,14 +380,18 @@ struct DetailedOrderView: View{
                     Spacer()
                     if( order.status == "Zrealizowane"){
                         Text(order.status).foregroundColor(.green)
-
+                        
                     }
                     else {
                         Text(order.status)
-
+                        
                     }
                 }
-
+                HStack{
+                    Text("Wartość zamówienia")
+                    Spacer()
+                    Text("\(order.totalPrice)PLN")
+                }
                 
             }
             

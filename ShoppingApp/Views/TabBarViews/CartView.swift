@@ -9,8 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     @EnvironmentObject var productVM: ProductViewModel
-    //@State private var productIDs = [String]()
-    @State private var totalPrice = 0
+
 
     var body: some View {
         NavigationView {
@@ -19,7 +18,6 @@ struct CartView: View {
                     Divider()
                     ScrollView{
                         ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
-                            //ProductCartLoader(productID: self.productVM.userCartProductIDs[index])
                             ScrollView{
                                 LazyVStack{
                                         ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
@@ -58,7 +56,7 @@ struct CartView: View {
                             HStack{
                                 Image(systemName: "eye").bold().font(.body)
                                 Text("Dokonaj zakupu").bold().font(.body)
-                                
+
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -81,14 +79,8 @@ struct CartView: View {
         }
 
         .onAppear{
-            self.totalPrice = 0
             productVM.getUserCart()
 
-//            ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
-//                ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
-//                    self.totalPrice = self.totalPrice + product.price
-//                }
-//            }
             
         }
         
