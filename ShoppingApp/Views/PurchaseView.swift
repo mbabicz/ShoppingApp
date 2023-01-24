@@ -106,13 +106,15 @@ struct PurchaseView: View {
                             
                         
                     
-                    //}
-//                    .navigationBarTitleDisplayMode(.inline)
-//                    .navigationTitle("Dokonaj zakupu")
-                    
-                    //Spacer()
                     Button {
-                        productVM.submitOrder(productIDs: self.productIDs, firstName: self.firstname, lastName: self.lastname, city: self.city, street: self.street, streetNumber: self.streetNumber, houseNumber: self.houseNumber, cardNumber: self.cardNumber, cardHolderFirstname: self.cardHolderFirstname, cardHolderLastname: self.cardHolderLastname, cardCVV: self.cardCVV, cardExpirationDate: self.cardExpirationDate)
+                        if( self.firstname != "" && self.lastname != "" && self.city != "" && self.street != "" && self.streetNumber != "" && self.cardNumber != "" && self.cardHolderLastname != "" && self.cardHolderFirstname != "" && self.cardExpirationDate != "" && self.cardNumber != ""  && self.cardCVV != "") {
+                            productVM.submitOrder(productIDs: self.productIDs, firstName: self.firstname, lastName: self.lastname, city: self.city, street: self.street, streetNumber: self.streetNumber, houseNumber: self.houseNumber, cardNumber: self.cardNumber, cardHolderFirstname: self.cardHolderFirstname, cardHolderLastname: self.cardHolderLastname, cardCVV: self.cardCVV, cardExpirationDate: self.cardExpirationDate)
+                        } else {
+                            productVM.alertTitle = "Error"
+                            productVM.alertMessage = "Pola nie mogą być puste"
+                            productVM.showingAlert = true
+                            
+                        }
                     } label: {
                         
                         HStack{
@@ -139,15 +141,16 @@ struct PurchaseView: View {
             }
                 
         }
+        .alert(isPresented: $productVM.showingAlert){
+            Alert(
+                title: Text(productVM.alertTitle),
+                message: Text(productVM.alertMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
 
-//        .onAppear{
-//            productVM.getUserCart(){ productID in
-//                productIDs = productID
-//                
-//            }
-//            
-//        }
     }
+    
 }
 
 struct PurchaseCartLoader: View{

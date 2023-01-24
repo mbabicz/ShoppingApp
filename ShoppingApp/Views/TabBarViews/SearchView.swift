@@ -39,12 +39,25 @@ struct SearchView: View {
                                     Text("Smartfony")
                                     
                                 })
+                                
+                                NavigationLink(destination: SearchByCategory(category: "Tablety"), label: {
+                                    Text("Tablety")
+                                })
       
                                 NavigationLink(destination: SearchByCategory(category: "Laptopy"), label: {
                                     Text("Laptopy")
                                 })
-                                NavigationLink(destination: SearchByCategory(category: "Komputery"), label: {
-                                    Text("Komputery")
+                                
+                                NavigationLink(destination: SearchByCategory(category: "Słuchawki"), label: {
+                                    Text("Słuchawki")
+                                })
+                                
+                                NavigationLink(destination: SearchByCategory(category: "Zegarki"), label: {
+                                    Text("Zegarki")
+                                })
+                                
+                                NavigationLink(destination: SearchByCategory(category: "Akcesoria"), label: {
+                                    Text("Akcesoria")
                                 })
                             }
                             
@@ -145,7 +158,8 @@ struct SearchCell: View{
                         HStack() {
                                Image(systemName: "cart.badge.plus")
                                 .bold().font(.callout)
-                               Text("Do koszyka")                                  .bold().font(.footnote)
+                               Text("Do koszyka")
+                                .bold().font(.footnote)
                            }
 
                         .padding(8)

@@ -49,8 +49,8 @@ struct MainView: View {
             productVM.getPromotedProducts()
             productVM.getOnSaleProducts()
             productVM.getProducts()
-            //productVM.getUserWatchList()
-            //productVM.getUserCart()
+            productVM.getUserWatchList()
+            productVM.getUserCart()
         }
         
         .alert(isPresented: $userVM.showingAlert){

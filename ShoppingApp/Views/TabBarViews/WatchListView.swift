@@ -10,17 +10,16 @@ import SwiftUI
 struct WatchListView: View {
     
     @EnvironmentObject var productVM: ProductViewModel
-    @State private var productIDs = [String]()
     
     var body: some View {
         NavigationView {
-            if self.productIDs.count > 0 {
+            if self.productVM.userWatchListProductIDs.count > 0 {
                 VStack{
                     Divider()
                     ScrollView{
-                        if self.productIDs.count > 0 {
-                            ForEach(0..<self.productIDs.count, id: \.self) { index in
-                                ProductWatchListLoader(productID: self.productIDs[index])
+                        if self.productVM.userWatchListProductIDs.count > 0 {
+                            ForEach(0..<self.productVM.userWatchListProductIDs.count, id: \.self) { index in
+                                ProductWatchListLoader(productID: self.productVM.userWatchListProductIDs[index])
                                 
                             }
                             
@@ -39,9 +38,7 @@ struct WatchListView: View {
         }
         
         .onAppear{
-            productVM.getUserWatchList(){ productID in
-                productIDs = productID
-            }
+            productVM.getUserWatchList()
             
         }
         

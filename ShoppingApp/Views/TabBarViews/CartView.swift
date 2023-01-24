@@ -9,20 +9,52 @@ import SwiftUI
 
 struct CartView: View {
     @EnvironmentObject var productVM: ProductViewModel
-    @State private var productIDs = [String]()
-
+    //@State private var productIDs = [String]()
+    @State private var totalPrice = 0
 
     var body: some View {
         NavigationView {
-            if self.productIDs.count > 0 {
+            if self.productVM.userCartProductIDs.count > 0 {
                 VStack{
                     Divider()
                     ScrollView{
-                        ForEach(0..<self.productIDs.count, id: \.self) { index in
-                            ProductCartLoader(productID: self.productIDs[index])
+                        ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
+                            //ProductCartLoader(productID: self.productVM.userCartProductIDs[index])
+                            ScrollView{
+                                LazyVStack{
+                                        ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
+                                            NavigationLink(destination: ProductDetailsView(product: product)) {
+                                                ProductCartCell(product: product)}
+                                                
+                                            Divider()
+                                                .overlay(Color.orange)
+                                        }
+                                        
+                                    
+
+                                }
+                                
+                            }
                             
+
                         }
-                        NavigationLink(destination: PurchaseView(productIDs: self.productIDs)){
+
+
+                    }
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Koszyk")
+                    Spacer()
+                    VStack{
+                        Divider()
+                        HStack{
+                            Text("Łączna wartość:")
+                                .padding([.leading])
+
+                            Spacer()
+                            Text("\(self.productVM.userCartTotalPrice)PLN")
+                                .padding([.trailing])
+                        }
+                        NavigationLink(destination: PurchaseView(productIDs: self.productVM.userCartProductIDs)){
                             HStack{
                                 Image(systemName: "eye").bold().font(.body)
                                 Text("Dokonaj zakupu").bold().font(.body)
@@ -34,12 +66,10 @@ struct CartView: View {
                             .background(Color.orange)
                             .cornerRadius(45)
                         }
-                        .padding()
-
+                        .padding([.leading, .trailing, .bottom])
                     }
-                    .navigationBarTitleDisplayMode(.inline)
-                    .navigationTitle("Koszyk")
                 }
+                
 
             }
             
@@ -51,11 +81,14 @@ struct CartView: View {
         }
 
         .onAppear{
-            productIDs.removeAll(keepingCapacity: false)
-            productVM.getUserCart(){ productID in
-                productIDs = productID
-                
-            }
+            self.totalPrice = 0
+            productVM.getUserCart()
+
+//            ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
+//                ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
+//                    self.totalPrice = self.totalPrice + product.price
+//                }
+//            }
             
         }
         
@@ -63,32 +96,6 @@ struct CartView: View {
     
 }
 
-struct ProductCartLoader: View{
-    
-    @State var productID: String
-    @EnvironmentObject var productVM: ProductViewModel
-    
-    var body: some View{
-        ScrollView{
-            LazyVStack{
-                if self.productVM.products != nil{
-                    ForEach(self.productVM.products!.filter{$0.id.contains(self.productID)}, id: \.id){ product in
-                        NavigationLink(destination: ProductDetailsView(product: product)) {
-                            ProductCartCell(product: product)}
-                            
-                        Divider()
-                            .overlay(Color.orange)
-                    }
-                    
-                }
-
-            }
-            
-        }
-        
-    }
-    
-}
 
 struct ProductCartCell: View{
     

@@ -419,7 +419,7 @@ struct DetailedOrderView: View{
                 HStack{
                     Text("Numer ulicy")
                     Spacer()
-                    Text(order.street)
+                    Text(order.streetNumber)
                 }
                 HStack{
                     Text("Numer domu")

@@ -20,6 +20,8 @@ class ProductViewModel: ObservableObject {
     @Published var onSaleProducts: [Product]?
     
     @Published var userCartProductIDs = [String]()
+    @Published var userCartTotalPrice = 0
+
     @Published var userWatchListProductIDs = [String]()
 
     
@@ -196,6 +198,7 @@ class ProductViewModel: ObservableObject {
                 self.alertTitle = "Pomyślnie dodano produkt do koszyka"
                 self.showingAlert = true
             }
+            
         }
         
     }
@@ -218,33 +221,50 @@ class ProductViewModel: ObservableObject {
                 self.alertTitle = "Pomyślnie dodano produkt do listy obserwowanych"
                 self.showingAlert = true
             }
+            
         }
         
     }
+
     
-    func getUserCart(completion: @escaping ([String]) -> ()){
+    func getUserCart(){
         self.userCartProductIDs.removeAll(keepingCapacity: false)
+        self.userCartTotalPrice = 0
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("Cart")
-        
+
         ref.getDocuments { snapshot, error in
             if error == nil {
                 if let snapshot = snapshot {
                     DispatchQueue.main.async {
                         for document in snapshot.documents {
                             self.userCartProductIDs.append(document.documentID)
+                            if self.products != nil {
+                                for product in self.products!.filter({$0.id.contains(document.documentID)}) {
+                                    if product.isOnSale {
+                                        self.userCartTotalPrice = self.userCartTotalPrice + product.onSalePrice
+
+                                    }
+                                    else {
+                                        self.userCartTotalPrice = self.userCartTotalPrice + product.price
+
+                                    }
+                                    
+                                }
+                            }
+                            
                         }
                         print(self.userCartProductIDs)
-                        completion(self.userCartProductIDs)
 
                     }
                 }
-                
+
             }
         }
     }
     
-    func getUserWatchList(completion: @escaping ([String]) -> ()){
+    
+    func getUserWatchList(){
         self.userWatchListProductIDs.removeAll(keepingCapacity: false)
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("WatchList")
@@ -257,7 +277,6 @@ class ProductViewModel: ObservableObject {
                             self.userWatchListProductIDs.append(document.documentID)
                         }
                         print(self.userWatchListProductIDs)
-                        completion(self.userWatchListProductIDs)
                     }
                 }
             }
@@ -273,7 +292,9 @@ class ProductViewModel: ObservableObject {
                 print("Error removing document from user's watchlist \(err)")
             } else {
                 print("Watchlist product removed succesfully")
+                self.getUserWatchList()
             }
+            
         }
         
     }
@@ -287,7 +308,9 @@ class ProductViewModel: ObservableObject {
                 print("Error removing document from user's cart \(err)")
             } else {
                 print("Cart product removed succesfully")
+                self.getUserCart()
             }
+            
         }
         
     }
