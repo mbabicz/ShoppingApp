@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+enum Categories: String, CaseIterable{
+    case smartphones = "Smartfony"
+    case tablets = "Tablety"
+    case laptops = "Laptopy"
+    case headphones = "Słuchawki"
+    case watches = "Zegarki"
+    case accesories = "Akcesoria"
+}
+
 struct SearchView: View {
     
     @State var searchText = ""
@@ -21,12 +30,14 @@ struct SearchView: View {
                             ForEach(self.productVM.products!.filter{(self.searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchText))}, id: \.id){ product in
                                 NavigationLink(destination: ProductDetailsView(product: product)) {
                                     SearchCell(product: product)}
-                                    
+                                
                                 Divider()
                                     .overlay(Color.orange)
-    
+
                             }
+                            
                         }
+                        
                     }
 
                 }
@@ -34,31 +45,13 @@ struct SearchView: View {
                     VStack(alignment: .leading){
                         List{
                             Section(header: Text("Kategorie")){
-                                
-                                NavigationLink(destination: SearchByCategory(category: "Smartfony"), label: {
-                                    Text("Smartfony")
-                                    
-                                })
-                                
-                                NavigationLink(destination: SearchByCategory(category: "Tablety"), label: {
-                                    Text("Tablety")
-                                })
-      
-                                NavigationLink(destination: SearchByCategory(category: "Laptopy"), label: {
-                                    Text("Laptopy")
-                                })
-                                
-                                NavigationLink(destination: SearchByCategory(category: "Słuchawki"), label: {
-                                    Text("Słuchawki")
-                                })
-                                
-                                NavigationLink(destination: SearchByCategory(category: "Zegarki"), label: {
-                                    Text("Zegarki")
-                                })
-                                
-                                NavigationLink(destination: SearchByCategory(category: "Akcesoria"), label: {
-                                    Text("Akcesoria")
-                                })
+                                ForEach(Categories.allCases, id: \.rawValue) { item in
+                                    NavigationLink(destination: SearchByCategory(category: item.rawValue), label: {
+                                        Text(item.rawValue)
+    
+                                    })
+                                }
+
                             }
                             
                         }
@@ -67,6 +60,7 @@ struct SearchView: View {
                         .scrollContentBackground(.hidden)
 
                     }
+                    
                 }
                 
             }
@@ -78,6 +72,7 @@ struct SearchView: View {
             ToolbarItem(placement: .principal){
                 Text("Produkty").font(.headline).bold()
             }
+            
         }
         .background(.gray.opacity(0.1))
         .searchable(text: $searchText)
@@ -86,8 +81,6 @@ struct SearchView: View {
         
     }
 
-
-    
 }
 
 struct SearchByCategory: View{
@@ -111,14 +104,16 @@ struct SearchByCategory: View{
                                     Divider()
                                         .overlay(Color.orange)
                                     
-                                    
                                 }
+                                
                             }
+                            
                         }
                         
-                        
                     }
+                    
                 }
+                
             } else {
                 Text("Chwilowy brak produktów w tej kategorii")
                 Spacer()
@@ -128,7 +123,6 @@ struct SearchByCategory: View{
         .onAppear{
             self.productCounter = self.productVM.products!.filter{$0.category.contains(self.category) }.count
         }
-            
 
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle(category)
@@ -192,7 +186,6 @@ struct SearchCell: View{
                             .padding()
                     }
                     
-
                 }
 
             }
@@ -236,12 +229,13 @@ struct ProductSearchCellImage: View {
         .onAppear {
             imageLoader.loadImage(with: imageURL)
         }
+        
     }
+    
 }
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        //SearchView()
         SearchCell(product: Product.sampleProduct)
             .environmentObject(ProductViewModel())
     }

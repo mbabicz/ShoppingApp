@@ -65,7 +65,8 @@ struct ProductCard: View {
                         HStack() {
                                Image(systemName: "cart.badge.plus")
                                 .bold().font(.callout)
-                               Text("Do koszyka")                                  .bold().font(.footnote)
+                               Text("Do koszyka")
+                                .bold().font(.footnote)
                            }
 
                             .padding(8)

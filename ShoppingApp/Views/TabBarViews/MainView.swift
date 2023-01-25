@@ -12,7 +12,6 @@ struct MainView: View {
     @EnvironmentObject var productVM: ProductViewModel
     @EnvironmentObject var userVM: UserViewModel
 
-
     var body: some View {
         NavigationView{
             VStack{
@@ -35,15 +34,11 @@ struct MainView: View {
                     }
                     Spacer(minLength: 40)
                 }
-                
-                
-                
+                                
             }
             .navigationBarTitle("Shopping App")
             .navigationBarTitleDisplayMode(.inline)
         }
-
-
 
         .onAppear{
             productVM.getPromotedProducts()
@@ -60,6 +55,7 @@ struct MainView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        
         .alert(isPresented: $productVM.showingAlert){
             Alert(
                 title: Text(productVM.alertTitle),
@@ -70,12 +66,10 @@ struct MainView: View {
 
     }
     
-    
 }
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-
         MainView()
     }
 }

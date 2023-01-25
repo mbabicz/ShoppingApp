@@ -37,72 +37,62 @@ struct PurchaseView: View {
             
             if self.productIDs.count > 0 {
                 VStack{
-                    //Divider()
-                    //ScrollView{
-//                        ForEach(0..<self.productIDs.count, id: \.self) { index in
-//                            PurchaseCartLoader(productID: self.productIDs[index])
-//
-//                        }
-                        Form {
-                            Section(header: Text("Dane odbiorcy")){
-                                TextField("Imie odbiorcy", text: $firstname)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Nazwisko odbiorcy", text: $lastname)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                            }
-                            .listRowInsets(EdgeInsets())
-
-                                                        
-                            Section(header: Text("Adres odbiorcy")){
-                                TextField("Miasto", text: $city)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Ulica", text: $street)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Numer ulicy", text: $streetNumber)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Numer domu", text: $houseNumber)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-
-                                
-                            }
-                            .listRowInsets(EdgeInsets())
-
+                    Form {
+                        Section(header: Text("Dane odbiorcy")){
+                            TextField("Imie odbiorcy", text: $firstname)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Nazwisko odbiorcy", text: $lastname)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                        }
+                        .listRowInsets(EdgeInsets())
+                        
+                        Section(header: Text("Adres odbiorcy")){
+                            TextField("Miasto", text: $city)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Ulica", text: $street)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Numer ulicy", text: $streetNumber)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Numer domu", text: $houseNumber)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
                             
-                            Section(header: Text("Dane karty płatniczej")){
-                                TextField("Imie właściciela karty", text: $cardHolderFirstname)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Nazwisko właściciela karty", text: $cardHolderLastname)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Numer karty", text: $cardNumber)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Data ważności karty", text: $cardExpirationDate)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                                TextField("Kod cvv karty", text: $cardCVV)
-                                    .textFieldStyle(.roundedBorder)
-                                    .listRowInsets(EdgeInsets())
-                            }
-                            .listRowInsets(EdgeInsets())
-
                             
                         }
-                        .foregroundColor(.black)
-                        .scrollContentBackground(.hidden)
                         .listRowInsets(EdgeInsets())
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Dokonaj zakupu")
-                        Spacer()
-                            
                         
+                        Section(header: Text("Dane karty płatniczej")){
+                            TextField("Imie właściciela karty", text: $cardHolderFirstname)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Nazwisko właściciela karty", text: $cardHolderLastname)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Numer karty", text: $cardNumber)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Data ważności karty", text: $cardExpirationDate)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                            TextField("Kod cvv karty", text: $cardCVV)
+                                .textFieldStyle(.roundedBorder)
+                                .listRowInsets(EdgeInsets())
+                        }
+                        .listRowInsets(EdgeInsets())
+                        
+                        
+                    }
+                    .foregroundColor(.black)
+                    .scrollContentBackground(.hidden)
+                    .listRowInsets(EdgeInsets())
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationTitle("Dokonaj zakupu")
+                    Spacer()
                     
                     Button {
                         if( self.firstname != "" && self.lastname != "" && self.city != "" && self.street != "" && self.streetNumber != "" && self.cardNumber != "" && self.cardHolderLastname != "" && self.cardHolderFirstname != "" && self.cardExpirationDate != "" && self.cardNumber != ""  && self.cardCVV != "") {
@@ -129,16 +119,16 @@ struct PurchaseView: View {
                         
                     }
                     .padding([.leading, .trailing, .bottom])
-                
+                    
                 }
-
+                
             }
             
             else{
                 Text("Nie masz żadnego produktu w koszyku.")
                 Spacer()
             }
-                
+            
         }
         .alert(isPresented: $productVM.showingAlert){
             Alert(
@@ -147,7 +137,7 @@ struct PurchaseView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-
+        
     }
     
 }
@@ -195,8 +185,6 @@ struct PurchaseCartCell: View{
                         Text(product.name)
                             .lineLimit(2)
                             .font(.callout)
-                            //.multilineTextAlignment(.center)
-                            //.padding([.trailing])
                             .foregroundColor(.black)
                         Spacer()
                         
@@ -229,9 +217,7 @@ struct PurchaseCartCell: View{
                         }
 
                     }
- 
-
-                    
+                     
                 }
                 
             }
@@ -241,6 +227,7 @@ struct PurchaseCartCell: View{
     }
 
 }
+
 struct PurchaseView_Previews: PreviewProvider {
     static var previews: some View {
         PurchaseView()

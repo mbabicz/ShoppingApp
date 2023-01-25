@@ -20,7 +20,6 @@ struct WatchListView: View {
                         if self.productVM.userWatchListProductIDs.count > 0 {
                             ForEach(0..<self.productVM.userWatchListProductIDs.count, id: \.self) { index in
                                 ProductWatchListLoader(productID: self.productVM.userWatchListProductIDs[index])
-                                
                             }
                             
                         }
@@ -140,17 +139,15 @@ struct ProductWatchListCell: View{
                             HStack() {
                                    Image(systemName: "cart.badge.plus")
                                     .bold().font(.callout)
-                                   Text("Do koszyka")                                  .bold().font(.footnote)
+                                   Text("Do koszyka")
+                                    .bold().font(.footnote)
                                }
-
                             .padding(8)
                             .foregroundColor(.white)
                             .background(Color.orange)
                             .cornerRadius(45)
-                               
                         }
                         .padding(.trailing)
-                        
                     }
                     
                 }

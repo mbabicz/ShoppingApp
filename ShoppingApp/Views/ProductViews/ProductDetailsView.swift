@@ -34,7 +34,6 @@ struct ProductDetailsView: View {
                         ForEach(0..<product.images.count, id: \.self){ index in
                             ProductImage(imageURL: URL(string: product.images[index])!)
                                 .tag(index)
-                            
                         }
                         
                     }
@@ -81,14 +80,12 @@ struct ProductDetailsView: View {
                                 }
                                 .frame(alignment: .center)
                                 .padding([.bottom, .leading, .trailing])
-                                
                             }
                             else {
                                 Text("\(product.price)PLN")
                                     .bold()
                                     .font(.headline)
                                     .padding([.bottom, .leading, .trailing])
-                                
                             }
                             
                             HStack(spacing: 2) {
@@ -205,7 +202,6 @@ struct ProductDetailsView: View {
                             }
                         }
                         
-                        
                         Button {
                             
                             if userVM.userIsAnonymous{
@@ -238,7 +234,7 @@ struct ProductDetailsView: View {
                     
                 }
                 Button {
-                    //
+                    productVM.addProductToCart(productID: product.id)
                 } label: {
                     
                     HStack{

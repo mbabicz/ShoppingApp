@@ -14,7 +14,6 @@ struct OpinionCard: View {
     var username: String
     var maxRate: Int = 5
     
-    
     var body: some View {
         ZStack{
             VStack(alignment: .leading){

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct CartView: View {
+    
     @EnvironmentObject var productVM: ProductViewModel
-
 
     var body: some View {
         NavigationView {
@@ -20,24 +20,20 @@ struct CartView: View {
                         ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
                             ScrollView{
                                 LazyVStack{
-                                        ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
-                                            NavigationLink(destination: ProductDetailsView(product: product)) {
-                                                ProductCartCell(product: product)}
-                                                
-                                            Divider()
-                                                .overlay(Color.orange)
-                                        }
+                                    ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
+                                        NavigationLink(destination: ProductDetailsView(product: product)) {
+                                            ProductCartCell(product: product)}
                                         
+                                        Divider()
+                                            .overlay(Color.orange)
+                                    }
                                     
-
                                 }
                                 
                             }
                             
-
                         }
-
-
+                        
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Koszyk")
@@ -47,7 +43,7 @@ struct CartView: View {
                         HStack{
                             Text("Łączna wartość:")
                                 .padding([.leading])
-
+                            
                             Spacer()
                             Text("\(self.productVM.userCartTotalPrice)PLN")
                                 .padding([.trailing])
@@ -56,7 +52,7 @@ struct CartView: View {
                             HStack{
                                 Image(systemName: "eye").bold().font(.body)
                                 Text("Dokonaj zakupu").bold().font(.body)
-
+                                
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -66,9 +62,9 @@ struct CartView: View {
                         }
                         .padding([.leading, .trailing, .bottom])
                     }
+                    
                 }
                 
-
             }
             
             else{
@@ -80,7 +76,6 @@ struct CartView: View {
 
         .onAppear{
             productVM.getUserCart()
-
             
         }
         
@@ -93,7 +88,6 @@ struct ProductCartCell: View{
     
     @State var product: Product
     @EnvironmentObject var productVM: ProductViewModel
-    @State var quantity = 0
 
     var body: some View{
         VStack(alignment: .leading){
@@ -105,8 +99,6 @@ struct ProductCartCell: View{
                         Text(product.name)
                             .lineLimit(2)
                             .font(.callout)
-                            //.multilineTextAlignment(.center)
-                            //.padding([.trailing])
                             .foregroundColor(.black)
                         Spacer()
                         Button {
@@ -117,6 +109,7 @@ struct ProductCartCell: View{
                                 .padding([.leading, .trailing])
                                 .clipShape(Circle())
                         }
+                        
                     }
  
                     HStack{
@@ -150,9 +143,7 @@ struct ProductCartCell: View{
                             .foregroundColor(.black)
                             .font(.footnote)
                         .padding()
-                        
-
-                        
+                                                
                     }
                     
                 }
@@ -171,4 +162,5 @@ struct CartView_Previews: PreviewProvider {
     static var previews: some View {
         CartView()
     }
+    
 }

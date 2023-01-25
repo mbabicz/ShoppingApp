@@ -18,18 +18,13 @@ class ProductViewModel: ObservableObject {
     
     @Published var promotedProducts: [Product]?
     @Published var onSaleProducts: [Product]?
+    @Published var products: [Product]?
     
     @Published var userCartProductIDs = [String]()
     @Published var userCartTotalPrice = 0
-
     @Published var userWatchListProductIDs = [String]()
 
-    
-    @Published var products: [Product]?
-    
-    @Published var categoryProducts: [Product]?
-
-    
+    //ALERTS
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
     @Published var alertTitle = ""
@@ -42,40 +37,6 @@ class ProductViewModel: ObservableObject {
     @Published var productRatesCount: Int = 0
     @Published var productRatesTotal: Int = 0
     @Published var productRatingAvarage : Double = 0
-    
-    func getCategoryProducts(category: String){
-        self.categoryProducts = nil
-        
-        db.collection("Products").whereField("category", isEqualTo: category).getDocuments { snapshot, error in
-            if error == nil{
-                
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async{
-                        self.products = snapshot.documents.map { doc -> Product in
-                            let id = doc.documentID as String
-                            let name = doc["name"] as? String ?? ""
-                            let img = doc["image_url"] as? String ?? ""
-                            let price = doc["price"] as? Int ?? 0
-                            let amount = doc["amount"] as? Int ?? 0
-                            let description = doc["description"] as? String ?? ""
-                            let category = doc["category"] as? String ?? ""
-                            let isOnSale = doc["isOnSale"] as? Bool ?? false
-                            let onSalePrice = doc["onSalePrice"] as? Int ?? 0
-                            let details = doc["details"] as? [String] ?? []
-                            let images = doc["images"] as? [String] ?? []
-                            
-                            
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
-                                           category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
-                        }
-                    }
-                }
-            }
-            else{
-                print("Error: can't get OnSale products from database")
-            }
-        }
-    }
     
     func getProducts(){
         self.products = nil
@@ -104,7 +65,6 @@ class ProductViewModel: ObservableObject {
                         }
                     }
                 }
-               // print(self.products!)
 
             }
             else{
@@ -334,8 +294,6 @@ class ProductViewModel: ObservableObject {
             "cardExpirationDate" : cardExpirationDate,
             "status" : "W przygotowaniu",
             "totalPrice" : totalPrice
-
-            
             
         ]){ err in
             if err != nil{
@@ -380,23 +338,10 @@ class ProductViewModel: ObservableObject {
                 self.alertTitle = "Done"
                 self.showingAlert = true
             }
+            
         }
-//
-//        ref.setData(date, merge: true)
-//        ref.setData(product, merge: true)
-//        ref.setData(review, merge: true)
-//        ref.setData(rating, merge: true)
-//        ref.setData(ratedByUID, merge: true)
-//        ref.setData(ratedBy, merge: true)
-//
-//        self.alertTitle = "Powodzenie"
-//        self.alertMessage = "Opinia została dodana pomyślnie"
-//        self.showingAlert = true
         
     }
-    
-    
-    
     
     func getProductReviews(productID: String, completion: @escaping (([String],[Int],[String],[String], Int, Int, Double)) -> ()){
         let ref = db.collection("Products").document(productID).collection("Reviews")

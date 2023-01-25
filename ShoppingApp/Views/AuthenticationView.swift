@@ -136,7 +136,6 @@ struct SignUpView: View {
     var body: some View {
         VStack {
             VStack{
-                //TODO: Image
                 VStack{
                     TextField("Nazwa użytkownika", text: $username)
                         .padding()

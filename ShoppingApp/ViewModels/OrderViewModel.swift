@@ -15,8 +15,6 @@ class OrderViewModel: ObservableObject {
     private let db = Firestore.firestore()
     @Published var orders: [Order]?
 
-    
-
     func getUserOrders(){
         self.orders = nil
         let userID = Auth.auth().currentUser?.uid

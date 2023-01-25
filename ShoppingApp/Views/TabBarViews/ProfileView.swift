@@ -9,11 +9,10 @@ import SwiftUI
 import Firebase
 
 struct ProfileView: View {
+    
     @EnvironmentObject var user: UserViewModel
     @EnvironmentObject var orderVM: OrderViewModel
-
     let auth = Auth.auth()
-
     
     var body: some View {
         NavigationView{
@@ -42,7 +41,9 @@ struct ProfileView: View {
                             List{
                                 Section(header: Text("Ogólne")){
                                     NavigationLink(destination: UserOrdersView(), label: {
-                                        Text("Zamowienia")                            })
+                                        Text("Zamowienia")
+                                        
+                                    })
                                 }
                                 
                             }
@@ -50,7 +51,6 @@ struct ProfileView: View {
                             .scrollDisabled(true)
                             .scrollContentBackground(.hidden)
                             .frame(height:100)
-                            
                             
                             List{
                                 Section(header: Text("Aplikacja")){
@@ -86,18 +86,13 @@ struct ProfileView: View {
                                 .frame(height:175)
                             }
                             
-                            
                         }
-                        
-                        
                         
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
                     
                     Spacer()
-                    
                 }
-                //Spacer()
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarTitle("Profil")
@@ -116,16 +111,14 @@ struct ProfileView: View {
                             Text("Wyloguj się").font(.headline).foregroundColor(.blue)
 
                         }
+                        
                     }
                     
                 }
                 
             }
+            
         }
-        
-
-
-
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.gray.opacity(0.1))
@@ -159,13 +152,10 @@ struct ChangePasswordView: View{
     @State var isSecured3: Bool = true
     
     @EnvironmentObject var user: UserViewModel
-
     
     var body: some View{
         VStack{
-            
             HStack{
-                
                 ZStack(alignment: .trailing){
                     
                     Group{
@@ -181,7 +171,6 @@ struct ChangePasswordView: View{
                                 .background(Color(.secondarySystemBackground))
                         }
                     }
-                    //.padding([.top, .leading, .trailing])
                     Spacer()
                     Button {
                         isSecured.toggle()
@@ -190,6 +179,7 @@ struct ChangePasswordView: View{
                     }.padding()
                     
                 }
+                
             }
             .padding([.top, .trailing, .leading])
 
@@ -210,14 +200,15 @@ struct ChangePasswordView: View{
                                 .background(Color(.secondarySystemBackground))
                         }
                     }
-                    //.padding([.top, .leading, .trailing])
                     Spacer()
                     Button {
                         isSecured2.toggle()
                     } label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                     }.padding()
+                    
                 }
+                
             }
             .padding([.top, .trailing, .leading])
             
@@ -238,13 +229,13 @@ struct ChangePasswordView: View{
                                 .background(Color(.secondarySystemBackground))
                         }
                     }
-                    //.padding([.top, .leading, .trailing])
                     Spacer()
                     Button {
                         isSecured3.toggle()
                     } label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                     }.padding()
+                    
                 }
                 
             }
@@ -299,21 +290,18 @@ struct ChangePasswordView: View{
         }
 
     }
+    
 }
 
 struct UserOrdersView: View{
     
-    //    @EnvironmentObject var user: UserViewModel
     @EnvironmentObject var orderVM: OrderViewModel
-    
-    
     
     var body: some View{
         if self.orderVM.orders != nil{
             VStack{
                 Divider()
                 ScrollView{
-                    
                     ForEach(0..<self.orderVM.orders!.count, id: \.self){ index in
                         NavigationLink(destination: DetailedOrderView(order: self.orderVM.orders![index])){
                             VStack(alignment: .leading){
@@ -322,7 +310,6 @@ struct UserOrdersView: View{
                                         .foregroundColor(.black)
                                         .opacity(0.75)
                                         .padding(.leading)
-
                                     
                                     Text(self.orderVM.orders![index].date, format: .dateTime.day().month().year())
                                         .foregroundColor(.black)
@@ -344,10 +331,13 @@ struct UserOrdersView: View{
                                                     .foregroundColor(.orange)
                                                     .padding(.trailing)
                                             }
+                                            
                                         }
+                                        
                                     }
+                                    
                                 }
-                                
+                                                            
                             }
                             
                         }
@@ -355,6 +345,7 @@ struct UserOrdersView: View{
                     }
                     Spacer()
                 }
+                
             }
             
         }
@@ -363,15 +354,13 @@ struct UserOrdersView: View{
         }
         
     }
+    
 }
 struct DetailedOrderView: View{
     
     @State var order: Order
     
-    
-    
     var body: some View{
-        
         
         List{
             Section(header: Text("Zamówienie nr \(order.id)")){
@@ -462,8 +451,8 @@ struct DetailedOrderView: View{
 
         }
         .listStyle(.insetGrouped)
-        
     }
+    
 }
 
 struct ProductOrderLoader: View{
@@ -478,7 +467,6 @@ struct ProductOrderLoader: View{
                     ForEach(self.productVM.products!.filter{$0.id.contains(self.productID)}, id: \.id){ product in
                         NavigationLink(destination: ProductDetailsView(product: product)) {
                             ProductOrderCell(product: product)}
-
                     }
                     
                 }
@@ -504,25 +492,18 @@ struct ProductOrderCell: View{
                 Spacer()
                 Text(product.name)
                 Spacer()
-                
             }
             .foregroundColor(.black)
-            
         }
         .foregroundColor(.black)
-
     }
     
-
 }
-
-
 
 struct NotificationsView: View{
         
     @State var recommendtaionToggleIsActive: Bool = false
     @State var orderToggleIsActive: Bool = false
-
     
     var body: some View{
         VStack{
@@ -564,7 +545,6 @@ struct AboutAppView: View{
         
     @EnvironmentObject var user: UserViewModel
     
-    
     var body: some View{
         
         VStack{
@@ -577,19 +557,11 @@ struct AboutAppView: View{
             GroupBoxRowView(name: "Version", content: "1.0")
             Divider()
 
-            
         }
         Spacer()
-        
-//        GroupBox(
-//            label: GroupBoxLabelView(labelText: "Shopping APP", labelImage: "info.circle")
-//        ){
-//            GroupBoxRowView(name: "Developer", content: "Michał Babicz")
-//        }
-//        .padding(.horizontal)
-
 
     }
+    
 }
 
 struct GroupBoxLabelView: View {
@@ -603,7 +575,9 @@ struct GroupBoxLabelView: View {
             Spacer()
             Image(systemName: labelImage)
         }
+        
     }
+    
 }
 
 struct GroupBoxRowView: View{
