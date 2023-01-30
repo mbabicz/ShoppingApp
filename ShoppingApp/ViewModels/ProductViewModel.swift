@@ -38,37 +38,34 @@ class ProductViewModel: ObservableObject {
     @Published var productRatesTotal: Int = 0
     @Published var productRatingAvarage : Double = 0
     
-    func getProducts(){
+    func getProducts() {
         self.products = nil
         
         db.collection("Products").getDocuments { snapshot, error in
-            if error == nil{
-                
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async{
-                        self.products = snapshot.documents.map { doc -> Product in
-                            let id = doc.documentID as String
-                            let name = doc["name"] as? String ?? ""
-                            let img = doc["image_url"] as? String ?? ""
-                            let price = doc["price"] as? Int ?? 0
-                            let amount = doc["amount"] as? Int ?? 0
-                            let description = doc["description"] as? String ?? ""
-                            let category = doc["category"] as? String ?? ""
-                            let isOnSale = doc["isOnSale"] as? Bool ?? false
-                            let onSalePrice = doc["onSalePrice"] as? Int ?? 0
-                            let details = doc["details"] as? [String] ?? []
-                            let images = doc["images"] as? [String] ?? []
-                            
-                            
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
-                                           category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
-                        }
-                    }
-                }
-
+            guard error == nil else {
+                print("Error: can't get products from database")
+                return
             }
-            else{
-                print("Error: can't get OnSale products from database")
+            
+            guard let snapshot = snapshot else { return }
+            
+            DispatchQueue.main.async {
+                self.products = snapshot.documents.compactMap { doc -> Product? in
+                    guard let name = doc["name"] as? String else { return nil }
+                    let id = doc.documentID
+                    let img = doc["image_url"] as? String ?? ""
+                    let price = doc["price"] as? Int ?? 0
+                    let amount = doc["amount"] as? Int ?? 0
+                    let description = doc["description"] as? String ?? ""
+                    let category = doc["category"] as? String ?? ""
+                    let isOnSale = doc["isOnSale"] as? Bool ?? false
+                    let onSalePrice = doc["onSalePrice"] as? Int ?? 0
+                    let details = doc["details"] as? [String] ?? []
+                    let images = doc["images"] as? [String] ?? []
+                    
+                    return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
+                                   category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                }
             }
         }
     }
@@ -77,195 +74,177 @@ class ProductViewModel: ObservableObject {
         self.onSaleProducts = nil
         
         db.collection("Products").whereField("isOnSale", isEqualTo: true).getDocuments { snapshot, error in
-            if error == nil{
-                
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async{
-                        self.onSaleProducts = snapshot.documents.map { doc -> Product in
-                            let id = doc.documentID as String
-                            let name = doc["name"] as? String ?? ""
-                            let img = doc["image_url"] as? String ?? ""
-                            let price = doc["price"] as? Int ?? 0
-                            let amount = doc["amount"] as? Int ?? 0
-                            let description = doc["description"] as? String ?? ""
-                            let category = doc["category"] as? String ?? ""
-                            let isOnSale = doc["isOnSale"] as? Bool ?? false
-                            let onSalePrice = doc["onSalePrice"] as? Int ?? 0
-                            let details = doc["details"] as? [String] ?? []
-                            let images = doc["images"] as? [String] ?? []
-                            
-                            
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
-                                           category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
-                        }
-                    }
-                }
+            guard error == nil else {
+                print("Error: can't get products from database")
+                return
             }
-            else{
-                print("Error: can't get OnSale products from database")
+            
+            guard let snapshot = snapshot else { return }
+            
+            DispatchQueue.main.async {
+                self.onSaleProducts = snapshot.documents.compactMap { doc -> Product? in
+                    guard let name = doc["name"] as? String else { return nil }
+                    let id = doc.documentID
+                    let img = doc["image_url"] as? String ?? ""
+                    let price = doc["price"] as? Int ?? 0
+                    let amount = doc["amount"] as? Int ?? 0
+                    let description = doc["description"] as? String ?? ""
+                    let category = doc["category"] as? String ?? ""
+                    let isOnSale = doc["isOnSale"] as? Bool ?? false
+                    let onSalePrice = doc["onSalePrice"] as? Int ?? 0
+                    let details = doc["details"] as? [String] ?? []
+                    let images = doc["images"] as? [String] ?? []
+                    
+                    return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
+                                   category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                }
             }
         }
     }
     
     func getPromotedProducts(){
-        self.onSaleProducts = nil
+        self.promotedProducts = nil
         
         db.collection("Products").whereField("isPromoted", isEqualTo: true).getDocuments { snapshot, error in
-            if error == nil{
-                
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async{
-                        self.promotedProducts = snapshot.documents.map{ doc -> Product in
-                            let id = doc.documentID as String
-                            let name = doc["name"] as? String ?? ""
-                            let img = doc["image_url"] as? String ?? ""
-                            let price = doc["price"] as? Int ?? 0
-                            let amount = doc["amount"] as? Int ?? 0
-                            let description = doc["description"] as? String ?? ""
-                            let category = doc["category"] as? String ?? ""
-                            let isOnSale = doc["isOnSale"] as? Bool ?? false
-                            let onSalePrice = doc["onSalePrice"] as? Int ?? 0
-                            let details = doc["details"] as? [String] ?? []
-                            let images = doc["images"] as? [String] ?? []
-                            
-                            
-                            return Product(id: id, name: name, img: img, price: price, amount: amount, description: description, category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
-                        }
-                    }
-                }
-            }
-            else{
+            guard error == nil else {
                 print("Error: can't get products from database")
+                return
+            }
+            
+            guard let snapshot = snapshot else { return }
+            
+            DispatchQueue.main.async {
+                self.promotedProducts = snapshot.documents.compactMap { doc -> Product? in
+                    guard let name = doc["name"] as? String else { return nil }
+                    let id = doc.documentID
+                    let img = doc["image_url"] as? String ?? ""
+                    let price = doc["price"] as? Int ?? 0
+                    let amount = doc["amount"] as? Int ?? 0
+                    let description = doc["description"] as? String ?? ""
+                    let category = doc["category"] as? String ?? ""
+                    let isOnSale = doc["isOnSale"] as? Bool ?? false
+                    let onSalePrice = doc["onSalePrice"] as? Int ?? 0
+                    let details = doc["details"] as? [String] ?? []
+                    let images = doc["images"] as? [String] ?? []
+                    
+                    return Product(id: id, name: name, img: img, price: price, amount: amount, description: description,
+                                   category: category, isOnSale: isOnSale, onSalePrice: onSalePrice, details: details, images: images)
+                }
             }
         }
     }
     
-    func addProductToCart(productID: String){
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("Cart").document(productID)
-        
-        ref.setData([
-            "date" : Date.now,
-            "product" : productID,
-
-        ]) { err in
-            if err != nil{
-                self.alertTitle = "Errors"
-                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
-                self.showingAlert = true
-            }
-            else {
-                self.alertTitle = "Pomyślnie dodano produkt do koszyka"
-                self.showingAlert = true
-            }
-            
+    func addProductToCart(productID: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Cant get user from db")
+            return
         }
         
+        let ref = db.collection("Users").document(userID).collection("Cart").document(productID)
+        let data: [String: Any] = [
+            "date": Timestamp(date: Date()),
+            "product": productID
+        ]
+        
+        ref.setData(data) { (error) in
+            if let error = error {
+                self.alertTitle = "Error"
+                self.alertMessage = error.localizedDescription
+                self.showingAlert = true
+            } else {
+                self.alertTitle = "Success"
+                self.alertMessage = "Pomyślnie dodano produkt do listy obserwowanych"
+                self.showingAlert = true
+            }
+        }
     }
     
     func addProductToWatchList(productID: String){
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("WatchList").document(productID)
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Cant get user from db")
+            return
+        }
         
-        ref.setData([
-            "date" : Date.now,
-            "product" : productID,
-
-        ]) { err in
-            if err != nil{
-                self.alertTitle = "Errors"
-                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
+        let ref = db.collection("Users").document(userID).collection("WatchList").document(productID)
+        let data: [String: Any] = [
+            "date": Timestamp(date: Date()),
+            "product": productID
+        ]
+        
+        ref.setData(data) { (error) in
+            if let error = error {
+                self.alertTitle = "Error"
+                self.alertMessage = error.localizedDescription
+                self.showingAlert = true
+            } else {
+                self.alertTitle = "Success"
+                self.alertMessage = "Pomyślnie dodano produkt do listy obserwowanych"
                 self.showingAlert = true
             }
-            else {
-                self.alertTitle = "Pomyślnie dodano produkt do listy obserwowanych"
-                self.showingAlert = true
-            }
-            
         }
         
     }
 
     
-    func getUserCart(){
-        self.userCartProductIDs.removeAll(keepingCapacity: false)
+    func getUserCart() {
+        self.userCartProductIDs.removeAll()
         self.userCartTotalPrice = 0
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("Cart")
-
-        ref.getDocuments { snapshot, error in
-            if error == nil {
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async {
-                        for document in snapshot.documents {
-                            self.userCartProductIDs.append(document.documentID)
-                            if self.products != nil {
-                                for product in self.products!.filter({$0.id.contains(document.documentID)}) {
-                                    if product.isOnSale {
-                                        self.userCartTotalPrice = self.userCartTotalPrice + product.onSalePrice
-
-                                    }
-                                    else {
-                                        self.userCartTotalPrice = self.userCartTotalPrice + product.price
-
-                                    }
-                                    
-                                }
-                            }
-                            
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        db.collection("Users").document(userID).collection("Cart").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error getting user cart: \(error)")
+            } else if let snapshot = snapshot {
+                DispatchQueue.main.async {
+                    for document in snapshot.documents {
+                        self.userCartProductIDs.append(document.documentID)
+                        if let product = self.products?.first(where: { $0.id == document.documentID }) {
+                            self.userCartTotalPrice += product.isOnSale ? product.onSalePrice : product.price
                         }
-                        print(self.userCartProductIDs)
-
                     }
                 }
-
             }
         }
     }
     
     
     func getUserWatchList(){
-        self.userWatchListProductIDs.removeAll(keepingCapacity: false)
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("WatchList")
-
-        ref.getDocuments { snapshot, error in
-            if error == nil {
-                if let snapshot = snapshot {
-                    DispatchQueue.main.async {
-                        for document in snapshot.documents {
-                            self.userWatchListProductIDs.append(document.documentID)
-                        }
-                        print(self.userWatchListProductIDs)
+        self.userWatchListProductIDs.removeAll()
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        db.collection("Users").document(userID).collection("WatchList").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error getting user watchlist: \(error)")
+            } else if let snapshot = snapshot {
+                DispatchQueue.main.async {
+                    for document in snapshot.documents {
+                        self.userWatchListProductIDs.append(document.documentID)
                     }
+                    print(self.userWatchListProductIDs)
                 }
             }
         }
     }
     
-    func removeProductFromWatchList(productID: String){
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("WatchList")
+    func removeProductFromWatchList(productID: String) {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = db.collection("Users").document(userID).collection("WatchList").document(productID)
 
-        ref.document(productID).delete() { err in
-            if let err = err {
-                print("Error removing document from user's watchlist \(err)")
+        ref.delete { error in
+            if let error = error {
+                print("Error removing document from user's watchlist: \(error)")
             } else {
-                print("Watchlist product removed succesfully")
+                print("Product removed from watchlist successfully")
                 self.getUserWatchList()
             }
-            
         }
-        
     }
     
     func removeProductFromCart(productID: String){
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("Cart")
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        let ref = db.collection("Users").document(userID).collection("Cart").document(productID)
 
-        ref.document(productID).delete() { err in
-            if let err = err {
-                print("Error removing document from user's cart \(err)")
+        ref.delete() { error in
+            if let error = error {
+                print("Error removing document from user's cart \(error)")
             } else {
                 print("Cart product removed succesfully")
                 self.getUserCart()
@@ -278,8 +257,9 @@ class ProductViewModel: ObservableObject {
     func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String, totalPrice: Int){
         let userID = Auth.auth().currentUser?.uid
         let ref = db.collection("Users").document(userID!).collection("Orders").document()
+
         ref.setData([
-            "date" : Date.now,
+            "date" : Timestamp(date: Date()),
             "productIDs" : productIDs,
             "firstName" : firstName,
             "lastName" : lastName,

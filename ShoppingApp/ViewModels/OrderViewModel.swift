@@ -26,7 +26,7 @@ class OrderViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.orders = snapshot.documents.map { doc -> Order in
                             let id = doc.documentID as String
-                            let date = doc["date"] as? Date ?? Date.now
+                            let date = (doc["date"] as? Timestamp)?.dateValue() ?? Date()
                             let productIDs = doc["productIDs"] as? [String] ?? []
                             let firstname = doc["firstName"] as? String ?? ""
                             let lastname = doc["lastName"] as? String ?? ""

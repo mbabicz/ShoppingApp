@@ -21,19 +21,19 @@ class UserViewModel: ObservableObject {
     private let db = Firestore.firestore()
     
     var uuid: String? {
-        auth.currentUser?.uid
+        return auth.currentUser?.uid
     }
     
     var userIsAuthenticated: Bool {
-        auth.currentUser != nil
+        return auth.currentUser != nil
     }
     
     var userIsAuthenticatedAndSynced: Bool {
-        user != nil && userIsAuthenticated
+        return user != nil && userIsAuthenticated
     }
     
     var userIsAnonymous: Bool{
-        auth.currentUser?.email == nil
+        return auth.currentUser?.email == nil
     }
 
     func signUp(email: String, password: String, username: String){
@@ -44,8 +44,8 @@ class UserViewModel: ObservableObject {
                 self.showingAlert = true
             } else {
                 DispatchQueue.main.async{
-                    self.add(User(username: username, userEmail: email))
-                    self.sync()
+                    self.addUser(User(username: username, userEmail: email))
+                    self.syncUser()
                 }
             }
         }
@@ -55,41 +55,37 @@ class UserViewModel: ObservableObject {
     func signIn(email: String, password: String){
         auth.signIn(withEmail: email, password: password){ (result, error) in
             if error != nil{
-                self.alertTitle = "Errors"
+                self.alertTitle = "Error"
                 self.alertMessage = error?.localizedDescription ?? "Something went wrong"
                 self.showingAlert = true
             } else {
                 DispatchQueue.main.async{
                     //Success
-                    self.sync()
+                    self.syncUser()
 
                 }
             }
         }
     }
     
+    
     func singInAnonymously(){
         auth.signInAnonymously(){ authResult, error in
             DispatchQueue.main.async{
-                //Success
-                self.add(User(username: "guest", userEmail: "guest"))
-                self.sync()
-                
+                self.addUser(User(username: "guest", userEmail: "guest"))
+                self.syncUser()
             }
-            
         }
-
     }
-
     func resetPassword(email: String){
         auth.sendPasswordReset(withEmail: email) { error in
             if error != nil{
                 self.alertTitle = "Error"
-                self.alertMessage = error?.localizedDescription ?? "Something went wrong"
+                self.alertMessage = error?.localizedDescription ?? "Coś poszło nie tak!"
                 self.showingAlert = true
             } else {
                 self.alertTitle = "Succes"
-                self.alertMessage = "A Password change request has been sent to your email adress."
+                self.alertMessage = "Prośba o zmiane hasła została wysłana na twój adres email.."
                 self.showingAlert = true
             }
             
@@ -110,7 +106,7 @@ class UserViewModel: ObservableObject {
     
     //MARK: firestore functions for user data
     
-    func sync(){
+    func syncUser(){
         guard userIsAuthenticated else { return }
         db.collection("Users").document(self.uuid!).getDocument { document, error in
             guard document != nil, error == nil else { return }
@@ -124,7 +120,7 @@ class UserViewModel: ObservableObject {
 
     }
     
-    private func add(_ user: User){
+    private func addUser(_ user: User){
         guard userIsAuthenticated else { return }
         do {
             let _ = try db.collection("Users").document(self.uuid!).setData(from: user)

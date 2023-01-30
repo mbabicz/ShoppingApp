@@ -20,65 +20,45 @@ struct SearchView: View {
     
     @State var searchText = ""
     @EnvironmentObject var productVM: ProductViewModel
-    
+
     var body: some View {
         NavigationView{
-            if self.productVM.products != nil{
-                if self.searchText != "" && !self.searchText.isEmpty {
+            if self.productVM.products != nil {
+                if !self.searchText.isEmpty {
                     ScrollView{
                         LazyVStack{
-                            ForEach(self.productVM.products!.filter{(self.searchText.isEmpty ? true : $0.name.localizedCaseInsensitiveContains(self.searchText))}, id: \.id){ product in
+                            ForEach(self.productVM.products!.filter { $0.name.localizedCaseInsensitiveContains(searchText) }, id: \.id) { product in
                                 NavigationLink(destination: ProductDetailsView(product: product)) {
-                                    SearchCell(product: product)}
-                                
-                                Divider()
-                                    .overlay(Color.orange)
-
-                            }
-                            
-                        }
-                        
-                    }
-
-                }
-                else {
-                    VStack(alignment: .leading){
-                        List{
-                            Section(header: Text("Kategorie")){
-                                ForEach(Categories.allCases, id: \.rawValue) { item in
-                                    NavigationLink(destination: SearchByCategory(category: item.rawValue), label: {
-                                        Text(item.rawValue)
-    
-                                    })
+                                    SearchCell(product: product)
                                 }
-
+                                Divider().overlay(Color.orange)
                             }
-                            
                         }
-                        .listStyle(.grouped)
-                        .scrollDisabled(true)
-                        .scrollContentBackground(.hidden)
-
                     }
-                    
+                } else {
+                    List {
+                        Section(header: Text("Kategorie")) {
+                            ForEach(Categories.allCases, id: \.rawValue) { item in
+                                NavigationLink(destination: SearchByCategory(category: item.rawValue), label: {
+                                    Text(item.rawValue)
+                                })
+                            }
+                        }
+                    }
+                    .listStyle(.grouped)
                 }
-                
             }
-
         }
-        
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar{
-            ToolbarItem(placement: .principal){
+        .toolbar {
+            ToolbarItem(placement: .principal) {
                 Text("Produkty").font(.headline).bold()
             }
-            
         }
         .background(.gray.opacity(0.1))
         .searchable(text: $searchText)
         .autocorrectionDisabled(true)
         .autocapitalization(.none)
-        
     }
 
 }

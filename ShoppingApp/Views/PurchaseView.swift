@@ -29,7 +29,10 @@ struct PurchaseView: View {
     @State private var cardNumber = ""
     @State private var cardExpirationDate = ""
     @State private var cardCVV = ""
-
+    
+    var allFieldsAreFilled: Bool {
+        return self.firstname != "" && self.lastname != "" && self.city != "" && self.street != "" && self.streetNumber != "" && self.cardNumber != "" && self.cardHolderLastname != "" && self.cardHolderFirstname != "" && self.cardExpirationDate != "" && self.cardNumber != ""  && self.cardCVV != ""
+    }
     
     var body: some View {
         
@@ -38,85 +41,51 @@ struct PurchaseView: View {
             if self.productIDs.count > 0 {
                 VStack{
                     Form {
-                        Section(header: Text("Dane odbiorcy")){
+                        Section(header: Text("Dane odbiorcy")) {
                             TextField("Imie odbiorcy", text: $firstname)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Nazwisko odbiorcy", text: $lastname)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                         }
-                        .listRowInsets(EdgeInsets())
-                        
-                        Section(header: Text("Adres odbiorcy")){
+                        Section(header: Text("Adres odbiorcy")) {
                             TextField("Miasto", text: $city)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Ulica", text: $street)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Numer ulicy", text: $streetNumber)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Numer domu", text: $houseNumber)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
-                            
-                            
                         }
-                        .listRowInsets(EdgeInsets())
-                        
-                        Section(header: Text("Dane karty płatniczej")){
+                        Section(header: Text("Dane karty płatniczej")) {
                             TextField("Imie właściciela karty", text: $cardHolderFirstname)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Nazwisko właściciela karty", text: $cardHolderLastname)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Numer karty", text: $cardNumber)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Data ważności karty", text: $cardExpirationDate)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                             TextField("Kod cvv karty", text: $cardCVV)
-                                .textFieldStyle(.roundedBorder)
-                                .listRowInsets(EdgeInsets())
                         }
-                        .listRowInsets(EdgeInsets())
-                        
-                        
                     }
+                    .textFieldStyle(.roundedBorder)
+                    .listRowInsets(EdgeInsets())
                     .foregroundColor(.black)
                     .scrollContentBackground(.hidden)
-                    .listRowInsets(EdgeInsets())
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Dokonaj zakupu")
                     Spacer()
                     
                     Button {
-                        if( self.firstname != "" && self.lastname != "" && self.city != "" && self.street != "" && self.streetNumber != "" && self.cardNumber != "" && self.cardHolderLastname != "" && self.cardHolderFirstname != "" && self.cardExpirationDate != "" && self.cardNumber != ""  && self.cardCVV != "") {
+                        if allFieldsAreFilled {
                             productVM.submitOrder(productIDs: self.productIDs, firstName: self.firstname, lastName: self.lastname, city: self.city, street: self.street, streetNumber: self.streetNumber, houseNumber: self.houseNumber, cardNumber: self.cardNumber, cardHolderFirstname: self.cardHolderFirstname, cardHolderLastname: self.cardHolderLastname, cardCVV: self.cardCVV, cardExpirationDate: self.cardExpirationDate, totalPrice: self.productVM.userCartTotalPrice)
                             self.dismiss()
                         } else {
                             productVM.alertTitle = "Error"
                             productVM.alertMessage = "Pola nie mogą być puste"
                             productVM.showingAlert = true
-                            
                         }
                     } label: {
-                        
                         HStack{
                             Image(systemName: "eye").bold().font(.body)
                             Text("Kupuje").bold().font(.body)
-                            
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
                         .foregroundColor(.white)
                         .background(Color.orange)
                         .cornerRadius(45)
-                        
                     }
                     .padding([.leading, .trailing, .bottom])
                     
@@ -129,7 +98,9 @@ struct PurchaseView: View {
                 Spacer()
             }
             
+            
         }
+        
         .alert(isPresented: $productVM.showingAlert){
             Alert(
                 title: Text(productVM.alertTitle),
@@ -137,7 +108,7 @@ struct PurchaseView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
+
     }
     
 }

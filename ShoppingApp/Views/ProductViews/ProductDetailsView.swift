@@ -64,29 +64,27 @@ struct ProductDetailsView: View {
                             .padding()
                         
                         HStack{
-                            if product.isOnSale{
-                                VStack{
-                                    Text("\(product.price)")
-                                        .bold()
-                                        .padding([.leading, .trailing])
+                            if product.isOnSale {
+                                VStack {
+                                    Text("\(product.price)PLN")
                                         .font(.callout)
                                         .strikethrough()
                                         .foregroundColor(.black).opacity(0.75)
                                         .frame(alignment: .trailing)
                                     
                                     Text("\(product.onSalePrice)PLN")
+                                        .bold()
                                         .font(.headline)
-                                    
                                 }
                                 .frame(alignment: .center)
                                 .padding([.bottom, .leading, .trailing])
-                            }
-                            else {
+                            } else {
                                 Text("\(product.price)PLN")
                                     .bold()
                                     .font(.headline)
                                     .padding([.bottom, .leading, .trailing])
                             }
+
                             
                             HStack(spacing: 2) {
                                 

@@ -20,12 +20,16 @@ struct CartView: View {
                         ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
                             ScrollView{
                                 LazyVStack{
-                                    ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
-                                        NavigationLink(destination: ProductDetailsView(product: product)) {
-                                            ProductCartCell(product: product)}
-                                        
-                                        Divider()
-                                            .overlay(Color.orange)
+                                    if self.productVM.products == nil {
+                                        LoadingView()
+                                    } else {
+                                        ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
+                                            NavigationLink(destination: ProductDetailsView(product: product)) {
+                                                ProductCartCell(product: product)}
+                                            
+                                            Divider()
+                                                .overlay(Color.orange)
+                                        }
                                     }
                                     
                                 }
