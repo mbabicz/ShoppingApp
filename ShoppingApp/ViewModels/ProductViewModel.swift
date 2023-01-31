@@ -206,6 +206,14 @@ class ProductViewModel: ObservableObject {
         }
     }
     
+    func calculateCartTotalPrice(products: [Product]) -> Int {
+        var totalPrice = 0
+        for product in products {
+            totalPrice += product.isOnSale ? product.onSalePrice : product.price
+        }
+        return totalPrice
+    }
+    
     
     func getUserWatchList(){
         self.userWatchListProductIDs.removeAll()
