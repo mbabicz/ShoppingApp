@@ -16,28 +16,21 @@ struct CartView: View {
             if self.productVM.userCartProductIDs.count > 0 {
                 VStack{
                     Divider()
-                    ScrollView{
-                        ForEach(0..<self.productVM.userCartProductIDs.count, id: \.self) { index in
-                            ScrollView{
-                                LazyVStack{
-                                    if self.productVM.products == nil {
-                                        LoadingView()
-                                    } else {
-                                        ForEach(self.productVM.products!.filter{$0.id.contains(self.productVM.userCartProductIDs[index])}, id: \.id){ product in
-                                            NavigationLink(destination: ProductDetailsView(product: product)) {
-                                                ProductCartCell(product: product)}
-                                            
-                                            Divider()
-                                                .overlay(Color.orange)
-                                        }
-                                    }
-                                    
+                    ScrollView {
+                        if productVM.products != nil {
+                            ForEach(productVM.products!.filter { product in
+                                productVM.userCartProductIDs.contains(product.id)
+                            }, id: \.id) { product in
+                                NavigationLink(destination: ProductDetailsView(product: product)) {
+                                    ProductCartCell(product: product)
                                 }
                                 
+                                Divider()
+                                    .overlay(Color.orange)
                             }
-                            
+                        } else {
+                            LoadingView()
                         }
-                        
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Koszyk")
@@ -56,7 +49,6 @@ struct CartView: View {
                             HStack{
                                 Image(systemName: "eye").bold().font(.body)
                                 Text("Dokonaj zakupu").bold().font(.body)
-                                
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -66,25 +58,17 @@ struct CartView: View {
                         }
                         .padding([.leading, .trailing, .bottom])
                     }
-                    
                 }
-                
             }
-            
             else{
                 Text("Koszyk jest pusty")
                 Spacer()
             }
-                
         }
-
         .onAppear{
             productVM.getUserCart()
-            
         }
-        
     }
-    
 }
 
 
@@ -113,10 +97,8 @@ struct ProductCartCell: View{
                                 .padding([.leading, .trailing])
                                 .clipShape(Circle())
                         }
-                        
                     }
- 
-                    HStack{
+                     HStack{
                         if product.isOnSale{
                             VStack{
                                 Text("\(product.price)")
@@ -141,7 +123,6 @@ struct ProductCartCell: View{
                                 .foregroundColor(.black)
                                 .padding()
                         }
-                        
                         Spacer()
                         Text("Ilość: 1")
                             .foregroundColor(.black)
@@ -149,22 +130,8 @@ struct ProductCartCell: View{
                         .padding()
                                                 
                     }
-                    
                 }
-                
             }
-            
         }
-
     }
-
-}
-
-
-struct CartView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        CartView()
-    }
-    
 }

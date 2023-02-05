@@ -17,29 +17,21 @@ struct OpinionCard: View {
     var body: some View {
         ZStack{
             VStack(alignment: .leading){
-                
                 HStack(alignment: .center){
                     Text(username)
                         .padding()
                         .font(.body)
                         .foregroundColor(.black).opacity(0.5)
                     Spacer()
-
                     RateStars(rating: rate, max: 5)
                         .font(.body)
-
                 }
-                
                 Spacer()
-
                 Text(review).padding([.leading, .trailing, .bottom])
-                
                 Spacer()
-
             }
             .frame(height: 120)
         }
-
         .background(Color(red: 240/255, green: 240/255, blue: 240/255))
         .cornerRadius(20)
         .shadow(color: Color.orange.opacity(0.75), radius: 5, x: 0, y: 1)
@@ -53,19 +45,14 @@ struct OpinionCard: View {
         
         var body: some View {
             HStack(spacing: 2) {
-                
                 ForEach(1..<(max+1), id: \.self) { index in
                     Image(systemName: self.starType(index: index))
                         .font(.title3)
                         .foregroundColor(Color.orange)
-
                 }
-                
             }
             .padding([.bottom, .trailing, .leading])
-            
         }
-        
         
         func starType(index: Int) -> String {
             if let rating = self.rating {
@@ -75,9 +62,7 @@ struct OpinionCard: View {
                 return "star"
             }
         }
-        
     }
-    
 }
 
 

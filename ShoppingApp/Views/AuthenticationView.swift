@@ -13,9 +13,7 @@ struct AuthenticationView: View {
     @EnvironmentObject var user: UserViewModel
 
     var body: some View {
-        VStack {
-            SignInView()
-        }
+        SignInView()
         .alert(isPresented: $user.showingAlert){
             Alert(
                 title: Text(user.alertTitle),
@@ -23,15 +21,12 @@ struct AuthenticationView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
     }
-    
 }
 
 struct SignInView: View {
     
     @EnvironmentObject var user: UserViewModel
-
     @State var email = ""
     @State var password = ""
 
@@ -101,23 +96,17 @@ struct SignInView: View {
                 Spacer()
                 
                 Button {
-
-                    user.singInAnonymously()
-                    
+                    user.signInAnonymously()
                 } label: {
                     Text("Kontynuuj jako gość")
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .center)
                         .foregroundColor(Color.orange)
                 }
-
             }
             .navigationTitle("Logowanie")
-
         }
-        
     }
-    
 }
 
 struct SignUpView: View {
@@ -131,7 +120,6 @@ struct SignUpView: View {
 
     @State var isSecured: Bool = true
     @State var isSecuredConfirmation: Bool = true
-
 
     var body: some View {
         VStack {
@@ -172,7 +160,6 @@ struct SignUpView: View {
                                 .accentColor(.gray)
                         }
                         .padding()
-                        
                     }
                     
                     ZStack(alignment: .trailing){
@@ -197,35 +184,27 @@ struct SignUpView: View {
                             Image(systemName: self.isSecuredConfirmation ? "eye.slash" : "eye")
                                 .accentColor(.gray)
                         }.padding()
-                        
                     }
                     
-                    Button {
-                        if (!username.isEmpty && !email.isEmpty && !password.isEmpty && !passwordConfirmation.isEmpty ){
-                            if password == passwordConfirmation {
-                                user.signUp(email: email, password: password, username: username)
-                            }
-                            else{
-                                user.alertTitle = "Error"
-                                user.alertMessage = "Hasła muszą być takie same"
-                                user.showingAlert = true
-                            }
-                            
-                        } else {
-                            user.alertTitle = "Error"
-                            user.alertMessage = "Pola nie mogą być puste"
-                            user.showingAlert = true
+                    Button("Stwórz konto") {
+                        if username.isEmpty || email.isEmpty || password.isEmpty || passwordConfirmation.isEmpty {
+                            user.updateAlert(title: "Error", message: "Pola nie mogą być puste")
+                            return
                         }
-                        
-                    } label: {
-                        Text("Stwórz konto")
-                            .frame(width: 200, height: 50)
-                            .bold()
-                            .foregroundColor(.white)
-                            .background(Color.orange)
-                            .cornerRadius(45)
-                            .padding()
 
+                        if password != passwordConfirmation {
+                            user.updateAlert(title: "Error", message: "Hasła muszą być takie same")
+                            return
+                        }
+
+                        user.signUp(email: email, password: password, username: username)
+                    }
+                    .foregroundColor(.white)
+                    .background(Color.orange)
+                    .cornerRadius(45)
+                    .padding()
+                    .alert(isPresented: $user.showingAlert) {
+                        Alert(title: Text(user.alertTitle), message: Text(user.alertMessage), dismissButton: .default(Text("OK")))
                     }
 
                 }
@@ -233,57 +212,46 @@ struct SignUpView: View {
                 Spacer()
             }
             .navigationTitle("Stwórz konto")
-
         }
-        
     }
-    
 }
 
 struct ResetPasswordView: View {
     
     @State var email = ""
-    
     @EnvironmentObject var user: UserViewModel
     
     var body: some View {
         VStack {
             VStack{
-                VStack{
-                    
-                    TextField("Adres email", text: $email).padding()
+                VStack {
+                    TextField("Adres email", text: $email)
+                        .padding()
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .background(Color(.secondarySystemBackground))
                     
-                }
-                
-                Button {
-                    if !email.isEmpty {
-                        user.resetPassword(email: email)
-                        
-                    } else {
-                        user.alertTitle = "Error"
-                        user.alertMessage = "Pola nie mogą być puste"
-                        user.showingAlert = true
+                    Button(action: {
+                        if !email.isEmpty {
+                            user.resetPassword(email: email)
+                        } else {
+                            user.updateAlert(title: "Error", message: "Pola nie mogą być puste")
+                        }
+                    }) {
+                        Text("Zresetuj hasło")
+                            .frame(width: 200, height: 50)
+                            .bold()
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .cornerRadius(45)
+                            .padding()
                     }
-                    
-                } label: {
-                    Text("Zresetuj hasło")
-                        .frame(width: 200, height: 50)
-                        .bold()
-                        .foregroundColor(.white)
-                        .background(Color.orange)
-                        .cornerRadius(45)
-                        .padding()
                 }
-                
+                .padding()
+                Spacer()
             }
-            .padding()
-            Spacer()
+            .navigationTitle("Odzyskanie hasła")
         }
-        .navigationTitle("Odzyskanie hasła")
         
     }
-    
 }

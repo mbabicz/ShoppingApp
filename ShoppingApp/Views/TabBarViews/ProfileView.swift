@@ -20,7 +20,6 @@ struct ProfileView: View {
                 Rectangle()
                     .foregroundColor(.white)
                     .padding(.top, 60)
-                
                 VStack {
                     Circle()
                         .frame(width: 140)
@@ -45,7 +44,6 @@ struct ProfileView: View {
                                         
                                     })
                                 }
-                                
                             }
                             .listStyle(.grouped)
                             .scrollDisabled(true)
@@ -56,15 +54,11 @@ struct ProfileView: View {
                                 Section(header: Text("Aplikacja")){
                                     NavigationLink(destination: NotificationsView(), label: {
                                         Text("Powiadomienia")
-                                        
                                     })
                                     NavigationLink(destination: AboutAppView(), label: {
                                         Text("Informacje o aplikacji")
-                                        
                                     })
-                                    
                                 }
-                                
                             }
                             .listStyle(.grouped)
                             .scrollDisabled(true)
@@ -75,8 +69,8 @@ struct ProfileView: View {
                                 List{
                                     Section(header: Text("Konto")){
                                         NavigationLink(destination: ChangePasswordView(), label: {
-                                            Text("Zmień hasło")                            })
-                                        
+                                            Text("Zmień hasło")
+                                        })
                                         Text("Moje dane")
                                     }
                                 }
@@ -85,12 +79,9 @@ struct ProfileView: View {
                                 .scrollContentBackground(.hidden)
                                 .frame(height:175)
                             }
-                            
                         }
-                        
                     }
                     .frame(maxWidth: .infinity, alignment: .top)
-                    
                     Spacer()
                 }
             }
@@ -106,18 +97,12 @@ struct ProfileView: View {
                     } label: {
                         if user.userIsAnonymous{
                             Text("Zaloguj się").font(.headline).foregroundColor(.blue)
-
                         } else {
                             Text("Wyloguj się").font(.headline).foregroundColor(.blue)
-
                         }
-                        
                     }
-                    
                 }
-                
             }
-            
         }
         
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -125,9 +110,7 @@ struct ProfileView: View {
         .onAppear{
             orderVM.getUserOrders()
         }
-        
     }
-    
 }
 
 
@@ -157,7 +140,6 @@ struct ChangePasswordView: View{
         VStack{
             HStack{
                 ZStack(alignment: .trailing){
-                    
                     Group{
                         if isSecured {
                             SecureField("Aktualne hasło", text: $password).padding()
@@ -177,16 +159,12 @@ struct ChangePasswordView: View{
                     } label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                     }.padding()
-                    
                 }
-                
             }
             .padding([.top, .trailing, .leading])
 
             HStack{
-                
                 ZStack(alignment: .trailing){
-                    
                     Group{
                         if isSecured2 {
                             SecureField("Nowe hasło", text: $newPassword).padding()
@@ -206,16 +184,12 @@ struct ChangePasswordView: View{
                     } label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                     }.padding()
-                    
                 }
-                
             }
             .padding([.top, .trailing, .leading])
             
             HStack{
-
                 ZStack(alignment: .trailing){
-                    
                     Group{
                         if isSecured3 {
                             SecureField("Powtórz nowe hasło", text: $newPassword2).padding()
@@ -235,9 +209,7 @@ struct ChangePasswordView: View{
                     } label: {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                     }.padding()
-                    
                 }
-                
             }
             .padding([.top, .trailing, .leading])
             
@@ -246,27 +218,19 @@ struct ChangePasswordView: View{
                     if newPassword == newPassword2{
                         user.changePassword(email: user.user!.userEmail, currentPassword: password, newPassword: newPassword){ error in
                             if error != nil {
-                                user.alertTitle = "Error"
-                                user.alertMessage = error?.localizedDescription ?? "Something went wrong"
-                                user.showingAlert = true
+                                user.updateAlert(title: "error", message: error?.localizedDescription ?? "Coś poszło nie tak")
                             } else {
-                                user.alertTitle = "Succes"
-                                user.alertMessage = "Password has been changed succesfully"
-                                user.showingAlert = true
+                                user.updateAlert(title: "Sukces!", message: "Hasło zostało zmienione")
                                 
                             }
                         }
                         
                     } else {
-                        user.alertTitle = "Error"
-                        user.alertMessage = "New password fields must be the same"
-                        user.showingAlert = true
+                        user.updateAlert(title: "error", message: "Hasła różnią sie od siebie.")
                     }
                 } else {
-                    
-                    user.alertTitle = "Error"
-                    user.alertMessage = "Field cannot be empty"
-                    user.showingAlert = true
+                    user.updateAlert(title: "error", message: "Pola nie mogą byc puste")
+
                 }
                 
             } label: {
@@ -288,9 +252,7 @@ struct ChangePasswordView: View{
                 dismissButton: .default(Text("OK"))
             )
         }
-
     }
-    
 }
 
 struct UserOrdersView: View{
@@ -331,30 +293,21 @@ struct UserOrdersView: View{
                                                     .foregroundColor(.orange)
                                                     .padding(.trailing)
                                             }
-                                            
                                         }
-                                        
                                     }
-                                    
                                 }
-                                                            
                             }
-                            
                         }
                         Divider()
                     }
                     Spacer()
                 }
-                
             }
-            
         }
         else{
             Text("Nie masz żadnych złożonych zamówień")
         }
-        
     }
-    
 }
 struct DetailedOrderView: View{
     
@@ -369,11 +322,9 @@ struct DetailedOrderView: View{
                     Spacer()
                     if( order.status == "Zrealizowane"){
                         Text(order.status).foregroundColor(.green)
-                        
                     }
                     else {
                         Text(order.status)
-                        
                     }
                 }
                 HStack{
@@ -381,7 +332,6 @@ struct DetailedOrderView: View{
                     Spacer()
                     Text("\(order.totalPrice)PLN")
                 }
-                
             }
             
             Section(header: Text("Kupujący")){
@@ -395,7 +345,6 @@ struct DetailedOrderView: View{
                     Spacer()
                     Text(order.lastName)
                 }
-                
             }
             
             Section(header: Text("Dostawa")){
@@ -419,8 +368,6 @@ struct DetailedOrderView: View{
                     Spacer()
                     Text(order.houseNumber)
                 }
-                
-                
             }
             
             Section(header: Text("Platność")){
@@ -439,20 +386,15 @@ struct DetailedOrderView: View{
                     Spacer()
                     Text(order.cardNumber)
                 }
-                
             }
             Section(header: Text("Zakupione produkty")){
                 ForEach(0..<order.productIDs.count, id: \.self) { index in
                     ProductOrderLoader(productID: order.productIDs[index])
-                    
                 }
-                
             }
-
         }
         .listStyle(.insetGrouped)
     }
-    
 }
 
 struct ProductOrderLoader: View{
@@ -468,15 +410,10 @@ struct ProductOrderLoader: View{
                         NavigationLink(destination: ProductDetailsView(product: product)) {
                             ProductOrderCell(product: product)}
                     }
-                    
                 }
-
             }
-            
         }
-        
     }
-    
 }
 
 struct ProductOrderCell: View{
@@ -486,7 +423,6 @@ struct ProductOrderCell: View{
 
     var body: some View{
         VStack(alignment: .leading){
-            
             HStack{
                 ProductSearchCellImage(imageURL: product.imageURL).padding(.leading)
                 Spacer()
@@ -497,7 +433,6 @@ struct ProductOrderCell: View{
         }
         .foregroundColor(.black)
     }
-    
 }
 
 struct NotificationsView: View{
@@ -536,9 +471,7 @@ struct NotificationsView: View{
             .padding()
         }
         Spacer()
-        
     }
-    
 }
 
 struct AboutAppView: View{
@@ -546,7 +479,6 @@ struct AboutAppView: View{
     @EnvironmentObject var user: UserViewModel
     
     var body: some View{
-        
         VStack{
             GroupBoxRowView(name: "Developer", content: "Michał Babicz")
             Divider()
@@ -556,12 +488,9 @@ struct AboutAppView: View{
             Divider()
             GroupBoxRowView(name: "Version", content: "1.0")
             Divider()
-
         }
         Spacer()
-
     }
-    
 }
 
 struct GroupBoxLabelView: View {
@@ -575,9 +504,7 @@ struct GroupBoxLabelView: View {
             Spacer()
             Image(systemName: labelImage)
         }
-        
     }
-    
 }
 
 struct GroupBoxRowView: View{
@@ -594,8 +521,8 @@ struct GroupBoxRowView: View{
             if linkLabel != nil{
                 Link(content, destination: URL(string: "https://\(linkLabel!)")!)
                     .padding()
-                
-            }else {
+
+            } else {
                 Text(content)
                     .padding()
             }

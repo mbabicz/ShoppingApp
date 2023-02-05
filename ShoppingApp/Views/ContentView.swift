@@ -14,22 +14,20 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            
-            if user.userIsAuthenticated && !user.userIsAuthenticatedAndSynced {
+            if !user.userIsAuthenticated {
+                AuthenticationView()
+            } else if !user.userIsAuthenticatedAndSynced {
                 LoadingView()
-            }
-            else if user.userIsAuthenticatedAndSynced{
-                TabView{
+            } else {
+                TabView {
                     MainView().tabItem {
                         Image(systemName: "house.fill")
                     }.tag(0)
                     SearchView().tabItem {
                         Image(systemName: "magnifyingglass")
-   
                     }.tag(1)
                     CartView().tabItem {
                         Image(systemName: "cart.fill")
-
                     }.tag(2)
                     WatchListView().tabItem {
                         Image(systemName: "eye.fill")
@@ -38,12 +36,6 @@ struct ContentView: View {
                         Image(systemName: "person.fill")
                     }.tag(4)
                 }.accentColor(.orange)
-
-                ProfileView()
-            }
-            else{
-                AuthenticationView()
-
             }
         }
         .onAppear{

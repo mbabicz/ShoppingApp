@@ -15,22 +15,17 @@ struct ProductCarousel: View {
     @State private var product: Product? = nil
     
     private let timer = Timer.publish(every: 6, on: .main, in: .common).autoconnect()
-    
     private let screenSize = UIScreen.main.bounds
 
     var body: some View {
-        
         VStack{
             TabView(selection: $currentIndex){
                 ForEach(0..<products.count, id: \.self){ index in
                     NavigationLink(destination: ProductDetailsView(product: products[index])){
                         ProductCarouselCard(product: products[index])
                     }
-
                     .tag(index)
-
                 }
-                
             }
             .frame(height: 225)
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
@@ -40,9 +35,7 @@ struct ProductCarousel: View {
             .onAppear{
                 setupAppearance()
             }
-
         }
-        
     }
     
     func animateCarousel(){

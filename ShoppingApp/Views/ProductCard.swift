@@ -41,20 +41,16 @@ struct ProductCard: View {
                             .foregroundColor(.black).opacity(0.75)
                             .frame(alignment: .trailing)
 
-
                         Text("\(product.onSalePrice)PLN")
                             .font(.body)
                             .foregroundColor(.black)
-                        
                     }
                     .frame(alignment: .center)
-  
                 }
                 else {
                     Text("\(product.price)PLN")
                         .bold()
                         .foregroundColor(.black)
-
                 }
 
                 Spacer(minLength: 10)
@@ -68,12 +64,10 @@ struct ProductCard: View {
                                Text("Do koszyka")
                                 .bold().font(.footnote)
                            }
-
                             .padding(8)
                             .foregroundColor(.white)
                             .background(Color.orange)
                             .cornerRadius(45)
-                           
                     }
                 }
                 .padding(.bottom)
@@ -82,11 +76,8 @@ struct ProductCard: View {
             .cornerRadius(12)
             .shadow(color: .gray, radius: 4, x: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/, y: /*@START_MENU_TOKEN@*/0.0/*@END_MENU_TOKEN@*/)
             .frame(width: 200, height: 320, alignment: .center)
-            
         }
-
     }
-    
 }
 
 struct ProductCardImage: View {

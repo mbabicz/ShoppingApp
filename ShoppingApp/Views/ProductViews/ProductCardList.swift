@@ -20,15 +20,10 @@ struct ProductCardList: View {
                     NavigationLink(destination: ProductDetailsView(product: product)){
                         ProductCard(product: product)
                     }
-
                 }
-
             }
-
         }
-
     }
-    
 }
 
 struct ProductCardList_Previews: PreviewProvider {

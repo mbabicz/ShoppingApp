@@ -21,7 +21,6 @@ struct MainView: View {
                             ProductCarousel(products: productVM.promotedProducts ?? (productVM.products)!)
                         }
                     }
-                    
                     VStack(alignment: .leading){
                         Text("Okazje")
                             .font(.system(size:28))
@@ -30,11 +29,9 @@ struct MainView: View {
                         if(productVM.onSaleProducts != nil){
                             ProductCardList(products: productVM.onSaleProducts!)
                         }
-                        
                     }
                     Spacer(minLength: 40)
                 }
-                                
             }
             .navigationBarTitle("Shopping App")
             .navigationBarTitleDisplayMode(.inline)
@@ -63,9 +60,7 @@ struct MainView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-
     }
-    
 }
 
 struct MainView_Previews: PreviewProvider {

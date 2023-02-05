@@ -12,7 +12,6 @@ struct ProductDetailsView: View {
     var product: Product
     @EnvironmentObject var productVM: ProductViewModel
     @EnvironmentObject var userVM: UserViewModel
-    @State private var currentIndex: Int = 0
     @State private var showingReviewView = false
     
     //Rating and reviews
@@ -23,32 +22,12 @@ struct ProductDetailsView: View {
     @State private var ratesTotal: Int = 0
     @State private var ratesCount: Int = 0
     @State private var ratesAvarage: Double = 0.0
-    
     @State private var currentReviewIndex: Int = 0
     
     var body: some View {
         ScrollView{
             VStack{
-                if(product.images.count > 0){
-                    TabView(selection: $currentIndex){
-                        ForEach(0..<product.images.count, id: \.self){ index in
-                            ProductImage(imageURL: URL(string: product.images[index])!)
-                                .tag(index)
-                        }
-                        
-                    }
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                    .frame(minHeight: 350)
-                    
-                    .onAppear{
-                        UIPageControl.appearance().currentPageIndicatorTintColor = .black
-                        UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
-                    }
-                }
-                else {
-                    ProductImage(imageURL: product.imageURL)
-                    
-                }
+                ProductImageView(product: product)
                 
                 Spacer()
                 ZStack {
@@ -84,10 +63,8 @@ struct ProductDetailsView: View {
                                     .font(.headline)
                                     .padding([.bottom, .leading, .trailing])
                             }
-
                             
                             HStack(spacing: 2) {
-                                
                                 ForEach(0 ..< Int(self.ratesAvarage), id: \.self){ _ in
                                     Image(systemName: "star.fill").font(.callout)
                                 }
@@ -96,13 +73,9 @@ struct ProductDetailsView: View {
                                     Image(systemName: "star.leadinghalf.fill").font(.callout)
                                     
                                 }
-                                
                                 ForEach(0 ..< Int(Double(5) - self.ratesAvarage), id: \.self){ _ in
                                     Image(systemName: "star").font(.callout)
-                                    
                                 }
-                                
-                                
                                 Text("(\(self.ratesTotal))").font(.footnote)
                                     .foregroundColor(.secondary)
                                     .offset(y: 3)
@@ -111,7 +84,6 @@ struct ProductDetailsView: View {
                             
                         }
                         HStack{
-                            
                             Button {
                                 productVM.addProductToCart(productID: product.id)
                             } label: {
@@ -145,14 +117,11 @@ struct ProductDetailsView: View {
                                 
                             }
                             .padding([.leading, .trailing])
-                            
                         }
-                        
                         Text("Opis")
                             .bold()
                             .font(.title2)
                             .padding()
-                        
                         Text(product.description)
                             .foregroundColor(.black).opacity(0.75)
                             .padding([.leading, .trailing, .bottom])
@@ -185,36 +154,25 @@ struct ProductDetailsView: View {
                                 TabView(selection: $currentReviewIndex){
                                     ForEach(0 ..< self.ratesTotal, id: \.self){ id in
                                         OpinionCard(rate: self.rate[id], review: self.review[id], username: self.ratedBy[id])
-                                        
                                             .tag(id)
-                                        
                                     }
                                 }
                                 .frame(height: 200)
                                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-                                
                             }
                             else {
                                 Text("Ten produkt nie ma żadnej opini")
-                                
                             }
                         }
-                        
                         Button {
                             
                             if userVM.userIsAnonymous{
-                                
-                                productVM.alertTitle = "Uwaga!"
-                                productVM.alertMessage = "Musisz być zalogowany, aby dodać opinie!"
-                                productVM.showingAlert = true
+                                productVM.updateAlert(title: "Uwaga", message: "Musisz być zalogowany, aby dodać opinie!")
 
                             }
                             else {
                                 showingReviewView = true
-
                             }
-
-                            
                         } label: {
                             HStack{
                                 Image(systemName: "plus").bold().font(.body)
@@ -225,11 +183,8 @@ struct ProductDetailsView: View {
                             .background(Color.orange)
                             .cornerRadius(45)
                         }
-                        
                         Spacer()
-                        
                     }
-                    
                 }
                 Button {
                     productVM.addProductToCart(productID: product.id)
@@ -263,9 +218,7 @@ struct ProductDetailsView: View {
                 ratesCount = rateCount
                 ratesTotal = rateTotal
                 ratesAvarage = rateAvarage
-                
             }
-            
         }
         
         .alert(isPresented: $userVM.showingAlert){
@@ -282,9 +235,7 @@ struct ProductDetailsView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
     }
-    
 }
 
 struct ProductImage: View {
@@ -322,6 +273,35 @@ struct ProductImage: View {
     }
 }
 
+
+struct ProductImageView: View {
+    var product: Product
+    @State private var currentIndex: Int = 0
+
+    var body: some View {
+        
+        if(product.images.count > 0){
+            TabView(selection: $currentIndex){
+                ForEach(0..<product.images.count, id: \.self){ index in
+                    ProductImage(imageURL: URL(string: product.images[index])!)
+                        .tag(index)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+            .frame(minHeight: 350)
+            
+            .onAppear{
+                UIPageControl.appearance().currentPageIndicatorTintColor = .black
+                UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.2)
+            }
+        }
+        else {
+            ProductImage(imageURL: product.imageURL)
+        }
+        
+    }
+    
+}
 
 struct ProductDetails_Previews: PreviewProvider {
     static var previews: some View {

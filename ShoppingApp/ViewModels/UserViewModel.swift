@@ -35,63 +35,62 @@ class UserViewModel: ObservableObject {
     var userIsAnonymous: Bool{
         return auth.currentUser?.email == nil
     }
+    
+    func updateAlert(title: String, message: String) {
+        self.alertTitle = title
+        self.alertMessage = message
+        self.showingAlert = true
+    }
 
-    func signUp(email: String, password: String, username: String){
-        auth.createUser(withEmail: email, password: password){ (result, error) in
-            if error != nil{
-                self.alertTitle = "Error"
-                self.alertMessage = error?.localizedDescription ?? "Something went wrong"
-                self.showingAlert = true
+    func signUp(email: String, password: String, username: String) {
+        auth.createUser(withEmail: email, password: password) { (result, error) in
+            if let error = error {
+                self.updateAlert(title: "Error", message: error.localizedDescription)
             } else {
-                DispatchQueue.main.async{
-                    self.addUser(User(username: username, userEmail: email))
+                DispatchQueue.main.async {
+                    self.addUser(User(username: username, signUpDate: Date.now, userEmail: email))
                     self.syncUser()
                 }
             }
         }
     }
     
-    
-    func signIn(email: String, password: String){
-        auth.signIn(withEmail: email, password: password){ (result, error) in
-            if error != nil{
-                self.alertTitle = "Error"
-                self.alertMessage = error?.localizedDescription ?? "Something went wrong"
-                self.showingAlert = true
+    func signIn(email: String, password: String) {
+        auth.signIn(withEmail: email, password: password) { (result, error) in
+            if let error = error {
+                self.updateAlert(title: "Error", message: error.localizedDescription)
             } else {
-                DispatchQueue.main.async{
-                    //Success
+                DispatchQueue.main.async {
                     self.syncUser()
-
                 }
             }
         }
     }
     
-    
-    func singInAnonymously(){
-        auth.signInAnonymously(){ authResult, error in
-            DispatchQueue.main.async{
-                self.addUser(User(username: "guest", userEmail: "guest"))
-                self.syncUser()
+    func signInAnonymously() {
+        auth.signInAnonymously() { authResult, error in
+            if error == nil {
+                DispatchQueue.main.async {
+                    self.addUser(User(username: "guest", signUpDate: Date.now, userEmail: "guest"))
+                    self.syncUser()
+                }
+            } else {
+                self.updateAlert(title: "Error", message: error?.localizedDescription ?? "Coś poszło nie tak")
             }
         }
     }
-    func resetPassword(email: String){
+    
+    func resetPassword(email: String) {
         auth.sendPasswordReset(withEmail: email) { error in
-            if error != nil{
-                self.alertTitle = "Error"
-                self.alertMessage = error?.localizedDescription ?? "Coś poszło nie tak!"
-                self.showingAlert = true
+            if error == nil {
+                self.updateAlert(title: "Success", message: "Link zmieniający hasło został wyslany na adres e-mail .")
             } else {
-                self.alertTitle = "Succes"
-                self.alertMessage = "Prośba o zmiane hasła została wysłana na twój adres email.."
-                self.showingAlert = true
+                self.updateAlert(title: "Error", message: error?.localizedDescription ?? "Coś poszło nie tak")
             }
-            
         }
-        
     }
+
+
     
     func signOut(){
         do{
@@ -101,7 +100,6 @@ class UserViewModel: ObservableObject {
         catch{
             print("Error signing out user: \(error)")
         }
-        
     }
     
     //MARK: firestore functions for user data
@@ -115,9 +113,7 @@ class UserViewModel: ObservableObject {
             } catch{
                 print("sync error: \(error)")
             }
-            
         }
-
     }
     
     private func addUser(_ user: User){
@@ -128,7 +124,6 @@ class UserViewModel: ObservableObject {
         } catch {
             print("Error adding: \(error)")
         }
-        
     }
     
     private func update(){
@@ -151,11 +146,6 @@ class UserViewModel: ObservableObject {
                     completion(error)
                 })
             }
-
         })
-
-        
-    }
-    
-    
+    }    
 }

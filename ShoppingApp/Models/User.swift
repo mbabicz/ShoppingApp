@@ -10,7 +10,7 @@ import Foundation
 struct User: Codable {
     
     var username: String
-    var signUpDate = Date.now
+    var signUpDate: Date
     var userEmail: String
     
 }

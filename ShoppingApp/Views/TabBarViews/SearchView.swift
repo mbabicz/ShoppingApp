@@ -23,38 +23,51 @@ struct SearchView: View {
 
     var body: some View {
         NavigationView{
-            if self.productVM.products != nil {
-                if !self.searchText.isEmpty {
-                    ScrollView{
-                        LazyVStack{
-                            ForEach(self.productVM.products!.filter { $0.name.localizedCaseInsensitiveContains(searchText) }, id: \.id) { product in
-                                NavigationLink(destination: ProductDetailsView(product: product)) {
-                                    SearchCell(product: product)
+            VStack{
+                if self.productVM.products != nil {
+                    if !self.searchText.isEmpty {
+                        ScrollView{
+                            LazyVStack{
+                                ForEach(self.productVM.products!.filter { $0.name.localizedCaseInsensitiveContains(searchText) }, id: \.id) { product in
+                                    NavigationLink(destination: ProductDetailsView(product: product)) {
+                                        SearchCell(product: product)
+                                    }
+                                    Divider().overlay(Color.orange)
                                 }
-                                Divider().overlay(Color.orange)
                             }
                         }
-                    }
-                } else {
-                    List {
-                        Section(header: Text("Kategorie")) {
-                            ForEach(Categories.allCases, id: \.rawValue) { item in
-                                NavigationLink(destination: SearchByCategory(category: item.rawValue), label: {
-                                    Text(item.rawValue)
-                                })
+                    } else {
+                        List {
+                            Section(header: Text("Kategorie")) {
+                                ForEach(Categories.allCases, id: \.rawValue) { item in
+                                    NavigationLink(destination: SearchByCategory(category: item.rawValue), label: {
+                                        Text(item.rawValue)
+                                    })
+                                }
                             }
                         }
+                        .listStyle(.grouped)
                     }
-                    .listStyle(.grouped)
                 }
             }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Produkty").font(.headline).bold()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Produkty").font(.headline).bold()
+                }
+                ToolbarItem(placement: .navigationBarTrailing){
+                    NavigationLink {
+                        addNewProductView()
+                    } label: {
+                        Image(systemName: "plus")
+                            .foregroundColor(.orange)
+
+                    }
+                }
+                
             }
         }
+
         .background(.gray.opacity(0.1))
         .searchable(text: $searchText)
         .autocorrectionDisabled(true)
@@ -106,6 +119,7 @@ struct SearchByCategory: View{
 
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarTitle(category)
+        
     }
 
 }
@@ -212,6 +226,76 @@ struct ProductSearchCellImage: View {
         
     }
     
+}
+
+struct addNewProductView: View{
+    @State var isOnSaleToggle: Bool = false
+    @State var isPromotedToggle: Bool = false
+    @State private var name = ""
+    @State private var price = ""
+    @State private var amount = ""
+    @State private var description = ""
+    @State private var onSalePrice = ""
+    
+    @EnvironmentObject var productVM: ProductViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    var allFieldsAreFilled: Bool {
+        return self.name != "" && self.price != "" && self.amount != "" && self.description != "" && self.onSalePrice != ""
+    }
+
+
+    var body: some View {
+        VStack{
+            Form {
+                TextField("Nazwa produktu", text: $name)
+                TextField("Cena produktu", text: $price)
+                TextField("Dostępna ilość", text: $amount)
+                TextField("Opis produktu", text: $description)
+                TextField("Cena promocyjna", text: $onSalePrice)
+                
+                Toggle(
+                    isOn: $isOnSaleToggle,
+                    label: {
+                        Text("Czy jest w promocji?")
+                    })
+                .toggleStyle(SwitchToggleStyle(tint: .green))
+                Toggle(
+                    isOn: $isPromotedToggle,
+                    label: {
+                        Text("Czy jest promowany?")
+                    })
+                .toggleStyle(SwitchToggleStyle(tint: .green))
+                Button {
+                    //
+                } label: {
+                    Text("Dodaj zdjęcia produktu")
+                }
+            }
+            
+            Spacer()
+            Button {
+                if allFieldsAreFilled {
+                        //
+                    self.dismiss()
+                } else {
+                    productVM.updateAlert(title: "Error", message: "Pola nie mogą być puste")
+                }
+            } label: {
+                HStack{
+                    Image(systemName: "eye").bold().font(.body)
+                    Text("Dodaj produkt").bold().font(.body)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.orange)
+                .cornerRadius(45)
+            }
+            .padding([.leading, .trailing, .bottom])
+
+        }
+    }
 }
 
 struct SearchView_Previews: PreviewProvider {

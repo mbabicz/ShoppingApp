@@ -19,7 +19,7 @@ struct RatingView: View {
     var body: some View {
         VStack{
             HStack(alignment: .center){
-                ProductImageView(imageURL: product.imageURL).frame(alignment: .trailing)
+                RatedProductImage(imageURL: product.imageURL).frame(alignment: .trailing)
                 
                 Text(product.name.uppercased())
                     .font(.headline).bold()
@@ -43,7 +43,6 @@ struct RatingView: View {
                     if rating != nil {
                         Text("Twoja ocena: \(rating!)")
                     }
-                    
                 }
                 .padding(.bottom)
                 .frame(maxWidth: .infinity)
@@ -59,18 +58,13 @@ struct RatingView: View {
                     .multilineTextAlignment(.leading)
                     .border(.gray).opacity(0.5)
                     .foregroundColor(.black)
-                    .lineLimit(5...12
-                               
-                    )
-                
+                    .lineLimit(5...12)
                     .padding([.top, .trailing, .leading])
                 
                 Text("\(textReview.text.count)/200")
                     .frame(maxWidth: .infinity, alignment: .trailing)
                     .padding(.trailing)
                     .foregroundColor($textReview.hasReachedLimit.wrappedValue ? .red : .black)
-                
-                
             }
             .padding([.top, .bottom])
             
@@ -109,7 +103,6 @@ struct RatingView: View {
             Spacer()
             
         }
-        
         .alert(isPresented: $user.showingAlert){
             Alert(
                 title: Text(user.alertTitle),
@@ -117,12 +110,10 @@ struct RatingView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        
     }
-    
 }
 
-struct ProductImageView: View {
+struct RatedProductImage: View {
     @StateObject private var imageLoader = ImageLoader()
     let imageURL: URL
     var body: some View {
@@ -192,7 +183,6 @@ struct RatingStars: View {
                         self.rating = index
                     }
             }
-            
         }
         .padding([.bottom, .trailing, .leading])
     }
@@ -205,7 +195,6 @@ struct RatingStars: View {
             return "star"
         }
     }
-    
 }
 
 struct RatingView_Previews: PreviewProvider {

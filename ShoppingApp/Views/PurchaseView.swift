@@ -37,7 +37,6 @@ struct PurchaseView: View {
     var body: some View {
         
         NavigationView {
-            
             if self.productIDs.count > 0 {
                 VStack{
                     Form {
@@ -88,19 +87,13 @@ struct PurchaseView: View {
                         .cornerRadius(45)
                     }
                     .padding([.leading, .trailing, .bottom])
-                    
                 }
-                
             }
-            
             else{
                 Text("Nie masz żadnego produktu w koszyku.")
                 Spacer()
             }
-            
-            
         }
-        
         .alert(isPresented: $productVM.showingAlert){
             Alert(
                 title: Text(productVM.alertTitle),
@@ -108,9 +101,7 @@ struct PurchaseView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-
     }
-    
 }
 
 struct PurchaseCartLoader: View{
@@ -128,15 +119,10 @@ struct PurchaseCartLoader: View{
                         Divider()
                             .overlay(Color.orange)
                     }
-                    
                 }
-
             }
-            
         }
-        
     }
-    
 }
 
 
@@ -148,7 +134,6 @@ struct PurchaseCartCell: View{
 
     var body: some View{
         VStack(alignment: .leading){
-            
             HStack{
                 ProductSearchCellImage(imageURL: product.imageURL).padding(.leading)
                 VStack{
@@ -184,19 +169,12 @@ struct PurchaseCartCell: View{
                                     .foregroundColor(.black)
                                     .padding()
                             }
-       
                         }
-
                     }
-                     
                 }
-                
             }
-            
         }
-
     }
-
 }
 
 struct PurchaseView_Previews: PreviewProvider {

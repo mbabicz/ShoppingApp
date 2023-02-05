@@ -23,7 +23,6 @@ struct ProductCarouselCard: View {
                         .font(.body)
                         .multilineTextAlignment(.center)
                         .padding(.top)
-    
                     Spacer()
                     if product.isOnSale{
                         VStack{
@@ -51,7 +50,6 @@ struct ProductCarouselCard: View {
                 Spacer()
             }
             .background(Color(red: 240/255, green: 247/255, blue: 255/255))
-
         }
         .frame(height: 140)
         .cornerRadius(20)

@@ -23,7 +23,7 @@ class ProductViewModel: ObservableObject {
     @Published var userCartProductIDs = [String]()
     @Published var userCartTotalPrice = 0
     @Published var userWatchListProductIDs = [String]()
-
+    
     //ALERTS
     @Published var showingAlert : Bool = false
     @Published var alertMessage = ""
@@ -38,6 +38,12 @@ class ProductViewModel: ObservableObject {
     @Published var productRatesTotal: Int = 0
     @Published var productRatingAvarage : Double = 0
     
+    func updateAlert(title: String, message: String) {
+        self.alertTitle = title
+        self.alertMessage = message
+        self.showingAlert = true
+    }
+    
     func getProducts() {
         self.products = nil
         
@@ -48,7 +54,6 @@ class ProductViewModel: ObservableObject {
             }
             
             guard let snapshot = snapshot else { return }
-            
             DispatchQueue.main.async {
                 self.products = snapshot.documents.compactMap { doc -> Product? in
                     guard let name = doc["name"] as? String else { return nil }
@@ -78,7 +83,6 @@ class ProductViewModel: ObservableObject {
                 print("Error: can't get products from database")
                 return
             }
-            
             guard let snapshot = snapshot else { return }
             
             DispatchQueue.main.async {
@@ -147,17 +151,14 @@ class ProductViewModel: ObservableObject {
         ]
         
         ref.setData(data) { (error) in
-            if let error = error {
-                self.alertTitle = "Error"
-                self.alertMessage = error.localizedDescription
-                self.showingAlert = true
+            if error != nil {
+                self.updateAlert(title: "Error", message: error!.localizedDescription)
             } else {
-                self.alertTitle = "Success"
-                self.alertMessage = "Pomyślnie dodano produkt do listy obserwowanych"
-                self.showingAlert = true
+                self.updateAlert(title: "Success", message: "Pomyślnie dodano produkt do koszyka!")
             }
         }
     }
+    
     
     func addProductToWatchList(productID: String){
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -172,18 +173,14 @@ class ProductViewModel: ObservableObject {
         ]
         
         ref.setData(data) { (error) in
-            if let error = error {
-                self.alertTitle = "Error"
-                self.alertMessage = error.localizedDescription
-                self.showingAlert = true
+            if error != nil {
+                self.updateAlert(title: "Error", message: error!.localizedDescription)
             } else {
-                self.alertTitle = "Success"
-                self.alertMessage = "Pomyślnie dodano produkt do listy obserwowanych"
-                self.showingAlert = true
+                self.updateAlert(title: "Success", message: "Pomyślnie dodano produkt do obserwowanych!")
             }
         }
-        
     }
+
 
     
     func getUserCart() {
@@ -206,6 +203,7 @@ class ProductViewModel: ObservableObject {
         }
     }
     
+    
     func calculateCartTotalPrice(products: [Product]) -> Int {
         var totalPrice = 0
         for product in products {
@@ -213,7 +211,6 @@ class ProductViewModel: ObservableObject {
         }
         return totalPrice
     }
-    
     
     func getUserWatchList(){
         self.userWatchListProductIDs.removeAll()
@@ -226,7 +223,6 @@ class ProductViewModel: ObservableObject {
                     for document in snapshot.documents {
                         self.userWatchListProductIDs.append(document.documentID)
                     }
-                    print(self.userWatchListProductIDs)
                 }
             }
         }
@@ -257,78 +253,76 @@ class ProductViewModel: ObservableObject {
                 print("Cart product removed succesfully")
                 self.getUserCart()
             }
-            
         }
-        
     }
     
-    func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String, totalPrice: Int){
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Users").document(userID!).collection("Orders").document()
+    func submitOrder(productIDs: [String], firstName: String, lastName: String, city: String, street: String, streetNumber: String, houseNumber: String, cardNumber: String, cardHolderFirstname: String, cardHolderLastname: String, cardCVV: String, cardExpirationDate: String, totalPrice: Int) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            self.updateAlert(title: "Error", message: "Cant get user from db")
+            return
+        }
 
-        ref.setData([
-            "date" : Timestamp(date: Date()),
-            "productIDs" : productIDs,
-            "firstName" : firstName,
-            "lastName" : lastName,
-            "city" : city,
-            "street" : street,
-            "streetNumber" : streetNumber,
-            "houseNumber" : houseNumber,
-            "cardNumber" : cardNumber,
-            "cardHolderFirstname" : cardHolderFirstname,
-            "cardHolderLastname" : cardHolderLastname,
-            "cardCVV" : cardCVV,
-            "cardExpirationDate" : cardExpirationDate,
-            "status" : "W przygotowaniu",
-            "totalPrice" : totalPrice
-            
-        ]){ err in
-            if err != nil{
-                self.alertTitle = "Errors"
-                self.alertMessage = err?.localizedDescription ?? "Coś poszło nie tak"
-                self.showingAlert = true
-            }
-            else {
-                self.alertTitle = "Zamówienie złożone pomyślnie"
-                self.showingAlert = true
+        let orderRef = db.collection("Users").document(userID).collection("Orders").document()
+
+        let data: [String: Any] = [
+            "date": Timestamp(date: Date()),
+            "productIDs": productIDs,
+            "firstName": firstName,
+            "lastName": lastName,
+            "city": city,
+            "street": street,
+            "streetNumber": streetNumber,
+            "houseNumber": houseNumber,
+            "cardNumber": cardNumber,
+            "cardHolderFirstname": cardHolderFirstname,
+            "cardHolderLastname": cardHolderLastname,
+            "cardCVV": cardCVV,
+            "cardExpirationDate": cardExpirationDate,
+            "status": "W przygotowaniu",
+            "totalPrice": totalPrice
+        ]
+
+        orderRef.setData(data) { (error) in
+            if let error = error {
+                self.updateAlert(title: "Error", message: error.localizedDescription)
+            } else {
+                self.updateAlert(title: "Success", message: "Zamówienie złożone pomyślnie")
                 for product in productIDs {
-                    self.db.collection("Users").document(userID!).collection("Cart").document(product).delete()
+                    self.db.collection("Users").document(userID).collection("Cart").document(product).delete()
                 }
                 self.getUserCart()
-                
             }
-            
         }
-        
     }
-    
-    
-    func addProductReview(productID: String, rating: Int, review: String, username: String){
-        
-        let userID = Auth.auth().currentUser?.uid
-        let ref = db.collection("Products").document(productID).collection("Reviews").document(userID!)
 
-        ref.setData([
-            "date" : Date.now,
-            "productID" : productID,
-            "review" : review,
-            "rating" : rating,
-            "ratedByUID" : userID!,
-            "ratedBy" : username
-        ]){ err in
-            if err != nil{
-                self.alertTitle = "Errors"
-                self.alertMessage = err?.localizedDescription ?? "Something went wrong"
-                self.showingAlert = true
-            }
-            else {
-                self.alertTitle = "Done"
-                self.showingAlert = true
-            }
-            
+    
+    
+    func addProductReview(productID: String, rating: Int, review: String, username: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("Cant get user from db")
+            return
         }
         
+        let ref = db.collection("Products").document(productID).collection("Reviews").document(userID)
+        let data: [String: Any] = [
+            "date": Timestamp(date: Date()),
+            "productID": productID,
+            "review": review,
+            "rating": rating,
+            "ratedByUID": userID,
+            "ratedBy": username
+        ]
+        
+        ref.setData(data) { (error) in
+            if let error = error {
+                self.alertTitle = "Error"
+                self.alertMessage = error.localizedDescription
+                self.showingAlert = true
+            } else {
+                self.alertTitle = "Success"
+                self.showingAlert = true
+            }
+        }
     }
     
     func getProductReviews(productID: String, completion: @escaping (([String],[Int],[String],[String], Int, Int, Double)) -> ()){

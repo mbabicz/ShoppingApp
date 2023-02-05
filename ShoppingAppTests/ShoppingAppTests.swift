@@ -6,9 +6,14 @@
 //
 
 import XCTest
+import FirebaseAuth
+
+
 
 final class ShoppingAppTests: XCTestCase {
     
+    
+
     func testDisplayPromotedProducts(){
         let products = Product.sampleProducts
         let displayPromoted = ProductCarousel(products: products)

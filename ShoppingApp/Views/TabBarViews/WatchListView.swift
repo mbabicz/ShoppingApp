@@ -21,9 +21,7 @@ struct WatchListView: View {
                             ForEach(0..<self.productVM.userWatchListProductIDs.count, id: \.self) { index in
                                 ProductWatchListLoader(productID: self.productVM.userWatchListProductIDs[index])
                             }
-                            
                         }
-                        
                     }
                     .navigationBarTitleDisplayMode(.inline)
                     .navigationTitle("Obserwowane")
@@ -33,16 +31,11 @@ struct WatchListView: View {
                 Text("Nie obserwujesz żadnego prodoktu.")
                 Spacer()
             }
-
         }
-        
         .onAppear{
             productVM.getUserWatchList()
-            
         }
-        
     }
-    
 }
 
 
@@ -58,20 +51,13 @@ struct ProductWatchListLoader: View{
                     ForEach(self.productVM.products!.filter{$0.id.contains(self.productID)}, id: \.id){ product in
                         NavigationLink(destination: ProductDetailsView(product: product)) {
                             ProductWatchListCell(product: product)}
-                            
                         Divider()
                             .overlay(Color.orange)
-
                     }
-                    
                 }
-
             }
-            
         }
-        
     }
-    
 }
 
 struct ProductWatchListCell: View{
@@ -81,7 +67,6 @@ struct ProductWatchListCell: View{
     
     var body: some View{
         VStack{
-            
             HStack{
                 ProductSearchCellImage(imageURL: product.imageURL).padding(.leading)
                 VStack{
@@ -102,9 +87,7 @@ struct ProductWatchListCell: View{
                                 .padding([.leading, .trailing])
                                 .clipShape(Circle())
                         }
-                        
                     }
- 
                     HStack{
                         if product.isOnSale{
                             VStack{
@@ -130,18 +113,16 @@ struct ProductWatchListCell: View{
                                 .foregroundColor(.black)
                                 .padding()
                         }
-                        
                         Spacer()
-                        
                         Button {
                             productVM.addProductToCart(productID: product.id)
                         } label: {
                             HStack() {
-                                   Image(systemName: "cart.badge.plus")
+                                Image(systemName: "cart.badge.plus")
                                     .bold().font(.callout)
-                                   Text("Do koszyka")
+                                Text("Do koszyka")
                                     .bold().font(.footnote)
-                               }
+                            }
                             .padding(8)
                             .foregroundColor(.white)
                             .background(Color.orange)
@@ -149,15 +130,10 @@ struct ProductWatchListCell: View{
                         }
                         .padding(.trailing)
                     }
-                    
                 }
-                
             }
-            
         }
-
     }
-    
 }
 
 
